@@ -5,6 +5,7 @@ import {
 	checkModeratorAuth,
 	createAuthErrorResponse,
 } from '../../../shared/lib/auth-utils';
+import { isValidLucideIcon } from '../../../shared/lib/icon-validator';
 import { db } from '@/db/drizzle';
 
 // GET /api/categories
@@ -51,12 +52,23 @@ export async function POST(req: Request) {
 			);
 		}
 
+		// Валидация иконки, если она указана
+		const iconValue = icon && typeof icon === 'string' ? icon.trim() : null;
+		if (iconValue && !isValidLucideIcon(iconValue)) {
+			return NextResponse.json(
+				{
+					error: `Icon "${iconValue}" does not exist in lucide-react. Please use a valid icon name.`,
+				},
+				{ status: 400 }
+			);
+		}
+
 		// Создаем новую категорию
 		const newCategory = await db
 			.insert(categories)
 			.values({
 				name: name.trim(),
-				icon: icon && typeof icon === 'string' ? icon.trim() : null,
+				icon: iconValue,
 			})
 			.returning();
 
@@ -130,11 +142,25 @@ export async function PUT(req: Request) {
 			);
 		}
 
+		// Валидация иконки, если она указана
+		let iconValue: string | null | undefined = undefined;
+		if (icon !== undefined) {
+			iconValue = icon && typeof icon === 'string' ? icon.trim() : null;
+			if (iconValue && !isValidLucideIcon(iconValue)) {
+				return NextResponse.json(
+					{
+						error: `Icon "${iconValue}" does not exist in lucide-react. Please use a valid icon name.`,
+					},
+					{ status: 400 }
+				);
+			}
+		}
+
 		const updatedCategory = await db
 			.update(categories)
 			.set({
 				name: name.trim(),
-				icon: icon !== undefined ? (icon && typeof icon === 'string' ? icon.trim() : null) : undefined,
+				icon: iconValue,
 			})
 			.where(eq(categories.id, categoryId))
 			.returning();
