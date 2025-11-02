@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 		}
 
 		// Получаем данные из запроса
-		const { name } = await req.json();
+		const { name, icon } = await req.json();
 
 		if (!name || typeof name !== 'string' || name.trim().length === 0) {
 			return NextResponse.json(
@@ -56,6 +56,7 @@ export async function POST(req: Request) {
 			.insert(categories)
 			.values({
 				name: name.trim(),
+				icon: icon && typeof icon === 'string' ? icon.trim() : null,
 			})
 			.returning();
 
@@ -76,7 +77,7 @@ export async function PUT(req: Request) {
 		}
 
 		const body = await req.json();
-		const { id, name } = body;
+		const { id, name, icon } = body;
 
 		if (!id || !name) {
 			return NextResponse.json(
@@ -133,6 +134,7 @@ export async function PUT(req: Request) {
 			.update(categories)
 			.set({
 				name: name.trim(),
+				icon: icon !== undefined ? (icon && typeof icon === 'string' ? icon.trim() : null) : undefined,
 			})
 			.where(eq(categories.id, categoryId))
 			.returning();

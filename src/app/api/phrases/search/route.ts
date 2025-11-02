@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
 				category: {
 					id: categories.id,
 					name: categories.name,
+					icon: categories.icon,
 					createdAt: categories.createdAt,
 					updatedAt: categories.updatedAt,
 				},

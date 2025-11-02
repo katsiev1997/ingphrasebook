@@ -10,6 +10,11 @@ import {
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
+// Тип для имен иконок из lucide-react
+// Можно использовать любое имя иконки из lucide-react (например: "Home", "User", "Settings", "Book" и т.д.)
+// Полный список доступных иконок: https://lucide.dev/icons/
+export type LucideIconName = string;
+
 // Определение ролей
 export const roleEnum = pgEnum('role', ['ADMIN', 'MODERATOR', 'USER']);
 
@@ -27,6 +32,7 @@ export const users = pgTable('users', {
 export const categories = pgTable('categories', {
 	id: serial('id').primaryKey(),
 	name: varchar('name', { length: 255 }).notNull().unique(),
+	icon: varchar('icon', { length: 100 }),
 	createdAt: timestamp('createdAt').notNull().defaultNow(),
 	updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 });
