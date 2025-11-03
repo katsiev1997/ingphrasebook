@@ -130,10 +130,13 @@
 	body {
 		@apply bg-background text-foreground;
 	}
-
 }
 
 body {
 	overscroll-behavior: contain;
 	-webkit-overflow-scrolling: touch;
 }
+/* 
+.bottom-safe-area {
+	bottom: env(safe-area-inset-bottom, 0);
+} */

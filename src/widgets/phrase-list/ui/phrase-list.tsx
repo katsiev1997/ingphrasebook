@@ -12,8 +12,7 @@ interface PhraseListProps {
 export const PhraseList = ({ categoryId }: PhraseListProps) => {
 	const { data: phrases, isPending, isError } = useGetPhrases(categoryId);
 
-	const { user } = useAuth();
-	const canCreatePhrase = user?.role === 'MODERATOR' || user?.role === 'ADMIN';
+	const { isModeratorOrAdmin } = useAuth();
 
 	return (
 		<div className="mt-6 flex flex-col gap-3">
@@ -44,7 +43,7 @@ export const PhraseList = ({ categoryId }: PhraseListProps) => {
 						audioUrl={phrase.audioUrl || undefined}
 					/>
 				))}
-			{canCreatePhrase && <CreatePhrase defaultCategoryId={categoryId} />}
+			{isModeratorOrAdmin && <CreatePhrase defaultCategoryId={categoryId} />}
 		</div>
 	);
 };

@@ -3,7 +3,7 @@ import { api } from '../api';
 
 interface UserData {
 	id: number;
-	email: string;
+	username: string;
 	role: 'ADMIN' | 'MODERATOR' | 'USER';
 }
 
@@ -26,7 +26,7 @@ export const useAuth = () => {
 			const { data } = await api.get<AuthResponse>('/auth');
 			return data;
 		},
-		staleTime: 5 * 60 * 1000, // 5 минут
+		staleTime: 30 * 60 * 1000, // 30 минут
 		retry: 1,
 		refetchOnWindowFocus: false,
 	});
@@ -41,6 +41,8 @@ export const useAuth = () => {
 				authenticated: false,
 				user: null,
 			});
+			// Инвалидируем кеш для полного обновления
+			queryClient.invalidateQueries({ queryKey: ['auth'] });
 		} catch (error) {
 			console.error('Logout error:', error);
 		}

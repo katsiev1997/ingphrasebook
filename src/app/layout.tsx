@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { BottomNavigation } from '@/widgets/bottom-navigation';
 import { MainProvider } from '@/shared/providers/main-provider';
+import { Toaster } from '@/shared/components/ui/sonner';
 
 const inter = Inter({
 	variable: '--font-display',
@@ -33,6 +34,7 @@ export default function RootLayout({
 				<MainProvider>
 					{children}
 					<BottomNavigation />
+					<Toaster />
 				</MainProvider>
 			</body>
 		</html>
