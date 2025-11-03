@@ -1,23 +1,12 @@
-import * as React from 'react';
 import { ChevronRight, HelpCircle } from 'lucide-react';
-import * as Icons from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import type { LucideIconName } from '@/db/schema';
-import type { LucideIcon } from 'lucide-react';
+import { iconList } from '@/shared/consts/icon-list';
 
 interface CategoryCardProps extends React.ComponentProps<'button'> {
 	iconName: LucideIconName | null | undefined;
 	name: string;
 }
-
-// Создаем маппинг всех иконок: iconName (без "Icon") -> компонент иконки
-const iconMap = Object.keys(Icons)
-	.filter((key) => key.endsWith('Icon'))
-	.reduce((acc, key) => {
-		const iconName = key.replace('Icon', '');
-		acc[iconName] = Icons[key as keyof typeof Icons] as LucideIcon;
-		return acc;
-	}, {} as Record<string, LucideIcon>);
 
 export function CategoryCard({
 	iconName,
@@ -25,8 +14,9 @@ export function CategoryCard({
 	className,
 	...props
 }: CategoryCardProps) {
-	const IconComponent = iconName ? iconMap[iconName] : null;
-
+	// Поддерживаем обратную совместимость: если приходит имя без "Icon", добавляем его
+	const iconIndex = iconList.findIndex((icon) => icon.name === iconName);
+	const IconComponent = iconIndex !== -1 ? iconList[iconIndex].component : null;
 	return (
 		<button
 			className={cn(

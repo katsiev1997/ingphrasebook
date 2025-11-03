@@ -1,8 +1,8 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from '@/shared/providers/theme-provider';
 import { BottomNavigation } from '@/widgets/bottom-navigation';
+import { MainProvider } from '@/shared/providers/main-provider';
 
 const inter = Inter({
 	variable: '--font-display',
@@ -11,8 +11,16 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-	title: 'Phrasebook',
-	description: 'Phrasebook application',
+	title: 'IngPhrase',
+	description: 'Ingush-Russian phrasebook',
+};
+
+export const viewport: Viewport = {
+	width: 'device-width',
+	initialScale: 1,
+	maximumScale: 1,
+	userScalable: true,
+	viewportFit: 'cover',
 };
 
 export default function RootLayout({
@@ -21,12 +29,12 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
+		<html lang="ru">
 			<body className={`${inter.variable} antialiased`}>
-				<ThemeProvider>
+				<MainProvider>
 					{children}
 					<BottomNavigation />
-				</ThemeProvider>
+				</MainProvider>
 			</body>
 		</html>
 	);

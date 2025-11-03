@@ -6,7 +6,8 @@ import { createElement } from 'react';
 
 /**
  * Получает компонент иконки из lucide-react по имени
- * @param iconName - имя иконки (например: "Home", "User", "Settings")
+ * @param iconName - имя иконки с суффиксом "Icon" (например: "HomeIcon", "UserIcon", "SettingsIcon")
+ *                   или без суффикса для обратной совместимости
  * @returns компонент иконки или null, если иконка не найдена
  */
 export function getLucideIcon(
@@ -14,10 +15,12 @@ export function getLucideIcon(
 ): LucideIcon | null {
 	if (!iconName) return null;
 
-	// В lucide-react иконки экспортируются с суффиксом "Icon"
-	// Например: Home -> HomeIcon, User -> UserIcon
-	const iconKey = `${iconName}Icon` as keyof typeof Icons;
-	const IconComponent = Icons[iconKey];
+	// Поддерживаем обратную совместимость
+	const iconKey = iconName.endsWith('Icon')
+		? iconName
+		: `${iconName}Icon`;
+	
+	const IconComponent = Icons[iconKey as keyof typeof Icons];
 
 	if (!IconComponent || typeof IconComponent !== 'function') {
 		return null;
