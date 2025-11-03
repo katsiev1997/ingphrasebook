@@ -2,6 +2,8 @@
 
 import { useGetPhrases } from '@/entities/phrase/model/queries/use-get-phrases';
 import { PhraseCard } from '@/entities/phrase/ui/phrase-card';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { CreatePhrase } from '@/widgets/create-phrase';
 
 interface PhraseListProps {
 	categoryId: string;
@@ -10,31 +12,39 @@ interface PhraseListProps {
 export const PhraseList = ({ categoryId }: PhraseListProps) => {
 	const { data: phrases, isPending, isError } = useGetPhrases(categoryId);
 
-	if (isPending) {
-		return <div>Loading...</div>;
-	}
-
-	if (isError) {
-		return <div>Error: Something went wrong</div>;
-	}
-
-	if (!phrases || phrases.length === 0) {
-		return <div>No phrases found</div>;
-	}
+	const { user } = useAuth();
+	const canCreatePhrase = user?.role === 'MODERATOR' || user?.role === 'ADMIN';
 
 	return (
 		<div className="mt-6 flex flex-col gap-3">
-			{phrases.map((phrase) => (
-				<PhraseCard
-					key={phrase.id}
-					id={String(phrase.id)}
-					phrase={phrase.title}
-					translation={phrase.translate}
-					transcription={phrase.transcription}
-					audioUrl={phrase.audioUrl || undefined}
-				/>
-			))}
+			{isPending && (
+				<div className="text-sm text-foreground-light dark:text-foreground-dark">
+					Loading...
+				</div>
+			)}
+			{isError && (
+				<div className="text-sm text-destructive">Error: Something went wrong</div>
+			)}
+			{!isPending && !isError && (!phrases || phrases.length === 0) && (
+				<div className="text-sm text-foreground-light dark:text-foreground-dark">
+					No phrases found
+				</div>
+			)}
+			{!isPending &&
+				!isError &&
+				phrases &&
+				phrases.length > 0 &&
+				phrases.map((phrase) => (
+					<PhraseCard
+						key={phrase.id}
+						id={String(phrase.id)}
+						phrase={phrase.title}
+						translation={phrase.translate}
+						transcription={phrase.transcription}
+						audioUrl={phrase.audioUrl || undefined}
+					/>
+				))}
+			{canCreatePhrase && <CreatePhrase defaultCategoryId={categoryId} />}
 		</div>
 	);
 };
-

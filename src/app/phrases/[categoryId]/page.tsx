@@ -1,12 +1,8 @@
+import { CategoryTitle, getCategoriesRequest } from '@/entities/category';
 import { PhraseList } from '@/widgets/phrase-list';
 import { ArrowLeftIcon } from 'lucide-react';
-import Link from 'next/link';
-import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { getCategoriesRequest, CategoryTitle } from '@/entities/category';
-import { PhrasesSkeleton } from '@/entities/phrase';
-import { QueryClient } from '@tanstack/react-query';
-import { getPhrasesRequest } from '@/entities/phrase/model/api/get-phrases-request';
+import Link from 'next/link';
 
 type Props = {
 	params: Promise<{
@@ -38,13 +34,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PhrasesPage({ params }: Props) {
 	const categoryId = (await params).categoryId;
 
-	const queryClient = new QueryClient();
-
-	queryClient.prefetchQuery({
-		queryKey: ['phrases', categoryId],
-		queryFn: () => getPhrasesRequest(Number(categoryId)),
-	});
-
 	return (
 		<div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark font-display">
 			<main className="flex-1 px-4 py-4 pb-24">
@@ -60,9 +49,7 @@ export default async function PhrasesPage({ params }: Props) {
 						</div>
 					</Link>
 				</div>
-				<Suspense fallback={<PhrasesSkeleton />}>
-					<PhraseList categoryId={categoryId} />
-				</Suspense>
+				<PhraseList categoryId={categoryId} />
 			</main>
 		</div>
 	);
