@@ -41,6 +41,7 @@ export async function DELETE(req: NextRequest) {
 
 		const phraseData = phrase[0];
 
+		console.log(phrase);
 		if (!phraseData.audioUrl) {
 			return NextResponse.json(
 				{ error: 'No audio file found for this phrase' },
