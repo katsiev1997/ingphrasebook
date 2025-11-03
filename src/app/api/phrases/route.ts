@@ -77,6 +77,13 @@ export async function POST(req: NextRequest) {
 			})
 			.returning();
 
+		// Обновляем updatedAt категории после добавления фразы
+		// Это нужно для корректной работы кеширования на клиенте
+		await db
+			.update(categories)
+			.set({ updatedAt: new Date() })
+			.where(eq(categories.id, Number(categoryId)));
+
 		return NextResponse.json({
 			success: true,
 			phrase: phrase[0],
@@ -93,6 +100,14 @@ export async function PUT(req: NextRequest) {
 		const body = await req.json();
 		const { id, title, translate, transcription, audioUrl, categoryId } = body;
 
+		// Получаем старую фразу, чтобы при смене категории обновить обе
+		const existing = await db
+			.select()
+			.from(phrases)
+			.where(eq(phrases.id, Number(id)))
+			.limit(1);
+		const oldCategoryId = existing[0]?.categoryId;
+
 		const updatedPhrase = await db
 			.update(phrases)
 			.set({
@@ -104,6 +119,24 @@ export async function PUT(req: NextRequest) {
 			})
 			.where(eq(phrases.id, Number(id)))
 			.returning();
+
+		// Обновляем updatedAt категории, к которой относится фраза
+		// Это нужно для корректной работы кеширования на клиенте
+		if (categoryId) {
+			await db
+				.update(categories)
+				.set({ updatedAt: new Date() })
+				.where(eq(categories.id, Number(categoryId)));
+		}
+
+		// Если фразу перенесли в другую категорию, обновляем updatedAt старой категории тоже
+		// Это нужно для инвалидации кеша старой категории
+		if (oldCategoryId && Number(oldCategoryId) !== Number(categoryId)) {
+			await db
+				.update(categories)
+				.set({ updatedAt: new Date() })
+				.where(eq(categories.id, Number(oldCategoryId)));
+		}
 
 		return NextResponse.json(updatedPhrase[0]);
 	} catch (error) {
@@ -124,7 +157,23 @@ export async function DELETE(req: NextRequest) {
 			);
 		}
 
+		// Получаем фразу, чтобы узнать categoryId
+		const existing = await db
+			.select()
+			.from(phrases)
+			.where(eq(phrases.id, Number(phraseId)))
+			.limit(1);
+		const categoryId = existing[0]?.categoryId;
+
 		await db.delete(phrases).where(eq(phrases.id, Number(phraseId)));
+
+		// Обновляем updatedAt категории, если известна
+		if (categoryId) {
+			await db
+				.update(categories)
+				.set({ updatedAt: new Date() })
+				.where(eq(categories.id, Number(categoryId)));
+		}
 
 		return NextResponse.json(
 			{ message: 'Phrase deleted successfully' },

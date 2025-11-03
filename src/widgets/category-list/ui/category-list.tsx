@@ -28,6 +28,7 @@ export const CategoryList = ({
 		<div className="mt-6 flex flex-col gap-3">
 			{categories.map((category) => (
 				<CategoryCard
+					categoryId={category.id}
 					key={category.id}
 					iconName={category.icon}
 					name={category.name}
