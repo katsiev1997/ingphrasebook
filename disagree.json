@@ -1,0 +1,202 @@
+[
+	{
+		"id": 144,
+		"title": "И не вздумай",
+		"translate": "Дага а ма дохалахь",
+		"transcription": "Дага а ма до:халахь",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 155,
+		"title": "Извини, но у меня это не получится",
+		"translate": "Бехк ма аккхалахь, са аьттув бац из де",
+		"transcription": "Бехк ма ба:кхлахь, са аь:ттув бац из де:",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 153,
+		"title": "Мне кажется, из этого ничего не получится / не выйдет",
+		"translate": "Сона хетарах цох хIама хурдац",
+		"transcription": "Со:н хе:тарах, цох хIам худда:ц",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 146,
+		"title": "Мне не нужно",
+		"translate": "Сона эшац",
+		"transcription": "Со:н э:шац",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 160,
+		"title": "Мне некогда",
+		"translate": "Сога ха яц",
+		"transcription": "Со:га ха яц",
+		"audioUrl": "https://grdfowp2xqeo1atn.public.blob.vercel-storage.com/phrase_160_1754254031098.mp4",
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2025-08-03T20:47:11.780Z"
+	},
+	{
+		"id": 159,
+		"title": "Нельзя",
+		"translate": "Йиш яц",
+		"transcription": "Йиш яц",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 143,
+		"title": "Нет / не так",
+		"translate": "А! Иштта дац",
+		"transcription": "А:! Иштт да:ц",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 149,
+		"title": "Ни за что",
+		"translate": "ФуннагIа ца дарах",
+		"transcription": "ФуннагI ца дара:х",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 150,
+		"title": "Никогда",
+		"translate": "ЦIаккха а",
+		"transcription": "ЦIаккха а",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 148,
+		"title": "Никоим образом",
+		"translate": "Цхьаккха тайпара",
+		"transcription": "Цхьаккха тайпа:ра",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 142,
+		"title": "Ты (вы) не прав (не правы)",
+		"translate": "Хьо харц ва",
+		"transcription": "Хьо ха:рц ва",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 147,
+		"title": "У меня нет желания",
+		"translate": "Са безам бац",
+		"transcription": "Са бе:зам бац",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 154,
+		"title": "Хоть и трудно, но я вынужден тебе отказать",
+		"translate": "Хала дале а, хьога ак ала деза са",
+		"transcription": "Хала дале: а хьо:г ак а:л де:з са",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 152,
+		"title": "Это не в моей власти/это не в моих силах ",
+		"translate": "Из са кара дац",
+		"transcription": "Из са кар да:ц ",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 156,
+		"title": "Это недопустимо",
+		"translate": "Из нийсдалийта йиш яц",
+		"transcription": "Из нийсдалийта йиш яц ",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 151,
+		"title": "Этого не может быть/ это исключено",
+		"translate": "Из хала йиш йолаш дац",
+		"transcription": "Из хал йиш йолаш да:ц",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 158,
+		"title": "Я не могу",
+		"translate": "Сога йиш яц",
+		"transcription": "Со:га йиш яц",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 141,
+		"title": "Я не против",
+		"translate": "Со духьала вац",
+		"transcription": "Со духьал вац",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 157,
+		"title": "Я не согласен ",
+		"translate": "Со раьза вац",
+		"transcription": "Со ря:за вац",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 145,
+		"title": "Я не хочу",
+		"translate": "Сона дезац",
+		"transcription": "Со:н де:зац",
+		"audioUrl": null,
+		"categoryId": 3,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	}
+]

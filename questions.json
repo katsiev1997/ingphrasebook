@@ -1,0 +1,502 @@
+[
+	{
+		"id": 164,
+		"title": "В чем дело?",
+		"translate": "Фу даьд?",
+		"transcription": "Фа дя:д? ",
+		"audioUrl": "https://grdfowp2xqeo1atn.public.blob.vercel-storage.com/phrase_164_1754253758339.webm",
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2025-08-03T20:42:39.898Z"
+	},
+	{
+		"id": 175,
+		"title": "Где находится? ",
+		"translate": "Мичахьа да….?",
+		"transcription": "Мича:хь да….?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 174,
+		"title": "Где это?",
+		"translate": "Мичад из?",
+		"transcription": "Мича:д из?",
+		"audioUrl": "https://grdfowp2xqeo1atn.public.blob.vercel-storage.com/phrase_174_1754256157508.mp4",
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2025-08-03T21:22:38.466Z"
+	},
+	{
+		"id": 198,
+		"title": "Где я нахожусь? ",
+		"translate": "Мичахьа ва со?",
+		"transcription": "Мича:хь ва со?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 173,
+		"title": "Где?",
+		"translate": "Мича?",
+		"transcription": "Мича:? ",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 197,
+		"title": "Где? ",
+		"translate": "Мичахьа?",
+		"transcription": "Мича:хь?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 181,
+		"title": "Как вы поживаете?",
+		"translate": "Вахар миштад шун?",
+		"transcription": "Ва:хр миштад шун?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 182,
+		"title": "Как сказать по-ингушски…?",
+		"translate": "Мишта аргда гIалгIай металла…?",
+		"transcription": "Мишт адда гIалгIай ме:ттала…? ",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 180,
+		"title": "Как твои дела?",
+		"translate": "ГIулакхаш мишта да хьа?",
+		"transcription": "ГIулакхаш миштад хьа?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 248,
+		"title": "Как твои дела?",
+		"translate": "Мишт хьа г1улакхаш?",
+		"transcription": "Мишт хьа г1улакхаш?",
+		"audioUrl": "https://grdfowp2xqeo1atn.public.blob.vercel-storage.com/phrase_248_1754254004096.mp4",
+		"categoryId": 4,
+		"createdAt": "2024-12-22T15:09:20.441Z",
+		"updatedAt": "2025-08-03T20:46:44.794Z"
+	},
+	{
+		"id": 179,
+		"title": "Как тебя зовут? ",
+		"translate": "ЦIи мишта я хьа?",
+		"transcription": "ЦIи мишта я хьа?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 178,
+		"title": "Как? ",
+		"translate": "Мишта?",
+		"transcription": "Мишт?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 186,
+		"title": "Какая погода?",
+		"translate": "МалагIа хаоттам?",
+		"transcription": "Мала:гI хао:ттам?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 184,
+		"title": "Какого цвета? ",
+		"translate": "МалагIа бесара?",
+		"transcription": "Мала:гI бесар?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 185,
+		"title": "Какой размер?",
+		"translate": "МалагIа размер?",
+		"transcription": "Мала:гI размер?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 183,
+		"title": "Какой? ",
+		"translate": "МалагIа?",
+		"transcription": "Мала:гI?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 193,
+		"title": "Когда (во сколько) встречаемся?",
+		"translate": "Маца вIашагIкхета вай?",
+		"transcription": "Мац вIа:шагIкхет вей?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 191,
+		"title": "Когда мне нужно подойти?",
+		"translate": "Маца хьатIа ва веза са?",
+		"transcription": "Мац хьатI ва ве:з са?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 190,
+		"title": "Когда отбывает поезд?",
+		"translate": "Маца дIабода поезд?",
+		"transcription": "Мац дIабо:д поезд?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 189,
+		"title": "Когда прибывает…?",
+		"translate": "Маца хьакхоач…?",
+		"transcription": "Мац хьакхоач…?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 192,
+		"title": "Когда ты закончишь?",
+		"translate": "Маца йисте варгва хьо?",
+		"transcription": "Мац йисте: вагва хьо?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 188,
+		"title": "Когда?",
+		"translate": "Маца?",
+		"transcription": "Мац? ",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 204,
+		"title": "Который час?",
+		"translate": "Масса сахьат даьннад?",
+		"transcription": "Масс сахьат дя:ннад?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 170,
+		"title": "Кто там? ",
+		"translate": "Малав цига?",
+		"transcription": "Малав циг?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 169,
+		"title": "Кто это? ",
+		"translate": "Малав из?",
+		"transcription": "Малав из?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 168,
+		"title": "Кто?",
+		"translate": "Мала?",
+		"transcription": "Мал? ",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 176,
+		"title": "Куда вы идете? ",
+		"translate": "Мичахьа долх шо?",
+		"transcription": "Мича:хь до:лх шо?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 196,
+		"title": "Куда мне надо идти?",
+		"translate": "Мича ваха веза са?",
+		"transcription": "Мича: вах ве:з са?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 177,
+		"title": "Куда там! ",
+		"translate": "Ай, мичара!",
+		"transcription": "Ай, мича:р!",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 195,
+		"title": "Куда ты идешь?",
+		"translate": "Мича вода хьо?",
+		"transcription": "Мича: во:д хьо?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 194,
+		"title": "Куда?",
+		"translate": "Мича?",
+		"transcription": "Мича:?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 201,
+		"title": "Откуда ни возьмись…",
+		"translate": "Мичахьара воагIа а ца ховш…",
+		"transcription": "Мича:р воа:гI а ца ховш…",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 200,
+		"title": "Откуда ты идешь?/ Откуда ты едешь? ",
+		"translate": "Мичахьара воагIа хьо?",
+		"transcription": "Мича:р воагI хьо?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 199,
+		"title": "Откуда? ",
+		"translate": "Мичахьара?",
+		"transcription": "Мича:р?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 187,
+		"title": "По какому делу ты здесь?",
+		"translate": "МалагIа гIулакх долаш нийсвеннав хьо уккхаза?",
+		"transcription": "Мала:гI гIулакх долаш нийсвеннав хьо укхаз?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 172,
+		"title": "С кем ты (вы) разговариваешь?",
+		"translate": "Хьанга лув хьо? ",
+		"transcription": "Хьанг лу:в хьо?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 205,
+		"title": "Сколько времени ты там пробудешь?",
+		"translate": "Фу ха йоаккхаргья Iа цига?",
+		"transcription": "Фу ха йоакхаггья а циг?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 203,
+		"title": "Сколько тебе лет?",
+		"translate": "Масса шу даьннад хьа?",
+		"transcription": "Масс шу дя:ннад хьа?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 202,
+		"title": "Сколько?",
+		"translate": "Масса?",
+		"transcription": "Масс?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 171,
+		"title": "Чей?/ Для кого?",
+		"translate": "Хьанна?",
+		"transcription": "Хьанн? ",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 234,
+		"title": "Чем занимаешься?",
+		"translate": "Фу деш ва хьо?",
+		"transcription": "Фу деш ва хьо?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-12-10T22:30:22.803Z",
+		"updatedAt": "2024-12-10T22:30:22.803Z"
+	},
+	{
+		"id": 235,
+		"title": "Чем занимаешься?",
+		"translate": "Фу деш ва хьо?",
+		"transcription": "Фу деш ва хьо?",
+		"audioUrl": "https://grdfowp2xqeo1atn.public.blob.vercel-storage.com/phrase_235_1754255539569.webm",
+		"categoryId": 4,
+		"createdAt": "2024-12-10T22:30:26.745Z",
+		"updatedAt": "2025-08-03T21:12:21.520Z"
+	},
+	{
+		"id": 233,
+		"title": "Чем занимаешься?",
+		"translate": "Фу деш ва хьо?",
+		"transcription": "Фу деш ва хьо?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-12-10T22:30:18.975Z",
+		"updatedAt": "2024-12-10T22:30:18.975Z"
+	},
+	{
+		"id": 165,
+		"title": "Что нового?",
+		"translate": "Фуд керда?",
+		"transcription": "Фад ке:рда?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 163,
+		"title": "Что случилось? ",
+		"translate": "Фу хиннад?",
+		"transcription": "Фа хиннад?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 246,
+		"title": "Что ты делаешь?",
+		"translate": "Фу деш ва хьо?",
+		"transcription": "Фу деш ва хьо?",
+		"audioUrl": "https://grdfowp2xqeo1atn.public.blob.vercel-storage.com/phrase_246_1754252383587.wav",
+		"categoryId": 4,
+		"createdAt": "2024-12-22T14:59:31.704Z",
+		"updatedAt": "2025-08-03T20:19:44.610Z"
+	},
+	{
+		"id": 162,
+		"title": "Что это?",
+		"translate": "Из фуй?",
+		"transcription": "Из фий?",
+		"audioUrl": "https://grdfowp2xqeo1atn.public.blob.vercel-storage.com/phrase_162_1754252332256.wav",
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2025-08-03T20:18:52.941Z"
+	},
+	{
+		"id": 161,
+		"title": "Что? ",
+		"translate": "Фу?",
+		"transcription": "Фа?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 167,
+		"title": "Это какое село?",
+		"translate": "МалагIа юрт я ер?",
+		"transcription": "Мала:х юрт йа ер? ",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2025-08-03T21:15:36.382Z"
+	},
+	{
+		"id": 166,
+		"title": "Это какой город?",
+		"translate": "Мала:х гIа:ла  йа ер?",
+		"transcription": "МалагIа гIала я ер?",
+		"audioUrl": null,
+		"categoryId": 4,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	}
+]

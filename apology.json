@@ -1,0 +1,92 @@
+[
+	{
+		"id": 121,
+		"title": "Извините",
+		"translate": "Бехк ма баккхалахь",
+		"transcription": "Бехк ма ба:кхлахь",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 123,
+		"title": "Извините за мое опоздание ",
+		"translate": "Бехк ма баккхалахь со тIехьвисара",
+		"transcription": "Бехк ма ба:кхлахь со тIехьвисара:",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 125,
+		"title": "Извините, что я тебя (вас) задержал",
+		"translate": "Бехк ма баккхалахь, аз хье гоавара",
+		"transcription": "Бехк ма ба:кхлахь, аз хье:гоа:вара",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 124,
+		"title": "Извините, я тороплюсь",
+		"translate": "Бехк ма баккхалахь, со сихлуш ва",
+		"transcription": "Бехк ма ба:кхлахь со сихлуш ва",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 129,
+		"title": "Ничего, и такое бывает (случается)",
+		"translate": "ХIама дергдац, нийслу",
+		"transcription": "ХIам деддац, нийслу",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 122,
+		"title": "Простите",
+		"translate": "КъинтIера валлалахь",
+		"transcription": "КъинтIе:р ва:ллахь",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 128,
+		"title": "Это моя вина",
+		"translate": "Из са бехк ба",
+		"transcription": "Из са бехк ба",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 127,
+		"title": "Я виноват",
+		"translate": "Со бехке ва",
+		"transcription": "Со бе:хке ва",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	},
+	{
+		"id": 126,
+		"title": "Я должен извиниться перед тобой (вами)",
+		"translate": "Хьона хьалхашка бехказа везаш ва со",
+		"transcription": "Хьо:н хьа:лхашка бехказ ва:л везаш ва со",
+		"audioUrl": null,
+		"categoryId": 7,
+		"createdAt": "2024-10-26T20:31:26.684Z",
+		"updatedAt": "2024-10-26T20:31:26.684Z"
+	}
+]
