@@ -1,5 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/shared/api";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '@/shared/api';
+import { useParams } from 'next/navigation';
 
 interface UploadAudioData {
 	phraseId: string;
@@ -13,16 +14,17 @@ interface UploadAudioResponse {
 
 export const useUploadAudio = () => {
 	const queryClient = useQueryClient();
+	const params = useParams();
 
 	return useMutation({
 		mutationFn: async (data: UploadAudioData): Promise<UploadAudioResponse> => {
 			const formData = new FormData();
-			formData.append("phraseId", data.phraseId);
-			formData.append("audio", data.audioFile);
+			formData.append('phraseId', data.phraseId);
+			formData.append('audio', data.audioFile);
 
-			const response = await api.post("/phrases/upload-audio", formData, {
+			const response = await api.post('/phrases/upload-audio', formData, {
 				headers: {
-					"Content-Type": "multipart/form-data",
+					'Content-Type': 'multipart/form-data',
 				},
 			});
 			return response.data;
@@ -30,7 +32,7 @@ export const useUploadAudio = () => {
 		onSuccess: () => {
 			// Инвалидируем кеш фраз для обновления данных
 			queryClient.invalidateQueries({
-				queryKey: ["phrases"],
+				queryKey: ['phrases', params?.categoryId],
 			});
 		},
 	});

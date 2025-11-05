@@ -124,7 +124,11 @@ export const AuthForm = ({ onSubmit }: AuthFormProps) => {
 							<FormItem>
 								<FormLabel>Имя пользователя</FormLabel>
 								<FormControl>
-									<Input placeholder="Введите имя пользователя" {...field} />
+									<Input
+										className="py-5"
+										placeholder="Введите имя пользователя"
+										{...field}
+									/>
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -146,6 +150,7 @@ export const AuthForm = ({ onSubmit }: AuthFormProps) => {
 								<FormLabel>Пароль</FormLabel>
 								<FormControl>
 									<Input
+										className="py-5"
 										type="password"
 										inputMode="numeric"
 										placeholder="Введите 6-значный пароль"
@@ -180,6 +185,7 @@ export const AuthForm = ({ onSubmit }: AuthFormProps) => {
 									<FormLabel>Повторите пароль</FormLabel>
 									<FormControl>
 										<Input
+											className="py-5"
 											type="password"
 											inputMode="numeric"
 											placeholder="Повторите 6-значный пароль"
@@ -197,7 +203,12 @@ export const AuthForm = ({ onSubmit }: AuthFormProps) => {
 						/>
 					)}
 
-					<Button type="submit" className="w-full" disabled={isSubmitting}>
+					<Button
+						type="submit"
+						className="w-full py-5 text-base"
+						disabled={isSubmitting}
+						ripple
+					>
 						{isSubmitting
 							? 'Загрузка...'
 							: mode === 'login'

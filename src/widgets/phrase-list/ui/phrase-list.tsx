@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState, useTransition } from 'react';
-import { useGetPhrases } from '@/entities/phrase/model/queries/use-get-phrases';
-import { PhraseCard } from '@/entities/phrase/ui/phrase-card';
+import { useGetPhrases, PhraseCard } from '@/entities/phrase';
 import { useAuth } from '@/shared/hooks/use-auth';
-import { CreatePhrase } from '@/widgets/create-phrase';
+import { CreatePhrase } from '@/features/create-phrase';
 
 interface PhraseListProps {
 	categoryId: string;

@@ -8,8 +8,8 @@ export default function SettingsPage() {
 				<h1 className="mb-4 text-3xl font-bold text-black dark:text-white">
 					Settings
 				</h1>
-				<AuthBlock />
 				<ThemeToggle />
+				<AuthBlock />
 			</main>
 		</div>
 	);

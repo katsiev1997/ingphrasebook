@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
+import { motion } from 'framer-motion';
 
 import { cn } from '@/shared/lib/utils';
 
@@ -35,24 +36,113 @@ const buttonVariants = cva(
 	}
 );
 
+interface Ripple {
+	id: string;
+	x: number;
+	y: number;
+}
+
 function Button({
 	className,
 	variant,
 	size,
 	asChild = false,
+	ripple = false,
+	onClick,
 	...props
 }: React.ComponentProps<'button'> &
 	VariantProps<typeof buttonVariants> & {
 		asChild?: boolean;
+		ripple?: boolean;
 	}) {
 	const Comp = asChild ? Slot : 'button';
+	const [ripples, setRipples] = React.useState<Ripple[]>([]);
+	const rippleIdCounter = React.useRef(0);
+	const buttonRef = React.useRef<HTMLButtonElement>(null);
 
+	const wrapperRef = React.useRef<HTMLSpanElement>(null);
+
+	const handleRipple = React.useCallback(
+		(event: React.MouseEvent<HTMLButtonElement>) => {
+			if (!ripple) {
+				onClick?.(event);
+				return;
+			}
+
+			// Вычисляем координаты относительно обертки
+			const wrapper = wrapperRef.current;
+			if (!wrapper) {
+				onClick?.(event);
+				return;
+			}
+
+			const rect = wrapper.getBoundingClientRect();
+			const x = event.clientX - rect.left;
+			const y = event.clientY - rect.top;
+
+			rippleIdCounter.current += 1;
+			const rippleId = `ripple-${rippleIdCounter.current}`;
+			const newRipple: Ripple = { id: rippleId, x, y };
+
+			setRipples((prev) => [...prev, newRipple]);
+
+			// Удаляем ripple после анимации
+			setTimeout(() => {
+				setRipples((prev) => prev.filter((r) => r.id !== rippleId));
+			}, 600);
+
+			onClick?.(event);
+		},
+		[ripple, onClick]
+	);
+
+	if (!ripple) {
+		return (
+			<Comp
+				{...(asChild ? {} : { ref: buttonRef })}
+				data-slot="button"
+				className={cn(buttonVariants({ variant, size, className }))}
+				onClick={onClick}
+				{...props}
+			/>
+		);
+	}
+
+	// Для ripple оборачиваем в span, чтобы ripple элементы были правильно позиционированы
 	return (
-		<Comp
-			data-slot="button"
-			className={cn(buttonVariants({ variant, size, className }))}
-			{...props}
-		/>
+		<span ref={wrapperRef} className="relative inline-flex overflow-hidden">
+			{ripples.map((rippleEffect) => (
+				<motion.span
+					key={rippleEffect.id}
+					className="absolute rounded-full bg-white/40 dark:bg-white/20 pointer-events-none"
+					initial={{
+						width: 0,
+						height: 0,
+						left: rippleEffect.x,
+						top: rippleEffect.y,
+						x: '-50%',
+						y: '-50%',
+						opacity: 0.6,
+					}}
+					animate={{
+						width: 200,
+						height: 200,
+						opacity: 0,
+					}}
+					transition={{
+						duration: 0.6,
+						ease: 'easeOut',
+					}}
+				/>
+			))}
+			<Comp
+				{...(asChild ? {} : { ref: buttonRef })}
+				data-slot="button"
+				className={cn(buttonVariants({ variant, size, className }))}
+				onClick={handleRipple}
+				{...props}
+			/>
+		</span>
 	);
 }
 

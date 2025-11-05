@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useQuery } from "@tanstack/react-query";
-import { useMemo, useEffect } from "react";
+import { useQuery } from '@tanstack/react-query';
+import { useMemo, useEffect } from 'react';
 
-import { getPhrasesRequest } from "../api/get-phrases-request";
+import { getPhrasesRequest } from '../api/get-phrases-request';
 import {
 	getCachedPhrases,
 	savePhrases,
 	shouldFetchPhrases,
-} from "@/shared/lib/phrases-storage";
-import { useGetCategories } from "@/entities/category/model/queries/use-get-categories";
-import type { Phrase } from "@/db/schema";
+} from '@/shared/lib/phrases-storage';
+import { useGetCategories } from '@/entities/category/model/queries/use-get-categories';
+import type { Phrase } from '@/db/schema';
 
 export const useGetPhrases = (categoryId: string) => {
 	const categoryIdNum = Number(categoryId) || 1;
@@ -24,7 +24,7 @@ export const useGetPhrases = (categoryId: string) => {
 		return getCachedPhrases(categoryIdNum);
 	}, [categoryIdNum]);
 
-	const enabled = useMemo(() => {
+	const enabled = () => {
 		if (!category?.updatedAt) {
 			// Если категория ещё не загружена, не делаем запрос
 			// но показываем кеш через initialData
@@ -32,10 +32,10 @@ export const useGetPhrases = (categoryId: string) => {
 		}
 		// Загружаем только если нужно обновить данные
 		return shouldFetchPhrases(categoryIdNum, category.updatedAt);
-	}, [category?.updatedAt, categoryIdNum]);
+	};
 
 	const queryResult = useQuery<Phrase[]>({
-		queryKey: ["phrases", categoryId],
+		queryKey: ['phrases', categoryId],
 		queryFn: () => getPhrasesRequest(categoryIdNum),
 		initialData: cachedData?.phrases,
 		enabled,
