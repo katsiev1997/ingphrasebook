@@ -1,20 +1,24 @@
 'use client';
 
-import { useEffect, useState, useTransition } from 'react';
-import { useGetPhrases, PhraseCard } from '@/entities/phrase';
-import { useAuth } from '@/shared/hooks/use-auth';
-import { CreatePhrase } from '@/features/create-phrase';
+import { Phrase } from '@/db/schema';
+import { ReactNode, useEffect, useState, useTransition } from 'react';
+import { PhraseCard } from './phrase-card';
 
 interface PhraseListProps {
-	categoryId: string;
+	phrases: Phrase[] | undefined;
+	isPending: boolean;
+	isError: boolean;
+	createPhrase?: ReactNode;
 }
 
-export const PhraseList = ({ categoryId }: PhraseListProps) => {
-	const { data: phrases, isPending, isError } = useGetPhrases(categoryId);
+export const PhraseList = ({
+	phrases,
+	isPending,
+	isError,
+	createPhrase,
+}: PhraseListProps) => {
 	const [isMounted, setIsMounted] = useState(false);
 	const [, startTransition] = useTransition();
-
-	const { isModeratorOrAdmin } = useAuth();
 
 	useEffect(() => {
 		startTransition(() => {
@@ -47,14 +51,14 @@ export const PhraseList = ({ categoryId }: PhraseListProps) => {
 				phrases.map((phrase) => (
 					<PhraseCard
 						key={phrase.id}
-						id={String(phrase.id)}
+						id={phrase.id}
 						phrase={phrase.title}
 						translation={phrase.translate}
 						transcription={phrase.transcription}
 						audioUrl={phrase.audioUrl || undefined}
 					/>
 				))}
-			{isModeratorOrAdmin && <CreatePhrase defaultCategoryId={categoryId} />}
+			{createPhrase}
 		</div>
 	);
 };

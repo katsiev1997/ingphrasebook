@@ -1,11 +1,9 @@
 import { cn } from '@/shared/lib/utils';
-interface CategorySkeletonCardProps {
+interface SkeletonCardProps {
 	className?: string;
 }
 
-export const CategorySkeletonCard = ({
-	className,
-}: CategorySkeletonCardProps) => {
+export const SkeletonCard = ({ className }: SkeletonCardProps) => {
 	return (
 		<div
 			className={cn(

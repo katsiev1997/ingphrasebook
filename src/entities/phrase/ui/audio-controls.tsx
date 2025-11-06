@@ -16,7 +16,7 @@ import { useDeleteAudio } from '../model/mutations/use-delete-audio';
 import { useAuth } from '@/shared/hooks/use-auth';
 
 interface AudioControlsProps {
-	phraseId: string;
+	phraseId: number;
 	audioUrl?: string;
 }
 

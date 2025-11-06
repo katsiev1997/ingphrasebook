@@ -140,10 +140,7 @@ export async function POST(req: NextRequest) {
 			.map((fav) => fav.phrase)
 			.filter(Boolean);
 
-		return NextResponse.json({
-			...user[0],
-			favoritePhrases: favoritePhrasesList,
-		});
+		return NextResponse.json(favoritePhrasesList);
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 500 });
 	}
@@ -197,17 +194,7 @@ export async function DELETE(req: NextRequest) {
 			.map((fav) => fav.phrase)
 			.filter(Boolean);
 
-		// Получаем информацию о пользователе
-		const user = await db
-			.select()
-			.from(users)
-			.where(eq(users.id, Number(userId)))
-			.limit(1);
-
-		return NextResponse.json({
-			...user[0],
-			favoritePhrases: favoritePhrasesList,
-		});
+		return NextResponse.json(favoritePhrasesList);
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 500 });
 	}

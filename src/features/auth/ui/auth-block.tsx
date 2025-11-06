@@ -6,6 +6,12 @@ import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
 import { toast } from 'sonner';
 
+const userType = {
+	USER: 'Пользователь',
+	MODERATOR: 'Модератор',
+	ADMIN: 'Админ',
+};
+
 export const AuthBlock = () => {
 	const { user, isAuthenticated, logout, loading } = useAuth();
 
@@ -25,7 +31,9 @@ export const AuthBlock = () => {
 			) : isAuthenticated && user ? (
 				<div className="space-y-4">
 					<div className="flex items-center gap-3">
-						<span className="text-sm text-muted-foreground">Пользователь:</span>
+						<span className="text-sm text-muted-foreground">
+							{userType[user.role]}:
+						</span>
 						<Badge variant="default">{user.username}</Badge>
 					</div>
 					<Button variant="outline" onClick={handleLogout} className="w-full">

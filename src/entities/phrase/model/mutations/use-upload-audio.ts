@@ -3,7 +3,7 @@ import { api } from '@/shared/api';
 import { useParams } from 'next/navigation';
 
 interface UploadAudioData {
-	phraseId: string;
+	phraseId: number;
 	audioFile: File;
 }
 
@@ -19,7 +19,7 @@ export const useUploadAudio = () => {
 	return useMutation({
 		mutationFn: async (data: UploadAudioData): Promise<UploadAudioResponse> => {
 			const formData = new FormData();
-			formData.append('phraseId', data.phraseId);
+			formData.append('phraseId', String(data.phraseId));
 			formData.append('audio', data.audioFile);
 
 			const response = await api.post('/phrases/upload-audio', formData, {

@@ -1,9 +1,6 @@
-import {
-	Category,
-	CategoryCard,
-	CategorySkeletonCard,
-} from '@/entities/category';
+import { Category, CategoryCard } from '@/entities/category';
 import { CreateCategory } from '@/features/create-category';
+import { SkeletonCard } from '@/shared/components/skeleton-card';
 import { useAuth } from '@/shared/hooks/use-auth';
 
 interface CategoryListProps {
@@ -25,7 +22,7 @@ export const CategoryList = ({
 		return (
 			<div className="mt-6 flex flex-col gap-3">
 				{Array.from({ length: 3 }).map((_, index) => (
-					<CategorySkeletonCard key={index} />
+					<SkeletonCard key={index} />
 				))}
 			</div>
 		);

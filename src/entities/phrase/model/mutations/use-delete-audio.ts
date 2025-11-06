@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { api } from "@/shared/api";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '@/shared/api';
 
 interface DeleteAudioResponse {
 	success: boolean;
@@ -10,7 +10,7 @@ export const useDeleteAudio = () => {
 	const queryClient = useQueryClient();
 
 	return useMutation({
-		mutationFn: async (phraseId: string): Promise<DeleteAudioResponse> => {
+		mutationFn: async (phraseId: number): Promise<DeleteAudioResponse> => {
 			const response = await api.delete(
 				`/phrases/delete-audio?phraseId=${phraseId}`
 			);
@@ -19,7 +19,7 @@ export const useDeleteAudio = () => {
 		onSuccess: () => {
 			// Инвалидируем кеш фраз для обновления данных
 			queryClient.invalidateQueries({
-				queryKey: ["phrases"],
+				queryKey: ['phrases'],
 			});
 		},
 	});

@@ -1,2 +1,2 @@
-export { PhraseList } from './ui/phrase-list';
-
+export { PhraseListCategory } from './ui/phrase-list-category';
+export { FavoritePhraseList } from './ui/favorites-phrase-list';

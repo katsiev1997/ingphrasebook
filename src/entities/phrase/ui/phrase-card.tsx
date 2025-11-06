@@ -3,15 +3,17 @@
 import { cn } from '@/shared/lib/utils';
 import { AudioControls } from './audio-controls';
 import { StarIcon } from 'lucide-react';
+import { useToggleFavorite } from '../model/mutations/use-toggle-favorite';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { useGetFavoritePhrases } from '../model/queries/use-get-favorite-phrases';
 
 type PhraseCardProps = {
 	phrase: string;
 	translation: string;
 	transcription: string;
-	id: string;
+	id: number;
 	audioUrl?: string;
 	className?: string;
-	isFavorite?: boolean;
 };
 
 export function PhraseCard({
@@ -21,8 +23,18 @@ export function PhraseCard({
 	audioUrl,
 	className,
 	id,
-	isFavorite,
 }: PhraseCardProps) {
+	const { user } = useAuth();
+	const userId = user?.id;
+	const { data: favoritePhrases } = useGetFavoritePhrases(userId);
+	const isFavorite = favoritePhrases?.findIndex((item) => item.id === id) !== -1;
+	const { mutate, isPending } = useToggleFavorite(isFavorite);
+
+	const onToggleFavorite = () => {
+		if (userId !== undefined) {
+			mutate({ userId, phraseId: id });
+		}
+	};
 	return (
 		<div
 			className={cn(
@@ -43,9 +55,12 @@ export function PhraseCard({
 					</p>
 				</div>
 				<div className="flex flex-col gap-2">
-					<button>
+					<button onClick={onToggleFavorite}>
 						<StarIcon
-							className={cn('size-6 text-foreground', isFavorite && 'text-primary')}
+							className={cn('size-6 text-foreground', {
+								'text-primary': isFavorite,
+								'text-primary/50': isPending,
+							})}
 						/>
 					</button>
 				</div>

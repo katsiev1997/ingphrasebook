@@ -1,5 +1,5 @@
 import { CategoryTitle, getCategoriesRequest } from '@/entities/category';
-import { PhraseList } from '@/widgets/phrase-list';
+import { PhraseListCategory } from '@/widgets/phrase-list';
 import { ArrowLeftIcon } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
@@ -49,7 +49,7 @@ export default async function PhrasesPage({ params }: Props) {
 						</div>
 					</Link>
 				</div>
-				<PhraseList categoryId={categoryId} />
+				<PhraseListCategory categoryId={categoryId} />
 			</main>
 		</div>
 	);
