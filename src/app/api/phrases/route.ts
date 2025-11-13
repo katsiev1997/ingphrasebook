@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 			.select()
 			.from(phrases)
 			.where(eq(phrases.categoryId, Number(categoryId)))
-			.orderBy(phrases.title);
+			.orderBy(phrases.id);
 
 		// Проверяем длину массива фраз
 		if (phrasesList.length === 0) {
