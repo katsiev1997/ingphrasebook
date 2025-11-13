@@ -11,7 +11,10 @@ import { db } from '@/db/drizzle';
 // GET /api/categories
 export async function GET() {
 	try {
-		const categoriesList = await db.select().from(categories);
+		const categoriesList = await db
+			.select()
+			.from(categories)
+			.orderBy(categories.id);
 
 		return NextResponse.json(categoriesList);
 	} catch (error) {
@@ -132,10 +135,7 @@ export async function PUT(req: Request) {
 			.where(eq(categories.name, name.trim()))
 			.limit(1);
 
-		if (
-			duplicateCategory.length > 0 &&
-			duplicateCategory[0].id !== categoryId
-		) {
+		if (duplicateCategory.length > 0 && duplicateCategory[0].id !== categoryId) {
 			return NextResponse.json(
 				{ error: 'Category with this name already exists' },
 				{ status: 409 }
