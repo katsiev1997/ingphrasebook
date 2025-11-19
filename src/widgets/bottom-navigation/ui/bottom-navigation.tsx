@@ -2,7 +2,13 @@
 
 import { cn } from '@/shared/lib/utils';
 import { motion } from 'framer-motion';
-import { BookOpen, HelpCircleIcon, Settings, Star } from 'lucide-react';
+import {
+	BookOpen,
+	GamepadDirectionalIcon,
+	HelpCircleIcon,
+	Settings,
+	Star,
+} from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ComponentType, useCallback, useMemo } from 'react';
@@ -29,6 +35,11 @@ const navItems: NavItem[] = [
 		href: '/about',
 		icon: HelpCircleIcon,
 		label: 'About',
+	},
+	{
+		href: '/game',
+		icon: GamepadDirectionalIcon,
+		label: 'Game',
 	},
 	{
 		href: '/favorites',

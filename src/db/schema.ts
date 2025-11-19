@@ -86,9 +86,23 @@ export const favoritePhrases = pgTable(
 	(table) => [primaryKey({ columns: [table.userId, table.phraseId] })]
 );
 
+// Модель статистики игры
+export const gameStats = pgTable('gameStats', {
+	id: serial('id').primaryKey(),
+	userId: integer('userId')
+		.notNull()
+		.references(() => users.id),
+	totalQuestions: integer('totalQuestions').notNull().default(0),
+	correctAnswers: integer('correctAnswers').notNull().default(0),
+	totalGames: integer('totalGames').notNull().default(0),
+	createdAt: timestamp('createdAt').notNull().defaultNow(),
+	updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+});
+
 // Определение связей
 export const usersRelations = relations(users, ({ many }) => ({
 	favoritePhrases: many(favoritePhrases),
+	gameStats: many(gameStats),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
@@ -128,6 +142,13 @@ export const favoritePhrasesRelations = relations(
 	})
 );
 
+export const gameStatsRelations = relations(gameStats, ({ one }) => ({
+	user: one(users, {
+		fields: [gameStats.userId],
+		references: [users.id],
+	}),
+}));
+
 // Типы для TypeScript
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -141,3 +162,5 @@ export type Message = typeof messages.$inferSelect;
 export type NewMessage = typeof messages.$inferInsert;
 export type FavoritePhrase = typeof favoritePhrases.$inferSelect;
 export type NewFavoritePhrase = typeof favoritePhrases.$inferInsert;
+export type GameStats = typeof gameStats.$inferSelect;
+export type NewGameStats = typeof gameStats.$inferInsert;
