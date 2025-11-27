@@ -16,12 +16,15 @@ function shuffleArray<T>(array: T[]): T[] {
 	return shuffled;
 }
 
-function createQuestion(phrases: Phrase[]): QuizQuestion | null {
-	if (phrases.length < 4) {
+function createQuestion(phrases: Phrase[], usedPhraseIds: Set<number>): QuizQuestion | null {
+	// Фильтруем фразы, исключая уже использованные
+	const availablePhrases = phrases.filter((phrase) => !usedPhraseIds.has(phrase.id));
+
+	if (availablePhrases.length < 4) {
 		return null;
 	}
 
-	const shuffled = shuffleArray(phrases);
+	const shuffled = shuffleArray(availablePhrases);
 	const correctPhrase = shuffled[0];
 	const wrongPhrases = shuffled.slice(1, 4);
 	const allOptions = shuffleArray([correctPhrase, ...wrongPhrases]);
@@ -46,14 +49,15 @@ export const useQuizGame = () => {
 		selectedAnswerId: null,
 		isAnswered: false,
 		isCorrect: null,
+		usedPhraseIds: new Set<number>(),
 	});
 
 	const currentQuestion = useMemo(() => {
 		if (!phrases || phrases.length < 4) {
 			return null;
 		}
-		return createQuestion(phrases);
-	}, [phrases]);
+		return createQuestion(phrases, session.usedPhraseIds);
+	}, [phrases, session.usedPhraseIds]);
 
 	const startNewGame = useCallback(() => {
 		setSession({
@@ -64,6 +68,7 @@ export const useQuizGame = () => {
 			selectedAnswerId: null,
 			isAnswered: false,
 			isCorrect: null,
+			usedPhraseIds: new Set<number>(),
 		});
 		refetchPhrases();
 	}, [refetchPhrases]);
@@ -73,7 +78,22 @@ export const useQuizGame = () => {
 			return;
 		}
 
-		const question = createQuestion(phrases);
+		const question = createQuestion(phrases, session.usedPhraseIds);
+		if (!question) {
+			// Если не хватает доступных фраз, очищаем список использованных и запрашиваем новые
+			setSession((prev) => ({
+				...prev,
+				usedPhraseIds: new Set<number>(),
+			}));
+			refetchPhrases();
+			return;
+		}
+
+		// Добавляем все фразы из вопроса в использованные
+		const newUsedIds = new Set(session.usedPhraseIds);
+		newUsedIds.add(question.correctPhrase.id);
+		question.wrongPhrases.forEach((phrase) => newUsedIds.add(phrase.id));
+
 		setSession((prev) => ({
 			...prev,
 			currentQuestion: question,
@@ -81,8 +101,9 @@ export const useQuizGame = () => {
 			selectedAnswerId: null,
 			isAnswered: false,
 			isCorrect: null,
+			usedPhraseIds: newUsedIds,
 		}));
-	}, [phrases]);
+	}, [phrases, session.usedPhraseIds, refetchPhrases]);
 
 	const selectAnswer = useCallback(
 		(phraseId: number) => {

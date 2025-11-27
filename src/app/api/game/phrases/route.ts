@@ -6,12 +6,12 @@ import { sql } from 'drizzle-orm';
 // GET /api/game/phrases - Получить случайные фразы для игры
 export async function GET() {
 	try {
-		// Получаем случайные 4 фразы из всех категорий
+		// Получаем случайные 60 фраз из всех категорий (хватит на 10+ вопросов)
 		const randomPhrases = await db
 			.select()
 			.from(phrases)
 			.orderBy(sql`RANDOM()`)
-			.limit(4);
+			.limit(60);
 
 		if (randomPhrases.length < 4) {
 			return NextResponse.json(

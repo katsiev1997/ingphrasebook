@@ -24,5 +24,6 @@ export interface GameSession {
 	selectedAnswerId: number | null;
 	isAnswered: boolean;
 	isCorrect: boolean | null;
+	usedPhraseIds: Set<number>;
 }
 
