@@ -26,4 +26,3 @@ export interface GameSession {
 	isCorrect: boolean | null;
 	usedPhraseIds: Set<number>;
 }
-

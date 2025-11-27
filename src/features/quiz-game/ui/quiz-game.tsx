@@ -134,18 +134,18 @@ export function QuizGame() {
 					<Progress value={progress} className="h-2" />
 				</div>
 
-				<Card className="mb-6">
+				<Card className="mb-3 gap-0 py-4">
 					<CardHeader>
-						<CardTitle className="text-xl">Выберите правильный перевод:</CardTitle>
+						<CardTitle className="text-lg">Выберите правильный перевод:</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="mb-6 text-2xl font-semibold text-primary">
+						<p className="text-lg font-semibold text-primary">
 							{currentQuestion.correctPhrase.title}
 						</p>
 					</CardContent>
 				</Card>
 
-				<div className="space-y-3">
+				<div className="space-y-2">
 					{currentQuestion.allOptions.map((phrase) => {
 						const isSelected = session.selectedAnswerId === phrase.id;
 						const isCorrect = phrase.id === currentQuestion.correctPhrase.id;
@@ -169,7 +169,7 @@ export function QuizGame() {
 								variant={variant}
 								size="lg"
 								className={cn(
-									'w-full justify-start text-left h-auto py-4 px-4',
+									'w-full justify-start text-left h-auto py-2 px-3',
 									!session.isAnswered && 'hover:bg-accent',
 									session.isAnswered && !isSelected && !isCorrect && 'opacity-50'
 								)}
@@ -178,17 +178,17 @@ export function QuizGame() {
 							>
 								<div className="flex w-full items-center justify-between">
 									<div className="flex-1 text-left">
-										<p className="text-lg font-semibold">{phrase.translate}</p>
-										<p className="text-sm text-muted-foreground mt-1">
+										<p className="text-base font-semibold">{phrase.translate}</p>
+										<p className="text-xs text-muted-foreground mt-0.5">
 											[{phrase.transcription}]
 										</p>
 									</div>
 									{showResult && isSelected && (
-										<div className="ml-4 shrink-0">
+										<div className="ml-3 shrink-0">
 											{isCorrect ? (
-												<CheckCircle2 className="size-5 text-primary-foreground" />
+												<CheckCircle2 className="size-4 text-primary-foreground" />
 											) : (
-												<XCircle className="size-5 text-destructive-foreground" />
+												<XCircle className="size-4 text-destructive-foreground" />
 											)}
 										</div>
 									)}
@@ -199,7 +199,7 @@ export function QuizGame() {
 				</div>
 
 				{session.isAnswered && (
-					<Button onClick={nextQuestion} className="mt-6 w-full" size="lg">
+					<Button onClick={nextQuestion} className="mt-3 w-full" size="lg">
 						{session.questionIndex >= session.totalQuestions
 							? 'Завершить игру'
 							: 'Следующий вопрос'}

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
+import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { Phrase } from '@/db/schema';
 import { QuizQuestion, GameSession } from '../types';
 import { useGetGamePhrases } from '../queries/use-get-game-phrases';
@@ -16,9 +16,14 @@ function shuffleArray<T>(array: T[]): T[] {
 	return shuffled;
 }
 
-function createQuestion(phrases: Phrase[], usedPhraseIds: Set<number>): QuizQuestion | null {
+function createQuestion(
+	phrases: Phrase[],
+	usedPhraseIds: Set<number>
+): QuizQuestion | null {
 	// Фильтруем фразы, исключая уже использованные
-	const availablePhrases = phrases.filter((phrase) => !usedPhraseIds.has(phrase.id));
+	const availablePhrases = phrases.filter(
+		(phrase) => !usedPhraseIds.has(phrase.id)
+	);
 
 	if (availablePhrases.length < 4) {
 		return null;
@@ -38,7 +43,11 @@ function createQuestion(phrases: Phrase[], usedPhraseIds: Set<number>): QuizQues
 
 export const useQuizGame = () => {
 	const { isAuthenticated } = useAuth();
-	const { data: phrases, refetch: refetchPhrases, isLoading } = useGetGamePhrases();
+	const {
+		data: phrases,
+		refetch: refetchPhrases,
+		isLoading,
+	} = useGetGamePhrases();
 	const { mutate: saveStats } = useSaveGameStats();
 
 	const [session, setSession] = useState<GameSession>({
@@ -51,6 +60,7 @@ export const useQuizGame = () => {
 		isCorrect: null,
 		usedPhraseIds: new Set<number>(),
 	});
+	const hasInitializedRef = useRef(false);
 
 	const currentQuestion = useMemo(() => {
 		if (!phrases || phrases.length < 4) {
@@ -60,6 +70,7 @@ export const useQuizGame = () => {
 	}, [phrases, session.usedPhraseIds]);
 
 	const startNewGame = useCallback(() => {
+		hasInitializedRef.current = false;
 		setSession({
 			currentQuestion: null,
 			questionIndex: 0,
@@ -142,10 +153,25 @@ export const useQuizGame = () => {
 	}, [session.questionIndex, session.totalQuestions]);
 
 	useEffect(() => {
-		if (phrases && phrases.length >= 4 && session.questionIndex === 0 && !session.currentQuestion) {
-			loadNextQuestion();
+		if (
+			phrases &&
+			phrases.length >= 4 &&
+			session.questionIndex === 0 &&
+			!session.currentQuestion &&
+			!hasInitializedRef.current
+		) {
+			hasInitializedRef.current = true;
+			// Use setTimeout to defer state update and avoid cascading renders
+			setTimeout(() => {
+				loadNextQuestion();
+			}, 0);
 		}
-	}, [phrases, session.questionIndex, session.currentQuestion, loadNextQuestion]);
+	}, [
+		phrases,
+		session.questionIndex,
+		session.currentQuestion,
+		loadNextQuestion,
+	]);
 
 	// Сохраняем статистику при завершении игры
 	useEffect(() => {
@@ -167,4 +193,3 @@ export const useQuizGame = () => {
 		startNewGame,
 	};
 };
-

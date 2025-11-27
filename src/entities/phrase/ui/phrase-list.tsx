@@ -3,6 +3,7 @@
 import { Phrase } from '@/db/schema';
 import { ReactNode, useEffect, useState, useTransition } from 'react';
 import { PhraseCard } from './phrase-card';
+import { PhrasesSkeleton } from './phrases-skeleton';
 
 interface PhraseListProps {
 	phrases: Phrase[] | undefined;
@@ -32,11 +33,7 @@ export const PhraseList = ({
 
 	return (
 		<div className="mt-6 flex flex-col gap-3">
-			{showLoading && (
-				<div className="text-sm text-foreground-light dark:text-foreground-dark">
-					Loading...
-				</div>
-			)}
+			{showLoading && <PhrasesSkeleton />}
 			{isError && (
 				<div className="text-sm text-destructive">Error: Something went wrong</div>
 			)}
