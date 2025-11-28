@@ -31,7 +31,11 @@ export async function POST(req: NextRequest) {
 
 		// Валидация phraseId
 		const phraseIdNumber = Number(phraseId);
-		if (isNaN(phraseIdNumber) || phraseIdNumber <= 0 || !Number.isInteger(phraseIdNumber)) {
+		if (
+			isNaN(phraseIdNumber) ||
+			phraseIdNumber <= 0 ||
+			!Number.isInteger(phraseIdNumber)
+		) {
 			return NextResponse.json(
 				{ error: 'Phrase ID must be a positive integer' },
 				{ status: 400 }

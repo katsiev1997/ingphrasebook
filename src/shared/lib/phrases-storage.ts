@@ -7,9 +7,7 @@ interface CachedPhrases {
 	categoryUpdatedAt: string;
 }
 
-export const getCachedPhrases = (
-	categoryId: number
-): CachedPhrases | null => {
+export const getCachedPhrases = (categoryId: number): CachedPhrases | null => {
 	if (typeof window === 'undefined') {
 		return null;
 	}
@@ -71,4 +69,3 @@ export const clearCachedPhrases = (categoryId: number): void => {
 		console.error('Error clearing cached phrases:', error);
 	}
 };
-
