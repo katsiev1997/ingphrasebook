@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/shared/api';
+import { clearCachedPhrases } from '@/shared/lib/phrases-storage';
 
 interface DeleteAudioResponse {
 	success: boolean;
 	message: string;
+	categoryId?: number;
 }
 
 export const useDeleteAudio = () => {
@@ -16,10 +18,19 @@ export const useDeleteAudio = () => {
 			);
 			return response.data;
 		},
-		onSuccess: () => {
-			// Инвалидируем кеш фраз для обновления данных
+		onSuccess: (data) => {
+			// Очищаем кеш localStorage для конкретной категории
+			if (data.categoryId) {
+				clearCachedPhrases(data.categoryId);
+			}
+			// Инвалидируем все запросы фраз для обновления данных
+			// Это включает ['phrases', categoryId] и другие варианты
 			queryClient.invalidateQueries({
 				queryKey: ['phrases'],
+			});
+			// Также инвалидируем кеш категорий, так как updatedAt изменился
+			queryClient.invalidateQueries({
+				queryKey: ['categories'],
 			});
 		},
 	});

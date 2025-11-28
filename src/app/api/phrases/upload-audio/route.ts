@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { phrases } from '../../../../db/schema';
+import { phrases, categories } from '../../../../db/schema';
 import { eq } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
 import { put } from '@vercel/blob';
@@ -75,15 +75,26 @@ export async function POST(req: NextRequest) {
 			addRandomSuffix: false,
 		});
 
+		const phraseData = phrase[0];
+
 		// Обновляем фразу в базе данных
 		await db
 			.update(phrases)
 			.set({ audioUrl: url })
 			.where(eq(phrases.id, phraseIdNumber));
 
+		// Обновляем updatedAt категории для инвалидации кеша на клиенте
+		if (phraseData.categoryId) {
+			await db
+				.update(categories)
+				.set({ updatedAt: new Date() })
+				.where(eq(categories.id, Number(phraseData.categoryId)));
+		}
+
 		return NextResponse.json({
 			success: true,
 			audioUrl: url,
+			categoryId: phraseData.categoryId,
 		});
 	} catch (error) {
 		console.error('Upload audio error:', error);

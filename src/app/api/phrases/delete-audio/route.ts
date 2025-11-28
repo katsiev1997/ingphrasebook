@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { phrases } from '../../../../db/schema';
+import { phrases, categories } from '../../../../db/schema';
 import { eq } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
 import { del } from '@vercel/blob';
@@ -41,15 +41,7 @@ export async function DELETE(req: NextRequest) {
 
 		const phraseData = phrase[0];
 
-		console.log(phrase);
-		if (!phraseData.audioUrl) {
-			return NextResponse.json(
-				{ error: 'No audio file found for this phrase' },
-				{ status: 404 }
-			);
-		}
-
-		// Удаляем файл из Vercel Blob Storage
+		// Удаляем файл из Vercel Blob Storage (если он существует)
 		if (phraseData.audioUrl) {
 			try {
 				await del(phraseData.audioUrl);
@@ -65,9 +57,18 @@ export async function DELETE(req: NextRequest) {
 			.set({ audioUrl: null })
 			.where(eq(phrases.id, Number(phraseId)));
 
+		// Обновляем updatedAt категории для инвалидации кеша на клиенте
+		if (phraseData.categoryId) {
+			await db
+				.update(categories)
+				.set({ updatedAt: new Date() })
+				.where(eq(categories.id, Number(phraseData.categoryId)));
+		}
+
 		return NextResponse.json({
 			success: true,
 			message: 'Audio file deleted successfully',
+			categoryId: phraseData.categoryId,
 		});
 	} catch (error) {
 		console.error('Delete audio error:', error);

@@ -59,3 +59,16 @@ export const shouldFetchPhrases = (
 	return cached.categoryUpdatedAt !== currentUpdatedAt;
 };
 
+export const clearCachedPhrases = (categoryId: number): void => {
+	if (typeof window === 'undefined') {
+		return;
+	}
+
+	try {
+		const key = `${STORAGE_KEY_PREFIX}${categoryId}`;
+		localStorage.removeItem(key);
+	} catch (error) {
+		console.error('Error clearing cached phrases:', error);
+	}
+};
+
