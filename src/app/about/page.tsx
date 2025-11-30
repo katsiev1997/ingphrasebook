@@ -1,4 +1,13 @@
-import { BookOpen, Moon, Plus, Search, Star, Volume2 } from 'lucide-react';
+import {
+	BookOpen,
+	Heart,
+	Moon,
+	Plus,
+	Search,
+	Star,
+	User,
+	Volume2,
+} from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -201,6 +210,65 @@ export default function AboutPage() {
 							</a>
 							.
 						</p>
+					</div>
+				</section>
+
+				{/* Автор проекта */}
+				<section className="space-y-3 pt-2">
+					<h2 className="text-xl font-semibold text-black dark:text-white">
+						Автор проекта
+					</h2>
+					<div className="bg-component-light dark:bg-component-dark rounded-lg p-4 space-y-4">
+						<div className="flex gap-3 items-start">
+							<div className="shrink-0 mt-1">
+								<User className="size-5 text-primary" />
+							</div>
+							<div className="flex-1">
+								<h3 className="font-medium text-black dark:text-white mb-1">
+									Микаил Кациев
+								</h3>
+								<p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+									Разработчик и создатель проекта IngPhrase
+								</p>
+								<div className="space-y-2">
+									<p className="text-sm text-gray-600 dark:text-gray-400">
+										Telegram:{' '}
+										<a
+											href="https://t.me/mikail_katsiev"
+											className="underline text-primary hover:text-primary/80"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											@mikail_katsiev
+										</a>
+									</p>
+								</div>
+							</div>
+						</div>
+
+						<div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+							<div className="flex gap-3 items-start">
+								<div className="shrink-0 mt-1">
+									<Heart className="size-5 text-primary" />
+								</div>
+								<div className="flex-1">
+									<h3 className="font-medium text-black dark:text-white mb-2">
+										Поддержка проекта
+									</h3>
+									<p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+										Если вам нравится проект и вы хотите его поддержать:
+									</p>
+									<div className="text-sm">
+										<p className="text-gray-600 dark:text-gray-400 mb-1">
+											<strong className="text-black dark:text-white">Т-банк:</strong>
+										</p>
+										<p className="text-lg font-mono text-black dark:text-white font-medium">
+											5536 9138 3162 9981
+										</p>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</section>
 			</main>
