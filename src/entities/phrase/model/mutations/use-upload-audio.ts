@@ -1,6 +1,6 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { api } from '@/shared/api';
-import { clearCachedPhrases } from '@/shared/lib/phrases-storage';
+import { useInvalidatePhrasesCache } from '@/shared/hooks/use-invalidate-phrases-cache';
 
 interface UploadAudioData {
 	phraseId: number;
@@ -14,7 +14,7 @@ interface UploadAudioResponse {
 }
 
 export const useUploadAudio = () => {
-	const queryClient = useQueryClient();
+	const { invalidate } = useInvalidatePhrasesCache();
 
 	return useMutation({
 		mutationFn: async (data: UploadAudioData): Promise<UploadAudioResponse> => {
@@ -30,19 +30,8 @@ export const useUploadAudio = () => {
 			return response.data;
 		},
 		onSuccess: (data) => {
-			// Очищаем кеш localStorage для конкретной категории
-			if (data.categoryId) {
-				clearCachedPhrases(data.categoryId);
-			}
-			// Инвалидируем все запросы фраз для обновления данных
-			// Это включает ['phrases', categoryId] и другие варианты
-			queryClient.invalidateQueries({
-				queryKey: ['phrases'],
-			});
-			// Также инвалидируем кеш категорий, так как updatedAt изменился
-			queryClient.invalidateQueries({
-				queryKey: ['categories'],
-			});
+			// Инвалидируем кеш фраз для конкретной категории
+			invalidate(data.categoryId);
 		},
 	});
 };

@@ -52,6 +52,7 @@ export const PhraseList = ({
 						phrase={phrase.title}
 						translation={phrase.translate}
 						transcription={phrase.transcription}
+						categoryId={phrase.categoryId}
 						audioUrl={phrase.audioUrl || undefined}
 					/>
 				))}

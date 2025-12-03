@@ -97,6 +97,12 @@ export async function POST(req: NextRequest) {
 // PUT /api/phrases
 export async function PUT(req: NextRequest) {
 	try {
+		// Проверяем авторизацию и права доступа
+		const authResult = await checkModeratorAuth();
+		if (!authResult.success) {
+			return createAuthErrorResponse(authResult);
+		}
+
 		const body = await req.json();
 		const { id, title, translate, transcription, audioUrl, categoryId } = body;
 
@@ -147,6 +153,12 @@ export async function PUT(req: NextRequest) {
 // DELETE /api/phrases
 export async function DELETE(req: NextRequest) {
 	try {
+		// Проверяем авторизацию и права доступа
+		const authResult = await checkModeratorAuth();
+		if (!authResult.success) {
+			return createAuthErrorResponse(authResult);
+		}
+
 		const { searchParams } = new URL(req.url);
 		const phraseId = searchParams.get('id');
 

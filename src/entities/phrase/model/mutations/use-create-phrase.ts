@@ -1,5 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { api } from "@/shared/api";
+import { useInvalidatePhrasesCache } from '@/shared/hooks/use-invalidate-phrases-cache';
 
 interface CreatePhraseData {
 	title: string;
@@ -22,7 +23,7 @@ interface CreatePhraseResponse {
 }
 
 export const useCreatePhrase = () => {
-	const queryClient = useQueryClient();
+	const { invalidate } = useInvalidatePhrasesCache();
 
 	return useMutation({
 		mutationFn: async (
@@ -33,9 +34,7 @@ export const useCreatePhrase = () => {
 		},
 		onSuccess: (data, variables) => {
 			// Инвалидируем кеш фраз для данной категории
-			queryClient.invalidateQueries({
-				queryKey: ["phrases", String(variables.categoryId)],
-			});
+			invalidate(variables.categoryId);
 		},
 	});
 };
