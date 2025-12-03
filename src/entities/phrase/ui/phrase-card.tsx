@@ -15,8 +15,16 @@ import { useGetFavoritePhrases } from '../model/queries/use-get-favorite-phrases
 import { useState } from 'react';
 import { Input } from '@/shared/components/ui/input';
 import { Button } from '@/shared/components/ui/button';
+import {
+	Select,
+	SelectTrigger,
+	SelectContent,
+	SelectItem,
+	SelectValue,
+} from '@/shared/components/ui/select';
 import { useUpdatePhrase } from '../model/mutations/use-update-phrase';
 import { useDeletePhrase } from '../model/mutations/use-delete-phrase';
+import { useGetCategories } from '@/entities/category/model/queries/use-get-categories';
 
 type PhraseCardProps = {
 	phrase: string;
@@ -40,6 +48,7 @@ export function PhraseCard({
 	const { user, isModeratorOrAdmin } = useAuth();
 	const userId = user?.id;
 	const { data: favoritePhrases } = useGetFavoritePhrases(userId);
+	const { data: categories } = useGetCategories();
 	const isFavorite = favoritePhrases?.findIndex((item) => item.id === id) !== -1;
 	const { mutate: toggleFavorite, isPending: isFavoritePending } =
 		useToggleFavorite(isFavorite);
@@ -50,6 +59,7 @@ export function PhraseCard({
 	const [editedPhrase, setEditedPhrase] = useState(phrase);
 	const [editedTranslation, setEditedTranslation] = useState(translation);
 	const [editedTranscription, setEditedTranscription] = useState(transcription);
+	const [editedCategoryId, setEditedCategoryId] = useState(String(categoryId));
 
 	const onToggleFavorite = () => {
 		if (userId !== undefined) {
@@ -62,6 +72,7 @@ export function PhraseCard({
 		setEditedPhrase(phrase);
 		setEditedTranslation(translation);
 		setEditedTranscription(transcription);
+		setEditedCategoryId(String(categoryId));
 	};
 
 	const onCancel = () => {
@@ -69,17 +80,20 @@ export function PhraseCard({
 		setEditedPhrase(phrase);
 		setEditedTranslation(translation);
 		setEditedTranscription(transcription);
+		setEditedCategoryId(String(categoryId));
 	};
 
 	const onSave = () => {
+		const newCategoryId = Number(editedCategoryId);
 		updatePhrase(
 			{
 				id,
 				title: editedPhrase,
 				translate: editedTranslation,
 				transcription: editedTranscription,
-				categoryId,
+				categoryId: newCategoryId,
 				audioUrl: audioUrl || undefined,
+				oldCategoryId: categoryId !== newCategoryId ? categoryId : undefined,
 			},
 			{
 				onSuccess: () => {
@@ -111,6 +125,22 @@ export function PhraseCard({
 				>
 					{isEditing ? (
 						<>
+							<Select
+								value={editedCategoryId}
+								onValueChange={setEditedCategoryId}
+								disabled={!categories || categories.length === 0}
+							>
+								<SelectTrigger className="w-full">
+									<SelectValue placeholder="Выберите категорию" />
+								</SelectTrigger>
+								<SelectContent>
+									{categories?.map((category) => (
+										<SelectItem key={category.id} value={String(category.id)}>
+											{category.name}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
 							<Input
 								value={editedPhrase}
 								onChange={(e) => setEditedPhrase(e.target.value)}

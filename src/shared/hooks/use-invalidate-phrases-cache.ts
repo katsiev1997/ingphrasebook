@@ -8,10 +8,13 @@ import { clearCachedPhrases } from '@/shared/lib/phrases-storage';
 export const useInvalidatePhrasesCache = () => {
 	const queryClient = useQueryClient();
 
-	const invalidate = (categoryId?: number) => {
-		// Очищаем кеш localStorage для конкретной категории
+	const invalidate = (categoryId?: number, oldCategoryId?: number) => {
+		// Очищаем кеш localStorage для конкретных категорий
 		if (categoryId !== undefined) {
 			clearCachedPhrases(categoryId);
+		}
+		if (oldCategoryId !== undefined && oldCategoryId !== categoryId) {
+			clearCachedPhrases(oldCategoryId);
 		}
 
 		// Инвалидируем кеш React Query для фраз
@@ -19,7 +22,14 @@ export const useInvalidatePhrasesCache = () => {
 			queryClient.invalidateQueries({
 				queryKey: ['phrases', String(categoryId)],
 			});
-		} else {
+		}
+		if (oldCategoryId !== undefined && oldCategoryId !== categoryId) {
+			queryClient.invalidateQueries({
+				queryKey: ['phrases', String(oldCategoryId)],
+			});
+		}
+		
+		if (categoryId === undefined && oldCategoryId === undefined) {
 			// Если categoryId неизвестен, инвалидируем все кеши фраз
 			queryClient.invalidateQueries({
 				queryKey: ['phrases'],

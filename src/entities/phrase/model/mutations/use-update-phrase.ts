@@ -9,16 +9,20 @@ interface UpdatePhraseData {
 	transcription: string;
 	categoryId: number;
 	audioUrl?: string;
+	oldCategoryId?: number;
 }
 
 export const useUpdatePhrase = () => {
 	const { invalidate } = useInvalidatePhrasesCache();
 
 	return useMutation({
-		mutationFn: (data: UpdatePhraseData) => updatePhraseRequest(data),
+		mutationFn: (data: UpdatePhraseData) => {
+			const { oldCategoryId, ...requestData } = data;
+			return updatePhraseRequest(requestData);
+		},
 		onSuccess: (data, variables) => {
-			// Инвалидируем кеш фраз для данной категории
-			invalidate(variables.categoryId);
+			// Инвалидируем кеш фраз для новой и старой категории (если категория изменилась)
+			invalidate(variables.categoryId, variables.oldCategoryId);
 		},
 	});
 };
