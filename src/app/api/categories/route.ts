@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { categories } from '../../../db/schema';
-import { eq } from 'drizzle-orm';
+import { categories, phrases } from '../../../db/schema';
+import { eq, sql } from 'drizzle-orm';
 import {
 	checkModeratorAuth,
 	createAuthErrorResponse,
@@ -12,11 +12,26 @@ import { db } from '@/db/drizzle';
 export async function GET() {
 	try {
 		const categoriesList = await db
-			.select()
+			.select({
+				id: categories.id,
+				name: categories.name,
+				icon: categories.icon,
+				createdAt: categories.createdAt,
+				updatedAt: categories.updatedAt,
+				phraseCount: sql<number>`COUNT(${phrases.id})`.as('phraseCount'),
+			})
 			.from(categories)
+			.leftJoin(phrases, eq(categories.id, phrases.categoryId))
+			.groupBy(categories.id)
 			.orderBy(categories.id);
 
-		return NextResponse.json(categoriesList);
+		// Преобразуем phraseCount в число
+		const categoriesWithCount = categoriesList.map((category) => ({
+			...category,
+			phraseCount: Number(category.phraseCount),
+		}));
+
+		return NextResponse.json(categoriesWithCount);
 	} catch (error) {
 		return NextResponse.json({ error }, { status: 500 });
 	}

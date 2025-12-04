@@ -39,6 +39,7 @@ export const CategoryList = ({
 					key={category.id}
 					iconName={category.icon}
 					name={category.name}
+					phraseCount={category.phraseCount}
 				/>
 			))}
 			{canAddPhrase && <CreateCategory />}

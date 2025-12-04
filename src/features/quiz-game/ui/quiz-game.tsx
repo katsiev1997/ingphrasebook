@@ -160,6 +160,10 @@ export function QuizGame() {
 		);
 	}
 
+	if (!currentQuestion) {
+		return null;
+	}
+
 	const progress = (session.questionIndex / session.totalQuestions) * 100;
 
 	return (

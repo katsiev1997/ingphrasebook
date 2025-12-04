@@ -4,6 +4,17 @@ import { AuthForm } from '@/features/auth';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/shared/components/ui/alert-dialog';
 import { toast } from 'sonner';
 
 const userType = {
@@ -36,9 +47,31 @@ export const AuthBlock = () => {
 						</span>
 						<Badge variant="default">{user.username}</Badge>
 					</div>
-					<Button variant="outline" onClick={handleLogout} className="w-full">
-						Выйти из аккаунта
-					</Button>
+					<AlertDialog>
+						<AlertDialogTrigger asChild>
+							<Button variant="destructive" className="w-full">
+								Выйти из аккаунта
+							</Button>
+						</AlertDialogTrigger>
+						<AlertDialogContent>
+							<AlertDialogHeader>
+								<AlertDialogTitle>Подтвердите выход</AlertDialogTitle>
+								<AlertDialogDescription>
+									Вы уверены, что хотите выйти из аккаунта? Вам потребуется
+									снова войти для доступа к избранным фразам и статистике.
+								</AlertDialogDescription>
+							</AlertDialogHeader>
+							<AlertDialogFooter>
+								<AlertDialogCancel>Отмена</AlertDialogCancel>
+								<AlertDialogAction
+									onClick={handleLogout}
+									className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+								>
+									Выйти
+								</AlertDialogAction>
+							</AlertDialogFooter>
+						</AlertDialogContent>
+					</AlertDialog>
 				</div>
 			) : (
 				<AuthForm />

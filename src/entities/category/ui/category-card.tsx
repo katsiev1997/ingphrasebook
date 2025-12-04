@@ -8,12 +8,14 @@ interface CategoryCardProps extends React.ComponentProps<'a'> {
 	iconName: LucideIconName | null | undefined;
 	name: string;
 	categoryId: number;
+	phraseCount?: number;
 }
 
 export function CategoryCard({
 	iconName,
 	name,
 	categoryId,
+	phraseCount,
 	className,
 	...props
 }: CategoryCardProps) {
@@ -37,9 +39,16 @@ export function CategoryCard({
 					<HelpCircle className="size-5" />
 				)}
 			</div>
-			<p className="flex-1 truncate text-base font-normal leading-normal text-black dark:text-white">
-				{name}
-			</p>
+			<div className="flex-1">
+				<p className="truncate text-base font-normal leading-normal text-black dark:text-white">
+					{name}
+				</p>
+				{phraseCount !== undefined && (
+					<p className="text-xs text-muted-foreground">
+						{phraseCount} {phraseCount === 1 ? 'фраза' : phraseCount < 5 ? 'фразы' : 'фраз'}
+					</p>
+				)}
+			</div>
 			<div className="shrink-0">
 				<ChevronRight className="size-5 text-gray-400" />
 			</div>

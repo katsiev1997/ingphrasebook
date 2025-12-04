@@ -8,4 +8,5 @@ export type Category = {
 	icon: IconName;
 	createdAt?: string;
 	updatedAt: string;
+	phraseCount?: number;
 };
