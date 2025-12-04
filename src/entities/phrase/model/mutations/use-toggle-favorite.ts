@@ -10,9 +10,15 @@ export const useToggleFavorite = (isFavorite: boolean) => {
 			isFavorite
 				? deleteFavoritePhraseRequest(userId, phraseId)
 				: addFavoritePhraseRequest(userId, phraseId),
-		onSuccess: () =>
+		onSuccess: () => {
+			// Обновляем кеш избранных фраз
 			queryClient.refetchQueries({
 				queryKey: ['favorite-phrases'],
-			}),
+			});
+			// Инвалидируем все кеши фраз, чтобы обновился счетчик favoritesCount
+			queryClient.invalidateQueries({
+				queryKey: ['phrases'],
+			});
+		},
 	});
 };

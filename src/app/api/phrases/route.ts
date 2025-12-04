@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { phrases, categories } from '../../../db/schema';
-import { eq } from 'drizzle-orm';
+import { eq, asc } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
 import {
 	checkModeratorAuth,
@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
 			.select()
 			.from(phrases)
 			.where(eq(phrases.categoryId, Number(categoryId)))
-			.orderBy(phrases.id);
+			.orderBy(asc(phrases.order), asc(phrases.id));
 
 		// Проверяем длину массива фраз
 		if (phrasesList.length === 0) {
@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
 		}
 
 		// Получаем данные из запроса
-		const { title, translate, transcription, categoryId } = await req.json();
+		const { title, translate, transcription, categoryId, order } = await req.json();
 
 		// Валидация данных
 		if (!title || !translate || !transcription || !categoryId) {
@@ -74,6 +74,8 @@ export async function POST(req: NextRequest) {
 				translate,
 				transcription,
 				categoryId: Number(categoryId),
+				order: order !== undefined ? Number(order) : 0,
+				updatedAt: new Date(),
 			})
 			.returning();
 
@@ -104,7 +106,7 @@ export async function PUT(req: NextRequest) {
 		}
 
 		const body = await req.json();
-		const { id, title, translate, transcription, audioUrl, categoryId } = body;
+		const { id, title, translate, transcription, audioUrl, categoryId, order } = body;
 
 		// Получаем старую фразу, чтобы при смене категории обновить обе
 		const existing = await db
@@ -114,15 +116,30 @@ export async function PUT(req: NextRequest) {
 			.limit(1);
 		const oldCategoryId = existing[0]?.categoryId;
 
+		const updateData: {
+			title: string;
+			translate: string;
+			transcription: string;
+			audioUrl: string | null | undefined;
+			categoryId: number | null;
+			updatedAt: Date;
+			order?: number;
+		} = {
+			title,
+			translate,
+			transcription,
+			audioUrl,
+			categoryId: Number(categoryId),
+			updatedAt: new Date(),
+		};
+		
+		if (order !== undefined) {
+			updateData.order = Number(order);
+		}
+
 		const updatedPhrase = await db
 			.update(phrases)
-			.set({
-				title,
-				translate,
-				transcription,
-				audioUrl,
-				categoryId: Number(categoryId),
-			})
+			.set(updateData)
 			.where(eq(phrases.id, Number(id)))
 			.returning();
 

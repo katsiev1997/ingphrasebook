@@ -7,6 +7,7 @@ import {
 	integer,
 	pgEnum,
 	primaryKey,
+	unique,
 } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 
@@ -44,9 +45,12 @@ export const phrases = pgTable('phrases', {
 	translate: text('translate').notNull(),
 	transcription: text('transcription').notNull(),
 	audioUrl: varchar('audioUrl', { length: 1000 }),
-	categoryId: integer('categoryId')
-		.notNull()
-		.references(() => categories.id),
+	categoryId: integer('categoryId').references(() => categories.id, {
+		onDelete: 'set null',
+	}),
+	order: integer('order').notNull().default(0),
+	views: integer('views').notNull().default(0),
+	favoritesCount: integer('favoritesCount').notNull().default(0),
 	createdAt: timestamp('createdAt').notNull().defaultNow(),
 	updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 });
@@ -65,9 +69,9 @@ export const messages = pgTable('messages', {
 	id: serial('id').primaryKey(),
 	originalText: text('originalText').notNull(),
 	translatedText: text('translatedText').notNull(),
-	dialogueId: integer('dialogueId')
-		.notNull()
-		.references(() => dialogues.id),
+	dialogueId: integer('dialogueId').references(() => dialogues.id, {
+		onDelete: 'set null',
+	}),
 	createdAt: timestamp('createdAt').notNull().defaultNow(),
 	updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 });
@@ -78,10 +82,10 @@ export const favoritePhrases = pgTable(
 	{
 		userId: integer('userId')
 			.notNull()
-			.references(() => users.id),
+			.references(() => users.id, { onDelete: 'cascade' }),
 		phraseId: integer('phraseId')
 			.notNull()
-			.references(() => phrases.id),
+			.references(() => phrases.id, { onDelete: 'cascade' }),
 	},
 	(table) => [primaryKey({ columns: [table.userId, table.phraseId] })]
 );
@@ -91,7 +95,8 @@ export const gameStats = pgTable('gameStats', {
 	id: serial('id').primaryKey(),
 	userId: integer('userId')
 		.notNull()
-		.references(() => users.id),
+		.references(() => users.id, { onDelete: 'cascade' })
+		.unique(),
 	totalQuestions: integer('totalQuestions').notNull().default(0),
 	correctAnswers: integer('correctAnswers').notNull().default(0),
 	totalGames: integer('totalGames').notNull().default(0),

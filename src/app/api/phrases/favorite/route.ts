@@ -37,6 +37,9 @@ export async function GET(req: NextRequest) {
 					transcription: phrases.transcription,
 					audioUrl: phrases.audioUrl,
 					categoryId: phrases.categoryId,
+					order: phrases.order,
+					views: phrases.views,
+					favoritesCount: phrases.favoritesCount,
 					createdAt: phrases.createdAt,
 					updatedAt: phrases.updatedAt,
 				},
@@ -116,6 +119,15 @@ export async function POST(req: NextRequest) {
 			phraseId: Number(phraseId),
 		});
 
+		// Увеличиваем счетчик избранного для фразы
+		await db
+			.update(phrases)
+			.set({
+				favoritesCount: phrases.favoritesCount + 1,
+				updatedAt: new Date(),
+			})
+			.where(eq(phrases.id, Number(phraseId)));
+
 		// Получаем обновленный список избранных фраз
 		const updatedFavorites = await db
 			.select({
@@ -128,6 +140,9 @@ export async function POST(req: NextRequest) {
 					transcription: phrases.transcription,
 					audioUrl: phrases.audioUrl,
 					categoryId: phrases.categoryId,
+					order: phrases.order,
+					views: phrases.views,
+					favoritesCount: phrases.favoritesCount,
 					createdAt: phrases.createdAt,
 					updatedAt: phrases.updatedAt,
 				},
@@ -170,6 +185,15 @@ export async function DELETE(req: NextRequest) {
 				)
 			);
 
+		// Уменьшаем счетчик избранного для фразы
+		await db
+			.update(phrases)
+			.set({
+				favoritesCount: phrases.favoritesCount - 1,
+				updatedAt: new Date(),
+			})
+			.where(eq(phrases.id, Number(phraseId)));
+
 		// Получаем обновленный список избранных фраз
 		const updatedFavorites = await db
 			.select({
@@ -182,6 +206,9 @@ export async function DELETE(req: NextRequest) {
 					transcription: phrases.transcription,
 					audioUrl: phrases.audioUrl,
 					categoryId: phrases.categoryId,
+					order: phrases.order,
+					views: phrases.views,
+					favoritesCount: phrases.favoritesCount,
 					createdAt: phrases.createdAt,
 					updatedAt: phrases.updatedAt,
 				},

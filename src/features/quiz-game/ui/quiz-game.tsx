@@ -14,6 +14,7 @@ import { Badge } from '@/shared/components/ui/badge';
 import { CheckCircle2, XCircle, Trophy, RotateCcw } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { Leaderboard } from './leaderboard';
 
 export function QuizGame() {
 	const { isAuthenticated } = useAuth();
@@ -111,7 +112,11 @@ export function QuizGame() {
 		return (
 			<div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
 				<main className="flex-1 px-4 py-4 pb-24">
-					<div className="flex h-[60vh] items-center justify-center">
+					<div className="mb-6 mt-4">
+						<h1 className="mb-4 text-2xl font-bold">Квиз</h1>
+						<Leaderboard />
+					</div>
+					<div className="flex h-[40vh] items-center justify-center">
 						<p className="text-muted-foreground">Недостаточно фраз для игры</p>
 					</div>
 				</main>
@@ -124,14 +129,24 @@ export function QuizGame() {
 	return (
 		<div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
 			<main className="flex-1 px-4 py-4 pb-24">
+				{session.questionIndex === 0 && (
+					<div className="mb-6 mt-4">
+						<h1 className="mb-4 text-2xl font-bold">Квиз</h1>
+						<Leaderboard />
+					</div>
+				)}
 				<div className="mb-6 mt-4">
 					<div className="mb-2 flex items-center justify-between">
-						<h1 className="text-2xl font-bold">Квиз</h1>
+						{session.questionIndex > 0 && (
+							<h1 className="text-2xl font-bold">Квиз</h1>
+						)}
 						<Badge variant="secondary">
 							{session.questionIndex} / {session.totalQuestions}
 						</Badge>
 					</div>
-					<Progress value={progress} className="h-2" />
+					{session.questionIndex > 0 && (
+						<Progress value={progress} className="h-2" />
+					)}
 				</div>
 
 				<Card className="mb-3 gap-0 py-4">

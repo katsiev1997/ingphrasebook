@@ -8,11 +8,12 @@ import {
 	CheckIcon,
 	TrashIcon,
 	Loader2Icon,
+	EyeIcon,
 } from 'lucide-react';
 import { useToggleFavorite } from '../model/mutations/use-toggle-favorite';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useGetFavoritePhrases } from '../model/queries/use-get-favorite-phrases';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Input } from '@/shared/components/ui/input';
 import { Button } from '@/shared/components/ui/button';
 import {
@@ -25,15 +26,19 @@ import {
 import { useUpdatePhrase } from '../model/mutations/use-update-phrase';
 import { useDeletePhrase } from '../model/mutations/use-delete-phrase';
 import { useGetCategories } from '@/entities/category/model/queries/use-get-categories';
+import { incrementPhraseViewsRequest } from '../model/api/increment-phrase-views-request';
+import { useInView } from 'react-intersection-observer';
 
 type PhraseCardProps = {
 	phrase: string;
 	translation: string;
 	transcription: string;
 	id: number;
-	categoryId: number;
+	categoryId: number | null;
 	audioUrl?: string;
 	className?: string;
+	views?: number;
+	favoritesCount?: number;
 };
 
 export function PhraseCard({
@@ -44,6 +49,8 @@ export function PhraseCard({
 	className,
 	id,
 	categoryId,
+	views: initialViews = 0,
+	favoritesCount: initialFavoritesCount = 0,
 }: PhraseCardProps) {
 	const { user, isModeratorOrAdmin } = useAuth();
 	const userId = user?.id;
@@ -59,7 +66,52 @@ export function PhraseCard({
 	const [editedPhrase, setEditedPhrase] = useState(phrase);
 	const [editedTranslation, setEditedTranslation] = useState(translation);
 	const [editedTranscription, setEditedTranscription] = useState(transcription);
-	const [editedCategoryId, setEditedCategoryId] = useState(String(categoryId));
+	const [editedCategoryId, setEditedCategoryId] = useState(
+		String(categoryId || '')
+	);
+	const [views, setViews] = useState(initialViews);
+	const hasIncrementedViews = useRef(false);
+	const viewTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+	// Отслеживаем видимость карточки
+	const { ref, inView } = useInView({
+		threshold: 0.5, // Элемент считается видимым, если видно 50%
+		triggerOnce: false, // Позволяем повторно отслеживать видимость
+	});
+
+	// Увеличиваем счетчик просмотров только если фраза была видна больше 3 секунд
+	// Это гарантирует, что пользователь действительно просмотрел фразу (прочитал оригинал, перевод и транскрипцию)
+	useEffect(() => {
+		if (inView && !hasIncrementedViews.current) {
+			// Запускаем таймер на 3 секунды
+			viewTimerRef.current = setTimeout(() => {
+				if (!hasIncrementedViews.current) {
+					hasIncrementedViews.current = true;
+					incrementPhraseViewsRequest(id)
+						.then((response) => {
+							setViews(response.views);
+						})
+						.catch((error) => {
+							console.error('Failed to increment phrase views:', error);
+						});
+				}
+			}, 3000);
+		} else if (!inView && viewTimerRef.current) {
+			// Если элемент стал невидимым до истечения секунды, отменяем таймер
+			clearTimeout(viewTimerRef.current);
+			viewTimerRef.current = null;
+		}
+
+		// Очистка таймера при размонтировании
+		return () => {
+			if (viewTimerRef.current) {
+				clearTimeout(viewTimerRef.current);
+			}
+		};
+	}, [inView, id]);
+
+	// Синхронизируем счетчик избранного с пропсами (обновляется через refetch)
+	const favoritesCount = initialFavoritesCount;
 
 	const onToggleFavorite = () => {
 		if (userId !== undefined) {
@@ -93,7 +145,10 @@ export function PhraseCard({
 				transcription: editedTranscription,
 				categoryId: newCategoryId,
 				audioUrl: audioUrl || undefined,
-				oldCategoryId: categoryId !== newCategoryId ? categoryId : undefined,
+				oldCategoryId:
+					categoryId !== null && categoryId !== newCategoryId
+						? categoryId
+						: undefined,
 			},
 			{
 				onSuccess: () => {
@@ -105,12 +160,16 @@ export function PhraseCard({
 
 	const onDelete = () => {
 		if (confirm('Вы уверены, что хотите удалить эту фразу?')) {
-			deletePhrase({ phraseId: id, categoryId });
+			deletePhrase({
+				phraseId: id,
+				categoryId: categoryId ?? undefined,
+			});
 		}
 	};
 
 	return (
 		<div
+			ref={ref}
 			className={cn(
 				'flex flex-col gap-4 rounded-xl bg-component-light p-4 shadow-md dark:bg-component-dark',
 				className
@@ -194,6 +253,18 @@ export function PhraseCard({
 					)}
 				</div>
 			</div>
+			{!isEditing && (
+				<div className="flex items-center gap-4 text-sm text-muted-foreground">
+					<div className="flex items-center gap-1">
+						<EyeIcon className="size-4" />
+						<span>{views}</span>
+					</div>
+					<div className="flex items-center gap-1">
+						<StarIcon className="size-4" />
+						<span>{favoritesCount}</span>
+					</div>
+				</div>
+			)}
 			{isEditing && (
 				<div className="flex gap-2">
 					<Button

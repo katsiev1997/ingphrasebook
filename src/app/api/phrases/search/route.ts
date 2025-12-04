@@ -24,6 +24,9 @@ export async function GET(req: NextRequest) {
 				transcription: phrases.transcription,
 				audioUrl: phrases.audioUrl,
 				categoryId: phrases.categoryId,
+				order: phrases.order,
+				views: phrases.views,
+				favoritesCount: phrases.favoritesCount,
 				createdAt: phrases.createdAt,
 				updatedAt: phrases.updatedAt,
 				category: {

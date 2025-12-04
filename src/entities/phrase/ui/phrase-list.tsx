@@ -54,6 +54,8 @@ export const PhraseList = ({
 						transcription={phrase.transcription}
 						categoryId={phrase.categoryId}
 						audioUrl={phrase.audioUrl || undefined}
+						views={phrase.views}
+						favoritesCount={phrase.favoritesCount}
 					/>
 				))}
 			{createPhrase}
