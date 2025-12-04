@@ -24,9 +24,11 @@ export function QuizGame() {
 		currentQuestion,
 		isLoading,
 		isGameFinished,
+		isGameStarted,
 		selectAnswer,
 		nextQuestion,
 		startNewGame,
+		startGame,
 	} = useQuizGame();
 
 	if (isLoading) {
@@ -97,10 +99,21 @@ export function QuizGame() {
 								</div>
 							)}
 
-							<Button onClick={startNewGame} className="w-full" size="lg">
-								<RotateCcw className="mr-2 size-4" />
-								Играть снова
-							</Button>
+							<div className="flex gap-3">
+								<Button
+									onClick={startNewGame}
+									variant="outline"
+									className="flex-1"
+									size="lg"
+								>
+									<Trophy className="mr-2 size-4" />
+									К топу игроков
+								</Button>
+								<Button onClick={startNewGame} className="flex-1" size="lg">
+									<RotateCcw className="mr-2 size-4" />
+									Играть снова
+								</Button>
+							</div>
 						</CardContent>
 					</Card>
 				</main>
@@ -108,7 +121,7 @@ export function QuizGame() {
 		);
 	}
 
-	if (!currentQuestion) {
+	if (!currentQuestion && !isGameStarted) {
 		return (
 			<div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
 				<main className="flex-1 px-4 py-4 pb-24">
@@ -116,7 +129,30 @@ export function QuizGame() {
 						<h1 className="mb-4 text-2xl font-bold">Квиз</h1>
 						<Leaderboard />
 					</div>
-					<div className="flex h-[40vh] items-center justify-center">
+					{isLoading ? (
+						<div className="flex h-[40vh] items-center justify-center">
+							<p className="text-muted-foreground">Загрузка...</p>
+						</div>
+					) : (
+						<div className="flex flex-col items-center justify-center gap-4 py-8">
+							<p className="text-center text-muted-foreground">
+								Готовы начать? Проверьте свои знания ингушского языка!
+							</p>
+							<Button onClick={startGame} size="lg" className="w-full">
+								Начать игру
+							</Button>
+						</div>
+					)}
+				</main>
+			</div>
+		);
+	}
+
+	if (!currentQuestion && isGameStarted) {
+		return (
+			<div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
+				<main className="flex-1 px-4 py-4 pb-24">
+					<div className="flex h-[60vh] items-center justify-center">
 						<p className="text-muted-foreground">Недостаточно фраз для игры</p>
 					</div>
 				</main>
@@ -129,12 +165,6 @@ export function QuizGame() {
 	return (
 		<div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark">
 			<main className="flex-1 px-4 py-4 pb-24">
-				{session.questionIndex === 0 && (
-					<div className="mb-6 mt-4">
-						<h1 className="mb-4 text-2xl font-bold">Квиз</h1>
-						<Leaderboard />
-					</div>
-				)}
 				<div className="mb-6 mt-4">
 					<div className="mb-2 flex items-center justify-between">
 						{session.questionIndex > 0 && (

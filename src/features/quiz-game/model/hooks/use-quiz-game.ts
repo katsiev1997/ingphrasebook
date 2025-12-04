@@ -60,29 +60,16 @@ export const useQuizGame = () => {
 		isCorrect: null,
 		usedPhraseIds: new Set<number>(),
 	});
+	const [isGameStarted, setIsGameStarted] = useState(false);
 	const hasInitializedRef = useRef(false);
 
+	// currentQuestion вычисляется только для fallback, основной вопрос берется из session
 	const currentQuestion = useMemo(() => {
-		if (!phrases || phrases.length < 4) {
+		if (!phrases || phrases.length < 4 || !isGameStarted) {
 			return null;
 		}
 		return createQuestion(phrases, session.usedPhraseIds);
-	}, [phrases, session.usedPhraseIds]);
-
-	const startNewGame = useCallback(() => {
-		hasInitializedRef.current = false;
-		setSession({
-			currentQuestion: null,
-			questionIndex: 0,
-			totalQuestions: QUESTIONS_PER_GAME,
-			correctAnswers: 0,
-			selectedAnswerId: null,
-			isAnswered: false,
-			isCorrect: null,
-			usedPhraseIds: new Set<number>(),
-		});
-		refetchPhrases();
-	}, [refetchPhrases]);
+	}, [phrases, session.usedPhraseIds, isGameStarted]);
 
 	const loadNextQuestion = useCallback(() => {
 		if (!phrases || phrases.length < 4) {
@@ -115,6 +102,27 @@ export const useQuizGame = () => {
 			usedPhraseIds: newUsedIds,
 		}));
 	}, [phrases, session.usedPhraseIds, refetchPhrases]);
+
+	const startNewGame = useCallback(() => {
+		hasInitializedRef.current = false;
+		setIsGameStarted(false);
+		setSession({
+			currentQuestion: null,
+			questionIndex: 0,
+			totalQuestions: QUESTIONS_PER_GAME,
+			correctAnswers: 0,
+			selectedAnswerId: null,
+			isAnswered: false,
+			isCorrect: null,
+			usedPhraseIds: new Set<number>(),
+		});
+		refetchPhrases();
+	}, [refetchPhrases]);
+
+	const startGame = useCallback(() => {
+		setIsGameStarted(true);
+		loadNextQuestion();
+	}, [loadNextQuestion]);
 
 	const selectAnswer = useCallback(
 		(phraseId: number) => {
@@ -152,26 +160,7 @@ export const useQuizGame = () => {
 		return session.questionIndex > session.totalQuestions;
 	}, [session.questionIndex, session.totalQuestions]);
 
-	useEffect(() => {
-		if (
-			phrases &&
-			phrases.length >= 4 &&
-			session.questionIndex === 0 &&
-			!session.currentQuestion &&
-			!hasInitializedRef.current
-		) {
-			hasInitializedRef.current = true;
-			// Use setTimeout to defer state update and avoid cascading renders
-			setTimeout(() => {
-				loadNextQuestion();
-			}, 0);
-		}
-	}, [
-		phrases,
-		session.questionIndex,
-		session.currentQuestion,
-		loadNextQuestion,
-	]);
+	// Убрали автоматическую загрузку первого вопроса - теперь игра начинается только по кнопке
 
 	// Сохраняем статистику при завершении игры
 	useEffect(() => {
@@ -185,11 +174,13 @@ export const useQuizGame = () => {
 
 	return {
 		session,
-		currentQuestion: session.currentQuestion || currentQuestion,
+		currentQuestion: isGameStarted ? (session.currentQuestion || currentQuestion) : null,
 		isLoading,
 		isGameFinished,
+		isGameStarted,
 		selectAnswer,
 		nextQuestion,
 		startNewGame,
+		startGame,
 	};
 };

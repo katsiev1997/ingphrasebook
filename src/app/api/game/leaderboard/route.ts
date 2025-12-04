@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { db } from '@/db/drizzle';
 import { gameStats, users } from '@/db/schema';
-import { desc, sql } from 'drizzle-orm';
+import { desc, sql, eq, gt } from 'drizzle-orm';
 
 // GET /api/game/leaderboard - Получить топ игроков
 export async function GET(req: NextRequest) {
@@ -21,17 +21,17 @@ export async function GET(req: NextRequest) {
 				totalGames: gameStats.totalGames,
 				accuracy: sql<number>`CASE 
 					WHEN ${gameStats.totalQuestions} > 0 
-					THEN ROUND((${gameStats.correctAnswers}::float / ${gameStats.totalQuestions}::float) * 100, 2)
+					THEN ROUND(((${gameStats.correctAnswers}::numeric / ${gameStats.totalQuestions}::numeric) * 100)::numeric, 2)
 					ELSE 0
 				END`.as('accuracy'),
 			})
 			.from(gameStats)
-			.innerJoin(users, sql`${gameStats.userId} = ${users.id}`)
-			.where(sql`${gameStats.totalGames} > 0`)
+			.innerJoin(users, eq(gameStats.userId, users.id))
+			.where(gt(gameStats.totalGames, 0))
 			.orderBy(
 				desc(sql`CASE 
 					WHEN ${gameStats.totalQuestions} > 0 
-					THEN ${gameStats.correctAnswers}::float / ${gameStats.totalQuestions}::float
+					THEN ${gameStats.correctAnswers}::numeric / ${gameStats.totalQuestions}::numeric
 					ELSE 0
 				END`),
 				desc(gameStats.totalGames)

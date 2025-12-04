@@ -89,7 +89,7 @@ export function Leaderboard() {
 							</div>
 							<div className="text-right">
 								<p className="font-semibold text-primary">
-									{entry.accuracy.toFixed(1)}%
+									{Number(entry.accuracy).toFixed(1)}%
 								</p>
 								<p className="text-xs text-muted-foreground">
 									{entry.correctAnswers}/{entry.totalQuestions}

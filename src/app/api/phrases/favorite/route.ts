@@ -1,6 +1,6 @@
 import { db } from '@/db/drizzle';
 import { users, phrases, favoritePhrases } from '../../../../db/schema';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/phrases/favorites?userId=1
@@ -123,7 +123,7 @@ export async function POST(req: NextRequest) {
 		await db
 			.update(phrases)
 			.set({
-				favoritesCount: phrases.favoritesCount + 1,
+				favoritesCount: sql`${phrases.favoritesCount} + 1`,
 				updatedAt: new Date(),
 			})
 			.where(eq(phrases.id, Number(phraseId)));
@@ -189,7 +189,7 @@ export async function DELETE(req: NextRequest) {
 		await db
 			.update(phrases)
 			.set({
-				favoritesCount: phrases.favoritesCount - 1,
+				favoritesCount: sql`${phrases.favoritesCount} - 1`,
 				updatedAt: new Date(),
 			})
 			.where(eq(phrases.id, Number(phraseId)));
