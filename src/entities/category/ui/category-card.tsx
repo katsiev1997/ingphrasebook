@@ -45,7 +45,8 @@ export function CategoryCard({
 				</p>
 				{phraseCount !== undefined && (
 					<p className="text-xs text-muted-foreground">
-						{phraseCount} {phraseCount === 1 ? 'фраза' : phraseCount < 5 ? 'фразы' : 'фраз'}
+						{phraseCount}{' '}
+						{phraseCount === 1 ? 'фраза' : phraseCount < 5 ? 'фразы' : 'фраз'}
 					</p>
 				)}
 			</div>

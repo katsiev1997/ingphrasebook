@@ -1,7 +1,12 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/components/ui/card';
+import {
+	Card,
+	CardContent,
+	CardHeader,
+	CardTitle,
+} from '@/shared/components/ui/card';
 import { Calendar, Clock, Flame, Activity } from 'lucide-react';
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
@@ -15,7 +20,11 @@ async function getUserStatsRequest() {
 }
 
 export function UserStats() {
-	const { data: stats, isLoading, isError } = useQuery({
+	const {
+		data: stats,
+		isLoading,
+		isError,
+	} = useQuery({
 		queryKey: ['user-stats'],
 		queryFn: getUserStatsRequest,
 		retry: false,
@@ -84,4 +93,3 @@ export function UserStats() {
 		</Card>
 	);
 }
-

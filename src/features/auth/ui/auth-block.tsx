@@ -57,8 +57,8 @@ export const AuthBlock = () => {
 							<AlertDialogHeader>
 								<AlertDialogTitle>Подтвердите выход</AlertDialogTitle>
 								<AlertDialogDescription>
-									Вы уверены, что хотите выйти из аккаунта? Вам потребуется
-									снова войти для доступа к избранным фразам и статистике.
+									Вы уверены, что хотите выйти из аккаунта? Вам потребуется снова войти
+									для доступа к избранным фразам и статистике.
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 							<AlertDialogFooter>

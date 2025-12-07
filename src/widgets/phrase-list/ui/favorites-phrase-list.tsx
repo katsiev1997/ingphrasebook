@@ -27,10 +27,7 @@ export const FavoritePhraseList = () => {
 					<p className="text-sm text-muted-foreground mb-4">
 						Войдите в аккаунт, чтобы просматривать избранные фразы
 					</p>
-					<Link
-						href="/settings"
-						className="text-sm text-primary hover:underline"
-					>
+					<Link href="/settings" className="text-sm text-primary hover:underline">
 						Перейти к настройкам
 					</Link>
 				</CardContent>

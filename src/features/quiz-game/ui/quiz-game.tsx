@@ -106,8 +106,7 @@ export function QuizGame() {
 									className="flex-1"
 									size="lg"
 								>
-									<Trophy className="mr-2 size-4" />
-									К топу игроков
+									<Trophy className="mr-2 size-4" />К топу игроков
 								</Button>
 								<Button onClick={startNewGame} className="flex-1" size="lg">
 									<RotateCcw className="mr-2 size-4" />

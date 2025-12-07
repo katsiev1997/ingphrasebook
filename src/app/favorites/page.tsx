@@ -22,7 +22,8 @@ export default function FavoritesPage() {
 						</h1>
 						{isAuthenticated && (
 							<p className="text-sm text-muted-foreground">
-								{favoriteCount} {favoriteCount === 1 ? 'фраза' : favoriteCount < 5 ? 'фразы' : 'фраз'}
+								{favoriteCount}{' '}
+								{favoriteCount === 1 ? 'фраза' : favoriteCount < 5 ? 'фразы' : 'фраз'}
 							</p>
 						)}
 					</div>

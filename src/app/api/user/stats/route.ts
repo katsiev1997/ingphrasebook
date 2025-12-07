@@ -1,12 +1,11 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 import { db } from '@/db/drizzle';
-import { users, gameStats, favoritePhrases } from '@/db/schema';
+import { favoritePhrases, gameStats, users } from '@/db/schema';
 import { checkAuth, createAuthErrorResponse } from '@/shared/lib/auth-utils';
-import { eq, sql, desc } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
+import { NextResponse } from 'next/server';
 
 // GET /api/user/stats - Получить статистику пользователя
-export async function GET(req: NextRequest) {
+export async function GET() {
 	try {
 		const authResult = await checkAuth();
 
@@ -51,9 +50,10 @@ export async function GET(req: NextRequest) {
 
 		// Определяем последнюю активность
 		// Используем updatedAt из gameStats, если статистика есть
-		const lastActivity = stats.length > 0 && stats[0].updatedAt 
-			? stats[0].updatedAt 
-			: registrationDate;
+		const lastActivity =
+			stats.length > 0 && stats[0].updatedAt
+				? stats[0].updatedAt
+				: registrationDate;
 
 		// Вычисляем количество дней подряд
 		// Упрощенная логика: если последняя активность была сегодня, считаем 1 день
@@ -63,14 +63,14 @@ export async function GET(req: NextRequest) {
 			const lastActivityDate = stats[0].updatedAt;
 			const today = new Date(now);
 			today.setHours(0, 0, 0, 0);
-			
+
 			const lastActivityDay = new Date(lastActivityDate);
 			lastActivityDay.setHours(0, 0, 0, 0);
-			
+
 			const daysDiff = Math.floor(
 				(today.getTime() - lastActivityDay.getTime()) / (1000 * 60 * 60 * 24)
 			);
-			
+
 			// Если активность была сегодня, считаем 1 день подряд
 			// Если вчера, тоже 1 день (серия продолжается)
 			if (daysDiff === 0) {
@@ -90,10 +90,6 @@ export async function GET(req: NextRequest) {
 		});
 	} catch (error) {
 		console.error('Error fetching user stats:', error);
-		return NextResponse.json(
-			{ error: 'Internal server error' },
-			{ status: 500 }
-		);
+		return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
 	}
 }
-

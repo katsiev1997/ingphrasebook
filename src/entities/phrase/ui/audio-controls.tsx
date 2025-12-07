@@ -10,6 +10,7 @@ import {
 	RotateCcw,
 	PlayIcon,
 	PauseIcon,
+	BarChart3,
 } from 'lucide-react';
 import { useUploadAudio } from '../model/mutations/use-upload-audio';
 import { useDeleteAudio } from '../model/mutations/use-delete-audio';
@@ -21,10 +22,18 @@ interface AudioControlsProps {
 }
 
 // Компонент для записи голоса пользователя
-const UserVoiceRecorder = () => {
+const UserVoiceRecorder = ({
+	referenceAudioUrl,
+}: {
+	referenceAudioUrl?: string;
+}) => {
 	const [isRecording, setIsRecording] = useState(false);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [userAudioUrl, setUserAudioUrl] = useState<string | null>(null);
+	const [userAudioBlob, setUserAudioBlob] = useState<Blob | null>(null);
+	const [isComparing, setIsComparing] = useState(false);
+	const [comparisonScore, setComparisonScore] = useState<number | null>(null);
+	const [comparisonError, setComparisonError] = useState<string | null>(null);
 	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 	const audioRef = useRef<HTMLAudioElement | null>(null);
 	const chunksRef = useRef<Blob[]>([]);
@@ -68,6 +77,10 @@ const UserVoiceRecorder = () => {
 				const audioBlob = new Blob(chunksRef.current, { type: mimeType });
 				const audioUrl = URL.createObjectURL(audioBlob);
 				setUserAudioUrl(audioUrl);
+				setUserAudioBlob(audioBlob);
+				// Сбрасываем предыдущий результат сравнения
+				setComparisonScore(null);
+				setComparisonError(null);
 			};
 
 			mediaRecorder.start();
@@ -105,11 +118,61 @@ const UserVoiceRecorder = () => {
 			URL.revokeObjectURL(userAudioUrl);
 			setUserAudioUrl(null);
 		}
+		setUserAudioBlob(null);
 		if (audioRef.current) {
 			audioRef.current.pause();
 			audioRef.current.currentTime = 0;
 		}
 		setIsPlaying(false);
+		setComparisonScore(null);
+		setComparisonError(null);
+	};
+
+	const comparePronunciation = async () => {
+		if (!userAudioBlob || !referenceAudioUrl) {
+			return;
+		}
+
+		setIsComparing(true);
+		setComparisonError(null);
+
+		try {
+			const formData = new FormData();
+			formData.append('referenceAudioUrl', referenceAudioUrl);
+
+			// Создаем File из Blob
+			const extension = userAudioBlob.type.split('/')[1]?.split(';')[0] || 'webm';
+			const audioFile = new File([userAudioBlob], `user_recording.${extension}`, {
+				type: userAudioBlob.type,
+			});
+			formData.append('userAudio', audioFile);
+
+			const response = await fetch('/api/compare-pronunciation', {
+				method: 'POST',
+				body: formData,
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				// Используем userMessage если есть, иначе error или details
+				const errorMessage =
+					errorData.userMessage ||
+					errorData.error ||
+					errorData.details ||
+					'Не удалось сравнить произношение';
+				throw new Error(errorMessage);
+			}
+
+			const result = await response.json();
+			setComparisonScore(result.score);
+		} catch (error) {
+			console.error('Compare pronunciation error:', error);
+			setComparisonError(
+				error instanceof Error ? error.message : 'Не удалось сравнить произношение'
+			);
+		} finally {
+			setIsComparing(false);
+		}
 	};
 
 	if (userAudioUrl) {
@@ -145,6 +208,54 @@ const UserVoiceRecorder = () => {
 						<RotateCcw className="h-4 w-4" />
 					</button>
 				</div>
+
+				{referenceAudioUrl && (
+					<button
+						onClick={comparePronunciation}
+						disabled={isComparing}
+						className="w-full flex items-center justify-center py-2 px-4 rounded-md bg-blue-600 text-white hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+					>
+						{isComparing ? (
+							<>
+								<Loader2Icon className="h-4 w-4 mr-2 animate-spin" />
+								Сравнение...
+							</>
+						) : (
+							<>
+								<BarChart3 className="h-4 w-4 mr-2" />
+								Сравнить произношение
+							</>
+						)}
+					</button>
+				)}
+
+				{comparisonScore !== null && (
+					<div className="p-3 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800">
+						<div className="flex items-center justify-between">
+							<span className="text-sm font-medium text-blue-900 dark:text-blue-100">
+								Оценка произношения:
+							</span>
+							<span className="text-lg font-bold text-blue-700 dark:text-blue-300">
+								{(comparisonScore * 100).toFixed(1)}%
+							</span>
+						</div>
+						<div className="mt-2 w-full bg-blue-200 dark:bg-blue-800 rounded-full h-2">
+							<div
+								className="bg-blue-600 dark:bg-blue-400 h-2 rounded-full transition-all duration-300"
+								style={{ width: `${comparisonScore * 100}%` }}
+							/>
+						</div>
+					</div>
+				)}
+
+				{comparisonError && (
+					<div className="p-3 rounded-md bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800">
+						<p className="text-sm text-red-800 dark:text-red-200 whitespace-pre-line">
+							{comparisonError}
+						</p>
+					</div>
+				)}
+
 				<audio
 					ref={audioRef}
 					src={userAudioUrl}
@@ -288,7 +399,7 @@ export const AudioControls = ({ phraseId, audioUrl }: AudioControlsProps) => {
 	return (
 		<div className="space-y-3 my-2">
 			{/* Компонент для записи голоса пользователя - доступен всем */}
-			<UserVoiceRecorder />
+			<UserVoiceRecorder referenceAudioUrl={audioUrl} />
 
 			{/* Оригинальное аудио и управление для модераторов/админов */}
 			{audioUrl ? (
