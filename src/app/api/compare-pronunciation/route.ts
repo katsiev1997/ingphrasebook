@@ -71,14 +71,14 @@ export async function POST(req: NextRequest) {
 
 		try {
 			// Вызываем Hugging Face API
-			// Gradio API для Audio компонента с type="numpy" ожидает URL в формате объекта { path: url }
+			// Gradio API ожидает простые URL строки в массиве data
 			const hfResponse = await fetch(HF_API_URL, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					data: [{ path: referenceAudioUrlFinal }, { path: userBlob.url }],
+					data: [referenceAudioUrlFinal, userBlob.url],
 				}),
 				// Таймаут 60 секунд для обработки аудио
 				signal: AbortSignal.timeout(60000),
@@ -129,9 +129,9 @@ export async function POST(req: NextRequest) {
 
 			const hfResult = await hfResponse.json();
 
-			// Gradio API возвращает результат в формате { data: [result] }
-			// где result - это объект с полями: similarity, percent, feedback, color, method
-			const result = hfResult.data?.[0] || hfResult.data || hfResult;
+			// Gradio API возвращает результат в формате { data: { similarity, percent, feedback, ... } }
+			// где data - это объект напрямую, а не массив
+			const result = hfResult.data || hfResult;
 
 			// Извлекаем similarity (число от 0 до 1) или percent (число от 0 до 100)
 			let score: number;
