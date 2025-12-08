@@ -9,11 +9,14 @@ import {
 	TrashIcon,
 	Loader2Icon,
 	EyeIcon,
+	Share2Icon,
+	LinkIcon,
+	CopyIcon,
 } from 'lucide-react';
 import { useToggleFavorite } from '../model/mutations/use-toggle-favorite';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useGetFavoritePhrases } from '../model/queries/use-get-favorite-phrases';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Input } from '@/shared/components/ui/input';
 import { Button } from '@/shared/components/ui/button';
 import {
@@ -28,6 +31,13 @@ import { useDeletePhrase } from '../model/mutations/use-delete-phrase';
 import { useGetCategories } from '@/entities/category/model/queries/use-get-categories';
 import { incrementPhraseViewsRequest } from '../model/api/increment-phrase-views-request';
 import { useInView } from 'react-intersection-observer';
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/shared/components/ui/popover';
+import { toast } from 'sonner';
+import { useSearchParams } from 'next/navigation';
 
 type PhraseCardProps = {
 	phrase: string;
@@ -72,12 +82,23 @@ export function PhraseCard({
 	const [views, setViews] = useState(initialViews);
 	const hasIncrementedViews = useRef(false);
 	const viewTimerRef = useRef<NodeJS.Timeout | null>(null);
+	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+	const [isHighlighted, setIsHighlighted] = useState(false);
+	const cardRef = useRef<HTMLDivElement | null>(null);
+	const searchParams = useSearchParams();
 
 	// Отслеживаем видимость карточки
-	const { ref, inView } = useInView({
+	const { ref: inViewRef, inView } = useInView({
 		threshold: 0.5, // Элемент считается видимым, если видно 50%
 		triggerOnce: false, // Позволяем повторно отслеживать видимость
 	});
+	const setRefs = useCallback(
+		(node: HTMLDivElement | null) => {
+			inViewRef(node);
+			cardRef.current = node;
+		},
+		[inViewRef]
+	);
 
 	// Увеличиваем счетчик просмотров только если фраза была видна больше 3 секунд
 	// Это гарантирует, что пользователь действительно просмотрел фразу (прочитал оригинал, перевод и транскрипцию)
@@ -109,6 +130,20 @@ export function PhraseCard({
 			}
 		};
 	}, [inView, id]);
+
+	// Прокрутка и подсветка при переходе по ссылке ?phrase={id}
+	useEffect(() => {
+		const queryId = searchParams?.get('phrase');
+		if (queryId && Number(queryId) === id && cardRef.current) {
+			cardRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+			const raf = requestAnimationFrame(() => setIsHighlighted(true));
+			const timer = setTimeout(() => setIsHighlighted(false), 2500);
+			return () => {
+				cancelAnimationFrame(raf);
+				clearTimeout(timer);
+			};
+		}
+	}, [id, searchParams]);
 
 	// Синхронизируем счетчик избранного с пропсами (обновляется через refetch)
 	const favoritesCount = initialFavoritesCount;
@@ -167,11 +202,45 @@ export function PhraseCard({
 		}
 	};
 
+	const shareText = `${phrase}\n${translation}\n[${transcription}]`;
+	const shareUrl =
+		categoryId !== null && typeof window !== 'undefined'
+			? `${window.location.origin}/phrases/${categoryId}?phrase=${id}`
+			: null;
+
+	const onCopyText = async () => {
+		try {
+			await navigator.clipboard.writeText(shareText);
+			toast.success('Фраза скопирована');
+			setIsPopoverOpen(false);
+		} catch (error) {
+			console.error('Copy failed', error);
+			toast.error('Не удалось скопировать');
+		}
+	};
+
+	const onCopyLink = async () => {
+		if (!shareUrl) {
+			toast.error('Категория неизвестна, ссылка не создана');
+			return;
+		}
+
+		try {
+			await navigator.clipboard.writeText(shareUrl);
+			toast.success('Ссылка скопирована');
+			setIsPopoverOpen(false);
+		} catch (error) {
+			console.error('Link copy failed', error);
+			toast.error('Не удалось скопировать ссылку');
+		}
+	};
+
 	return (
 		<div
-			ref={ref}
+			ref={setRefs}
 			className={cn(
-				'flex flex-col gap-4 rounded-xl bg-component-light p-4 shadow-md dark:bg-component-dark',
+				'flex flex-col gap-4 rounded-xl bg-component-light p-4 shadow-md dark:bg-component-dark transition-all',
+				isHighlighted && 'ring-2 ring-primary shadow-lg',
 				className
 			)}
 		>
@@ -242,6 +311,26 @@ export function PhraseCard({
 							})}
 						/>
 					</button>
+					<Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+						<PopoverTrigger asChild>
+							<button>
+								<Share2Icon className="size-6 text-foreground" />
+							</button>
+						</PopoverTrigger>
+						<PopoverContent side="left" className="w-56 space-y-2">
+							<p className="text-sm font-medium text-foreground">Поделиться</p>
+							<div className="flex flex-col gap-2">
+								<Button variant="secondary" size="sm" onClick={onCopyText}>
+									<CopyIcon className="mr-2 size-4" />
+									Скопировать текст
+								</Button>
+								<Button variant="secondary" size="sm" onClick={onCopyLink}>
+									<LinkIcon className="mr-2 size-4" />
+									Скопировать ссылку
+								</Button>
+							</div>
+						</PopoverContent>
+					</Popover>
 					{isModeratorOrAdmin && (
 						<button onClick={isEditing ? onCancel : onEdit}>
 							<SettingsIcon
