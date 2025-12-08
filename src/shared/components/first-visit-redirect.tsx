@@ -21,11 +21,9 @@ export function FirstVisitRedirect() {
 
 		localStorage.setItem(FIRST_VISIT_KEY, 'true');
 
-		if (pathname !== '/about') {
-			router.replace('/about');
-		}
+		// Already on '/', send to about on first visit
+		router.replace('/about');
 	}, [pathname, router]);
 
 	return null;
 }
-
