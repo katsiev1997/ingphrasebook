@@ -4,6 +4,7 @@ import './globals.css';
 import { BottomNavigation } from '@/widgets/bottom-navigation';
 import { MainProvider } from '@/shared/providers/main-provider';
 import { Toaster } from '@/shared/components/ui/sonner';
+import { FirstVisitRedirect } from '@/shared/components/first-visit-redirect';
 
 const inter = Inter({
 	variable: '--font-display',
@@ -32,6 +33,7 @@ export default function RootLayout({
 		<html lang="ru">
 			<body className={`${inter.variable} antialiased`}>
 				<MainProvider>
+					<FirstVisitRedirect />
 					{children}
 					<BottomNavigation />
 					<Toaster position="top-left" />
