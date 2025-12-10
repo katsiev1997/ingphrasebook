@@ -320,11 +320,21 @@ export function PhraseCard({
 						<PopoverContent side="left" className="w-56 space-y-2">
 							<p className="text-sm font-medium text-foreground">Поделиться</p>
 							<div className="flex flex-col gap-2">
-								<Button variant="secondary" size="sm" onClick={onCopyText}>
+								<Button
+									className="active:bg-primary dark:active:bg-primary"
+									variant="secondary"
+									size="sm"
+									onClick={onCopyText}
+								>
 									<CopyIcon className="mr-2 size-4" />
 									Скопировать текст
 								</Button>
-								<Button variant="secondary" size="sm" onClick={onCopyLink}>
+								<Button
+									className="active:bg-primary dark:active:bg-primary"
+									variant="secondary"
+									size="sm"
+									onClick={onCopyLink}
+								>
 									<LinkIcon className="mr-2 size-4" />
 									Скопировать ссылку
 								</Button>
@@ -360,7 +370,7 @@ export function PhraseCard({
 						onClick={onSave}
 						disabled={isUpdatePending}
 						size="sm"
-						className="flex-1"
+						className="flex-1 active:bg-primary dark:active:bg-primary"
 					>
 						{isUpdatePending ? (
 							<Loader2Icon className="size-4 animate-spin" />
@@ -374,7 +384,7 @@ export function PhraseCard({
 						disabled={isDeletePending}
 						size="sm"
 						variant="destructive"
-						className="flex-1"
+						className="flex-1 active:bg-primary dark:active:bg-primary"
 					>
 						{isDeletePending ? (
 							<Loader2Icon className="size-4 animate-spin" />

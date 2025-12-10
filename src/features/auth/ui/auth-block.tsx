@@ -49,7 +49,10 @@ export const AuthBlock = () => {
 					</div>
 					<AlertDialog>
 						<AlertDialogTrigger asChild>
-							<Button variant="destructive" className="w-full">
+							<Button
+								variant="destructive"
+								className="w-full active:bg-primary dark:active:bg-primary"
+							>
 								Выйти из аккаунта
 							</Button>
 						</AlertDialogTrigger>

@@ -61,13 +61,16 @@ export const CreateCategory = () => {
 					type="button"
 					variant="outline"
 					onClick={() => setIsSheetOpen(true)}
-					className="w-full"
+					className="w-full active:bg-primary dark:active:bg-primary"
 				>
 					Сменить иконку
 				</Button>
 
 				{/* Кнопка добавления */}
-				<Button type="submit" className="w-full">
+				<Button
+					type="submit"
+					className="w-full active:bg-primary dark:active:bg-primary"
+				>
 					<Plus className="size-4" />
 					Добавить
 				</Button>

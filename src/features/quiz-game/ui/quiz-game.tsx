@@ -103,12 +103,16 @@ export function QuizGame() {
 								<Button
 									onClick={startNewGame}
 									variant="outline"
-									className="flex-1"
+									className="flex-1 active:bg-primary dark:active:bg-primary"
 									size="lg"
 								>
 									<Trophy className="mr-2 size-4" />К топу игроков
 								</Button>
-								<Button onClick={startNewGame} className="flex-1" size="lg">
+								<Button
+									onClick={startNewGame}
+									className="flex-1 active:bg-primary dark:active:bg-primary"
+									size="lg"
+								>
 									<RotateCcw className="mr-2 size-4" />
 									Играть снова
 								</Button>
@@ -137,7 +141,11 @@ export function QuizGame() {
 							<p className="text-center text-muted-foreground">
 								Готовы начать? Проверьте свои знания ингушского языка!
 							</p>
-							<Button onClick={startGame} size="lg" className="w-full">
+							<Button
+								onClick={startGame}
+								size="lg"
+								className="w-full active:bg-primary dark:active:bg-primary"
+							>
 								Начать игру
 							</Button>
 						</div>
@@ -217,7 +225,7 @@ export function QuizGame() {
 								variant={variant}
 								size="lg"
 								className={cn(
-									'w-full justify-start text-left h-auto py-2 px-3',
+									'w-full justify-start text-left h-auto py-2 px-3 active:bg-primary dark:active:bg-primary',
 									!session.isAnswered && 'hover:bg-accent',
 									session.isAnswered && !isSelected && !isCorrect && 'opacity-50'
 								)}
