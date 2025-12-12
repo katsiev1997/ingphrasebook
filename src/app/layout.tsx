@@ -5,6 +5,7 @@ import { BottomNavigation } from '@/widgets/bottom-navigation';
 import { MainProvider } from '@/shared/providers/main-provider';
 import { Toaster } from '@/shared/components/ui/sonner';
 import { FirstVisitRedirect } from '@/shared/components/first-visit-redirect';
+import { YandexMetrika } from '@/shared/components/yandex-metrika';
 
 const inter = Inter({
 	variable: '--font-display',
@@ -37,6 +38,7 @@ export default function RootLayout({
 					{children}
 					<BottomNavigation />
 					<Toaster position="top-left" />
+					<YandexMetrika />
 				</MainProvider>
 			</body>
 		</html>
