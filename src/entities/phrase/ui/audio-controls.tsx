@@ -296,6 +296,7 @@ const UserVoiceRecorder = ({
 export const AudioControls = ({ phraseId, audioUrl }: AudioControlsProps) => {
 	const [isRecording, setIsRecording] = useState(false);
 	const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+	const [isLoadingAudio, setIsLoadingAudio] = useState(false);
 	const mediaRecorderRef = useRef<MediaRecorder | null>(null);
 	const chunksRef = useRef<Blob[]>([]);
 	const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -386,7 +387,7 @@ export const AudioControls = ({ phraseId, audioUrl }: AudioControlsProps) => {
 	};
 
 	const toggleAudioPlayback = () => {
-		if (audioRef.current) {
+		if (audioRef.current && !isLoadingAudio) {
 			if (isPlayingAudio) {
 				audioRef.current.pause();
 			} else {
@@ -407,15 +408,20 @@ export const AudioControls = ({ phraseId, audioUrl }: AudioControlsProps) => {
 					<div className="flex items-center gap-2">
 						<button
 							onClick={toggleAudioPlayback}
-							className="w-full h-9 bg-accent flex items-center justify-center gap-2 px-3 rounded-md"
+							disabled={isLoadingAudio}
+							className="w-full h-9 bg-accent flex items-center justify-center gap-2 px-3 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
 							title="Правильное произношение"
 						>
-							{isPlayingAudio ? (
+							{isLoadingAudio ? (
+								<Loader2Icon className="h-4 w-4 animate-spin" />
+							) : isPlayingAudio ? (
 								<PauseIcon className="h-4 w-4" />
 							) : (
 								<PlayIcon className="h-4 w-4" />
 							)}
-							<span className="text-sm text-foreground">Правильное произношение</span>
+							<span className="text-sm text-foreground">
+								{isLoadingAudio ? 'Загрузка...' : 'Правильное произношение'}
+							</span>
 						</button>
 						{isModeratorOrAdmin && (
 							<button
@@ -435,6 +441,11 @@ export const AudioControls = ({ phraseId, audioUrl }: AudioControlsProps) => {
 					<audio
 						ref={audioRef}
 						src={audioUrl}
+						onLoadStart={() => setIsLoadingAudio(true)}
+						onCanPlay={() => setIsLoadingAudio(false)}
+						onLoadedData={() => setIsLoadingAudio(false)}
+						onWaiting={() => setIsLoadingAudio(true)}
+						onError={() => setIsLoadingAudio(false)}
 						onEnded={() => setIsPlayingAudio(false)}
 						onPause={() => setIsPlayingAudio(false)}
 						onPlay={() => setIsPlayingAudio(true)}

@@ -39,7 +39,7 @@ export function CategoryCard({
 					<HelpCircle className="size-5" />
 				)}
 			</div>
-			<div className="flex-1">
+			<div className="flex-1 min-w-0">
 				<p className="truncate text-base font-normal leading-normal text-black dark:text-white">
 					{name}
 				</p>
