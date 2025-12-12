@@ -16,6 +16,15 @@ const inter = Inter({
 export const metadata: Metadata = {
 	title: 'IngPhrase',
 	description: 'Ingush-Russian phrasebook',
+	metadataBase: new URL('https://ingphrasebook.com'),
+	openGraph: {
+		title: 'IngPhrase',
+		description: 'Ingush-Russian phrasebook',
+		images: ['/favicon.ico'],
+	},
+	verification: {
+		yandex: 'ef95042f4ee58daa',
+	},
 };
 
 export const viewport: Viewport = {
