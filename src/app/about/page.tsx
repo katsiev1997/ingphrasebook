@@ -9,6 +9,7 @@ import {
 	Volume2,
 } from 'lucide-react';
 import type { Metadata } from 'next';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
 	title: 'О проекте | IngPhrase',
@@ -74,10 +75,16 @@ export default function AboutPage() {
 								<h3 className="font-medium text-black dark:text-white mb-1">
 									Аудио произношение
 								</h3>
-								<p className="text-sm text-gray-600 dark:text-gray-400">
+								<p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
 									Прослушивайте правильное произношение фраз, чтобы улучшить свои навыки
 									говорения и восприятия на слух.
 								</p>
+								<Link
+									href="/pronunciation"
+									className="text-sm text-primary hover:text-primary/80 underline"
+								>
+									Узнать больше о произношении звуков →
+								</Link>
 							</div>
 						</div>
 
