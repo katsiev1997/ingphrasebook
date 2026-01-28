@@ -1,8 +1,7 @@
 import { CategoryTitle, getCategoriesRequest } from '@/entities/category';
+import { BackButton } from '@/shared/components/back-button';
 import { PhraseListCategory } from '@/widgets/phrase-list';
-import { ArrowLeftIcon } from 'lucide-react';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 type Props = {
 	params: Promise<{
@@ -39,15 +38,7 @@ export default async function PhrasesPage({ params }: Props) {
 			<main className="flex-1 px-4 py-4 pb-24">
 				<div className="mb-4 flex items-center justify-between">
 					<CategoryTitle categoryId={categoryId} />
-					<Link
-						href="/"
-						className="text-black dark:text-white hover:opacity-90 transition-opacity"
-					>
-						<button className="flex items-center gap-2 text-sm border border-border rounded-md px-4 py-2 active:bg-primary dark:active:bg-primary bg-component-light dark:bg-component-dark">
-							<ArrowLeftIcon className="size-4" />
-							<p>Назад</p>
-						</button>
-					</Link>
+					<BackButton />
 				</div>
 				<PhraseListCategory categoryId={categoryId} />
 			</main>

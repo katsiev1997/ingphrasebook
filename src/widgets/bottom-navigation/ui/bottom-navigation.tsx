@@ -29,7 +29,7 @@ const navItems: NavItem[] = [
 	{
 		href: '/',
 		icon: BookOpen,
-		label: 'Phrasebook',
+		label: 'Phrases',
 	},
 	{
 		href: '/about',

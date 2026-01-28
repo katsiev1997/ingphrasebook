@@ -1,10 +1,9 @@
 'use client';
 
-import { FavoritePhraseList } from '@/widgets/phrase-list';
-import { ArrowLeftIcon } from 'lucide-react';
-import Link from 'next/link';
 import { useGetFavoritePhrases } from '@/entities/phrase/model/queries/use-get-favorite-phrases';
+import { BackButton } from '@/shared/components/back-button';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { FavoritePhraseList } from '@/widgets/phrase-list';
 
 export default function FavoritesPage() {
 	const { user, isAuthenticated } = useAuth();
@@ -27,15 +26,7 @@ export default function FavoritesPage() {
 							</p>
 						)}
 					</div>
-					<Link
-						href="/"
-						className="text-black dark:text-white hover:opacity-90 transition-opacity"
-					>
-						<div className="flex items-center gap-2 text-sm border border-border rounded-md px-4 py-2 bg-component-light dark:bg-component-dark">
-							<ArrowLeftIcon className="size-4" />
-							<p>Назад</p>
-						</div>
-					</Link>
+					<BackButton />
 				</div>
 				<FavoritePhraseList />
 			</main>

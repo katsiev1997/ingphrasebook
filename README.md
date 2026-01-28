@@ -1,36 +1,253 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IngPhrase
 
-## Getting Started
+Современный веб-приложение-разговорник для изучения ингушского языка. Приложение помогает изучающим язык быстро находить нужные фразы, прослушивать их произношение и систематизировать изучение по категориям.
 
-First, run the development server:
+## 🚀 Основные возможности
+
+### 📚 Категории и фразы
+
+- Организация фраз по категориям для удобной навигации
+- Просмотр фраз с переводом и транскрипцией
+- Поддержка иконок для категорий (Lucide Icons)
+- Счетчики просмотров и избранного для каждой фразы
+
+### 🔍 Поиск
+
+- Поиск фраз в реальном времени по ключевым словам
+- Поиск по переводу, транскрипции и оригинальному тексту
+- Дебаунсинг для оптимизации производительности
+
+### 🔊 Аудио произношение
+
+- Прослушивание правильного произношения фраз
+- Загрузка и удаление аудио файлов для фраз
+- Хранение аудио в облачном хранилище (Vercel Blob)
+- Сравнение произношения (API endpoint)
+
+### ⭐ Избранное
+
+- Сохранение важных фраз в избранное
+- Персональная коллекция избранных фраз для каждого пользователя
+- Быстрый доступ к сохраненным фразам
+
+### 🎮 Игровой режим (Quiz)
+
+- Интерактивная викторина для проверки знаний
+- Множественный выбор из 4 вариантов ответов
+- Статистика игр: количество правильных ответов, общая точность
+- Таблица лидеров
+- Сохранение прогресса для авторизованных пользователей
+
+### 📖 Руководство по произношению
+
+- Подробное описание произношения гласных звуков
+- Описание произношения согласных звуков
+- Информация о классах существительного в ингушском языке
+- Примеры произношения с транскрипцией
+
+### 👤 Система пользователей
+
+- Регистрация и авторизация
+- Роли пользователей: ADMIN, MODERATOR, USER
+- JWT-аутентификация
+- Персональная статистика
+
+### 🎨 Интерфейс
+
+- Адаптивный дизайн для мобильных устройств
+- Темная и светлая тема
+- Современный UI на основе shadcn/ui
+- Анимации с Framer Motion
+- Нижняя навигация для удобного доступа к разделам
+
+### 💬 Диалоги
+
+- Поддержка диалогов с сообщениями
+- Аудио для диалогов
+- Структурированное хранение оригинального и переведенного текста
+
+## 🛠 Технологический стек
+
+### Frontend
+
+- **Next.js 16** - React фреймворк с App Router
+- **React 19** - UI библиотека
+- **TypeScript** - типизированный JavaScript
+- **Tailwind CSS 4** - утилитарный CSS фреймворк
+- **shadcn/ui** - компоненты UI
+- **Framer Motion** - библиотека анимаций
+- **React Query (TanStack Query)** - управление серверным состоянием
+- **React Hook Form** - управление формами
+- **Zod** - валидация схем
+- **Lucide React** - иконки
+
+### Backend
+
+- **Next.js API Routes** - серверные API endpoints
+- **Drizzle ORM** - ORM для работы с базой данных
+- **PostgreSQL** (Neon) - реляционная база данных
+- **JWT** - аутентификация
+- **Vercel Blob** - облачное хранилище для аудио файлов
+
+### Инструменты разработки
+
+- **ESLint** - линтер кода
+- **TypeScript** - статическая типизация
+- **Drizzle Kit** - миграции и управление схемой БД
+
+## 📁 Структура проекта
+
+```
+src/
+├── app/                    # Next.js App Router страницы
+│   ├── api/               # API endpoints
+│   │   ├── auth/         # Аутентификация
+│   │   ├── categories/   # Категории
+│   │   ├── phrases/      # Фразы
+│   │   ├── game/         # Игровая статистика
+│   │   └── user/         # Пользовательские данные
+│   ├── about/            # Страница "О проекте"
+│   ├── favorites/        # Страница избранного
+│   ├── game/             # Страница игры
+│   ├── pronunciation/    # Руководство по произношению
+│   ├── settings/         # Настройки
+│   └── phrases/          # Страницы категорий фраз
+├── db/                    # База данных
+│   ├── schema.ts         # Схема БД (Drizzle)
+│   └── drizzle.ts        # Конфигурация подключения
+├── entities/              # Бизнес-сущности (FSD)
+│   ├── category/         # Категории
+│   └── phrase/           # Фразы
+├── features/              # Функциональные возможности
+│   ├── search-bar/       # Поисковая строка
+│   └── quiz-game/        # Игровой режим
+├── widgets/               # Композитные компоненты
+│   ├── bottom-navigation/ # Нижняя навигация
+│   ├── category-list/     # Список категорий
+│   └── phrase-list/       # Список фраз
+└── shared/                # Общие компоненты и утилиты
+    ├── components/        # Переиспользуемые компоненты
+    ├── hooks/            # Кастомные хуки
+    ├── lib/              # Утилиты
+    └── providers/       # React провайдеры
+```
+
+## 🗄 Схема базы данных
+
+### Основные таблицы
+
+- **users** - пользователи (username, password, role)
+- **categories** - категории фраз (name, icon)
+- **phrases** - фразы (title, translate, transcription, audioUrl, categoryId)
+- **favoritePhrases** - связь пользователей и избранных фраз (many-to-many)
+- **gameStats** - статистика игр (totalQuestions, correctAnswers, totalGames)
+- **dialogues** - диалоги (title, audioUrl)
+- **messages** - сообщения в диалогах (originalText, translatedText, dialogueId)
+
+## 🚦 Начало работы
+
+### Требования
+
+- Node.js 18+
+- npm, yarn, pnpm или bun
+- PostgreSQL база данных (рекомендуется Neon)
+
+### Установка
+
+1. Клонируйте репозиторий:
+
+```bash
+git clone <repository-url>
+cd ingphrasebook
+```
+
+2. Установите зависимости:
+
+```bash
+npm install
+# или
+yarn install
+# или
+pnpm install
+```
+
+3. Настройте переменные окружения:
+   Создайте файл `.env.local` в корне проекта:
+
+```env
+DATABASE_URL=your_postgresql_connection_string
+BLOB_READ_WRITE_TOKEN=your_vercel_blob_token
+JWT_SECRET=your_jwt_secret_key
+```
+
+4. Выполните миграции базы данных:
+
+```bash
+npm run db:migrate
+```
+
+5. (Опционально) Импортируйте начальные данные:
+
+```bash
+npm run import:data
+```
+
+6. Запустите сервер разработки:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Откройте [http://localhost:3000](http://localhost:3000) в браузере.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📜 Доступные команды
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `npm run dev` - запуск сервера разработки
+- `npm run build` - сборка production версии
+- `npm run start` - запуск production сервера
+- `npm run lint` - проверка кода линтером
+- `npm run db:generate` - генерация миграций из схемы
+- `npm run db:migrate` - применение миграций
+- `npm run db:studio` - запуск Drizzle Studio для просмотра БД
+- `npm run import:data` - импорт начальных данных
 
-## Learn More
+## 🌐 Развертывание
 
-To learn more about Next.js, take a look at the following resources:
+Приложение готово к развертыванию на [Vercel](https://vercel.com):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Подключите репозиторий к Vercel
+2. Настройте переменные окружения в панели Vercel
+3. Убедитесь, что база данных доступна из интернета
+4. Деплой произойдет автоматически при push в основную ветку
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📱 PWA поддержка
 
-## Deploy on Vercel
+Приложение поддерживает установку как Progressive Web App (PWA):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Манифест приложения
+- Service Worker для офлайн работы
+- Адаптивный дизайн для мобильных устройств
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📊 Аналитика
+
+Интегрирована Яндекс.Метрика для отслеживания использования приложения.
+
+## 👨‍💻 Автор
+
+**Микаил Кациев**
+
+- Telegram: [@mikail_katsiev](https://t.me/mikail_katsiev)
+
+## 📄 Лицензия
+
+Проект является приватным.
+
+## 🤝 Поддержка проекта
+
+Если вам нравится проект и вы хотите его поддержать:
+
+- **Т-банк:** 5536 9138 3162 9981
+
+---
+
+Создано с ❤️ для изучения ингушского языка

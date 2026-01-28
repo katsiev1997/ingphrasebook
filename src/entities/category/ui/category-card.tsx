@@ -26,7 +26,7 @@ export function CategoryCard({
 		<Link
 			href={`/phrases/${categoryId}`}
 			className={cn(
-				'flex w-full items-center gap-4 rounded-xl bg-component-light p-4 text-left shadow-sm dark:bg-component-dark',
+				'flex w-full items-center gap-4 rounded-xl bg-component-light p-4 text-left shadow-sm dark:bg-component-dark active:opacity-50',
 				'transition-colors hover:opacity-90',
 				className
 			)}
