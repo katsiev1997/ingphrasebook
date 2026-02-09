@@ -180,10 +180,6 @@ export function PhraseCard({
 				transcription: editedTranscription,
 				categoryId: newCategoryId,
 				audioUrl: audioUrl || undefined,
-				oldCategoryId:
-					categoryId !== null && categoryId !== newCategoryId
-						? categoryId
-						: undefined,
 			},
 			{
 				onSuccess: () => {

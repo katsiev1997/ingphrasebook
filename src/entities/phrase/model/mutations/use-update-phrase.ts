@@ -1,6 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { updatePhraseRequest } from '../api/update-phrase-request';
-import { useInvalidatePhrasesCache } from '@/shared/hooks/use-invalidate-phrases-cache';
 
 interface UpdatePhraseData {
 	id: number;
@@ -9,20 +8,23 @@ interface UpdatePhraseData {
 	transcription: string;
 	categoryId: number;
 	audioUrl?: string;
-	oldCategoryId?: number;
 }
 
 export const useUpdatePhrase = () => {
-	const { invalidate } = useInvalidatePhrasesCache();
+	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: (data: UpdatePhraseData) => {
-			const { oldCategoryId, ...requestData } = data;
-			return updatePhraseRequest(requestData);
+			return updatePhraseRequest(data);
 		},
-		onSuccess: (data, variables) => {
-			// Инвалидируем кеш фраз для новой и старой категории (если категория изменилась)
-			invalidate(variables.categoryId, variables.oldCategoryId);
+		onSuccess: () => {
+			// Инвалидируем все фразы и категории
+			queryClient.invalidateQueries({
+				queryKey: ['phrases'],
+			});
+			queryClient.invalidateQueries({
+				queryKey: ['categories'],
+			});
 		},
 	});
 };

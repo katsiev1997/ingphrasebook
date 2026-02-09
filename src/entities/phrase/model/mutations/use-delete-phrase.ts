@@ -1,6 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { deletePhraseRequest } from '../api/delete-phrase-request';
-import { useInvalidatePhrasesCache } from '@/shared/hooks/use-invalidate-phrases-cache';
 
 interface DeletePhraseParams {
 	phraseId: number;
@@ -8,14 +7,25 @@ interface DeletePhraseParams {
 }
 
 export const useDeletePhrase = () => {
-	const { invalidate } = useInvalidatePhrasesCache();
+	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: ({ phraseId }: DeletePhraseParams) =>
 			deletePhraseRequest(phraseId),
 		onSuccess: (_, variables) => {
 			// Инвалидируем кеш фраз для конкретной категории
-			invalidate(variables.categoryId);
+			if (variables.categoryId !== undefined) {
+				queryClient.invalidateQueries({
+					queryKey: ['phrases', String(variables.categoryId)],
+				});
+			} else {
+				queryClient.invalidateQueries({
+					queryKey: ['phrases'],
+				});
+			}
+			queryClient.invalidateQueries({
+				queryKey: ['categories'],
+			});
 		},
 	});
 };

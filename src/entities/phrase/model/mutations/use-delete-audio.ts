@@ -1,6 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/shared/api';
-import { useInvalidatePhrasesCache } from '@/shared/hooks/use-invalidate-phrases-cache';
 
 interface DeleteAudioResponse {
 	success: boolean;
@@ -9,7 +8,7 @@ interface DeleteAudioResponse {
 }
 
 export const useDeleteAudio = () => {
-	const { invalidate } = useInvalidatePhrasesCache();
+	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: async (phraseId: number): Promise<DeleteAudioResponse> => {
@@ -20,7 +19,18 @@ export const useDeleteAudio = () => {
 		},
 		onSuccess: (data) => {
 			// Инвалидируем кеш фраз для конкретной категории
-			invalidate(data.categoryId);
+			if (data.categoryId !== undefined) {
+				queryClient.invalidateQueries({
+					queryKey: ['phrases', String(data.categoryId)],
+				});
+			} else {
+				queryClient.invalidateQueries({
+					queryKey: ['phrases'],
+				});
+			}
+			queryClient.invalidateQueries({
+				queryKey: ['categories'],
+			});
 		},
 	});
 };

@@ -1,6 +1,5 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/shared/api';
-import { useInvalidatePhrasesCache } from '@/shared/hooks/use-invalidate-phrases-cache';
 
 interface UploadAudioData {
 	phraseId: number;
@@ -14,7 +13,7 @@ interface UploadAudioResponse {
 }
 
 export const useUploadAudio = () => {
-	const { invalidate } = useInvalidatePhrasesCache();
+	const queryClient = useQueryClient();
 
 	return useMutation({
 		mutationFn: async (data: UploadAudioData): Promise<UploadAudioResponse> => {
@@ -31,7 +30,18 @@ export const useUploadAudio = () => {
 		},
 		onSuccess: (data) => {
 			// Инвалидируем кеш фраз для конкретной категории
-			invalidate(data.categoryId);
+			if (data.categoryId !== undefined) {
+				queryClient.invalidateQueries({
+					queryKey: ['phrases', String(data.categoryId)],
+				});
+			} else {
+				queryClient.invalidateQueries({
+					queryKey: ['phrases'],
+				});
+			}
+			queryClient.invalidateQueries({
+				queryKey: ['categories'],
+			});
 		},
 	});
 };
