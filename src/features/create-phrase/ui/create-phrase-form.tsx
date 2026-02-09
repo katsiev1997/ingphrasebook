@@ -1,40 +1,25 @@
 'use client';
 
-import React, { useMemo } from 'react';
-import { useGetCategories } from '@/entities/category/model/queries/use-get-categories';
 import { useCreatePhrase } from '@/entities/phrase/model/mutations/use-create-phrase';
-import { Input } from '@/shared/components/ui/input';
-import {
-	Select,
-	SelectTrigger,
-	SelectContent,
-	SelectItem,
-	SelectValue,
-} from '@/shared/components/ui/select';
 import {
 	Form,
+	FormControl,
 	FormField,
 	FormItem,
 	FormLabel,
-	FormControl,
 	FormMessage,
 } from '@/shared/components/ui/form';
+import { Input } from '@/shared/components/ui/input';
+import { useMemo } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 
 type CreatePhraseFormValues = {
 	title: string;
 	translate: string;
 	transcription: string;
-	categoryId: string; // store as string for Select
 };
 
-export const CreatePhraseForm = ({
-	defaultCategoryId,
-}: {
-	defaultCategoryId: string;
-}) => {
-	const { data: categories, isPending: isCategoriesLoading } =
-		useGetCategories();
+export const CreatePhraseForm = ({ categoryId }: { categoryId: string }) => {
 	const createPhraseMutation = useCreatePhrase();
 
 	const form = useForm<CreatePhraseFormValues>({
@@ -42,84 +27,40 @@ export const CreatePhraseForm = ({
 			title: '',
 			translate: '',
 			transcription: '',
-			categoryId: '',
 		},
 		mode: 'onChange',
 	});
 
-	const watchedCategoryId = useWatch({
-		control: form.control,
-		name: 'categoryId',
-	});
-
-	// Derive selected category without effects
-	const computedCategoryId = useMemo(() => {
-		if (watchedCategoryId) return watchedCategoryId;
-		if (defaultCategoryId) return defaultCategoryId;
-		if (categories && categories.length > 0) return String(categories[0].id);
-		return '';
-	}, [watchedCategoryId, defaultCategoryId, categories]);
-
 	const isSubmitting = createPhraseMutation.isPending;
 
+	const watchedValues = useWatch({
+		control: form.control,
+	});
+
 	const canSubmit = useMemo(() => {
-		const { title, translate, transcription } = form.getValues();
+		const { title, translate, transcription } = watchedValues;
 		return (
-			Boolean(computedCategoryId) &&
-			title.trim() !== '' &&
-			translate.trim() !== '' &&
-			transcription.trim() !== '' &&
+			Boolean(categoryId) &&
+			title?.trim() !== '' &&
+			translate?.trim() !== '' &&
+			transcription?.trim() !== '' &&
 			!isSubmitting
 		);
-	}, [computedCategoryId, form, isSubmitting]);
+	}, [categoryId, watchedValues, isSubmitting]);
 
 	const onSubmit = async (values: CreatePhraseFormValues) => {
-		const effectiveCategoryId = values.categoryId || computedCategoryId;
 		await createPhraseMutation.mutateAsync({
 			title: values.title.trim(),
 			translate: values.translate.trim(),
 			transcription: values.transcription.trim(),
-			categoryId: Number(effectiveCategoryId),
+			categoryId: Number(categoryId),
 		});
-		form.reset({ title: '', translate: '', transcription: '', categoryId: '' });
+		form.reset({ title: '', translate: '', transcription: '' });
 	};
 
 	return (
 		<Form {...form}>
 			<form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
-				<FormField
-					name="categoryId"
-					control={form.control}
-					render={({ field }) => (
-						<FormItem>
-							<FormLabel>Категория</FormLabel>
-							<FormControl>
-								<Select
-									value={computedCategoryId}
-									onValueChange={(val) => field.onChange(val)}
-									disabled={isCategoriesLoading}
-								>
-									<SelectTrigger className="w-full">
-										<SelectValue
-											placeholder={
-												isCategoriesLoading ? 'Загрузка…' : 'Выберите категорию'
-											}
-										/>
-									</SelectTrigger>
-									<SelectContent>
-										{categories?.map((c) => (
-											<SelectItem key={c.id} value={String(c.id)}>
-												{c.name}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-							</FormControl>
-							<FormMessage />
-						</FormItem>
-					)}
-				/>
-
 				<FormField
 					name="title"
 					control={form.control}

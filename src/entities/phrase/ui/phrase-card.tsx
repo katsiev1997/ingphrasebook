@@ -1,43 +1,43 @@
 'use client';
 
-import { cn } from '@/shared/lib/utils';
-import { AudioControls } from './audio-controls';
-import {
-	StarIcon,
-	SettingsIcon,
-	CheckIcon,
-	TrashIcon,
-	Loader2Icon,
-	EyeIcon,
-	Share2Icon,
-	LinkIcon,
-	CopyIcon,
-} from 'lucide-react';
-import { useToggleFavorite } from '../model/mutations/use-toggle-favorite';
-import { useAuth } from '@/shared/hooks/use-auth';
-import { useGetFavoritePhrases } from '../model/queries/use-get-favorite-phrases';
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { Input } from '@/shared/components/ui/input';
-import { Button } from '@/shared/components/ui/button';
-import {
-	Select,
-	SelectTrigger,
-	SelectContent,
-	SelectItem,
-	SelectValue,
-} from '@/shared/components/ui/select';
-import { useUpdatePhrase } from '../model/mutations/use-update-phrase';
-import { useDeletePhrase } from '../model/mutations/use-delete-phrase';
 import { useGetCategories } from '@/entities/category/model/queries/use-get-categories';
-import { incrementPhraseViewsRequest } from '../model/api/increment-phrase-views-request';
-import { useInView } from 'react-intersection-observer';
+import { Button } from '@/shared/components/ui/button';
+import { Input } from '@/shared/components/ui/input';
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from '@/shared/components/ui/popover';
-import { toast } from 'sonner';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/shared/components/ui/select';
+import { useAuth } from '@/shared/hooks/use-auth';
+import { cn } from '@/shared/lib/utils';
+import {
+	CheckIcon,
+	CopyIcon,
+	EyeIcon,
+	LinkIcon,
+	Loader2Icon,
+	SettingsIcon,
+	Share2Icon,
+	StarIcon,
+	TrashIcon,
+} from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { toast } from 'sonner';
+import { incrementPhraseViewsRequest } from '../model/api/increment-phrase-views-request';
+import { useDeletePhrase } from '../model/mutations/use-delete-phrase';
+import { useToggleFavorite } from '../model/mutations/use-toggle-favorite';
+import { useUpdatePhrase } from '../model/mutations/use-update-phrase';
+import { useGetFavoritePhrases } from '../model/queries/use-get-favorite-phrases';
+import { AudioControls } from './audio-controls';
 
 type PhraseCardProps = {
 	phrase: string;
@@ -244,7 +244,7 @@ export function PhraseCard({
 				className
 			)}
 		>
-			<div className="flex items-center gap-2">
+			<div className="flex gap-2">
 				<div
 					className={cn('flex flex-1 flex-col justify-center', {
 						'gap-2': isEditing,
@@ -302,7 +302,7 @@ export function PhraseCard({
 						</>
 					)}
 				</div>
-				<div className="flex flex-col gap-2">
+				<div className="flex flex-col gap-3">
 					<button onClick={onToggleFavorite}>
 						<StarIcon
 							className={cn('size-6 text-foreground', {

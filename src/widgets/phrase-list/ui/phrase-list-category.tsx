@@ -18,7 +18,7 @@ export const PhraseListCategory = ({ categoryId }: Props) => {
 			isPending={isPending}
 			isError={isError}
 			createPhrase={
-				isModeratorOrAdmin && <CreatePhrase defaultCategoryId={categoryId} />
+				isModeratorOrAdmin && <CreatePhrase categoryId={categoryId} />
 			}
 		/>
 	);

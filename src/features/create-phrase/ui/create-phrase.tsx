@@ -7,12 +7,10 @@ import {
 import { CreatePhraseForm } from './create-phrase-form';
 
 interface CreatePhraseProps {
-	defaultCategoryId: string;
+	categoryId: string;
 }
 
-export const CreatePhrase: React.FC<CreatePhraseProps> = ({
-	defaultCategoryId,
-}) => {
+export const CreatePhrase: React.FC<CreatePhraseProps> = ({ categoryId }) => {
 	return (
 		<Accordion
 			type="single"
@@ -26,7 +24,7 @@ export const CreatePhrase: React.FC<CreatePhraseProps> = ({
 					</h3>
 				</AccordionTrigger>
 				<AccordionContent>
-					<CreatePhraseForm defaultCategoryId={defaultCategoryId} />
+					<CreatePhraseForm categoryId={categoryId} />
 				</AccordionContent>
 			</AccordionItem>
 		</Accordion>
