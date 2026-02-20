@@ -16,7 +16,7 @@ export default function SettingsPage() {
 					Settings
 				</h1>
 				{user && <UserStats />}
-				{user?.role === 'ADMIN' && <AdminVisitorsStats />}
+				<AdminVisitorsStats />
 				<ThemeToggle />
 				<AuthBlock />
 			</main>

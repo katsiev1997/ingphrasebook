@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { checkAdminAuth, createAuthErrorResponse } from '@/shared/lib/auth-utils';
 
 const YANDEX_METRIKA_API_URL = 'https://api-metrika.yandex.net/stat/v1/data';
 const FALLBACK_COUNTER_ID = '105812506';
@@ -28,15 +27,9 @@ const toNumber = (value: unknown): number => {
 	return Number.isFinite(parsed) ? parsed : 0;
 };
 
-// GET /api/admin/visitors - статистика посетителей из Яндекс.Метрики (только ADMIN)
+// GET /api/admin/visitors - публичная статистика посетителей из Яндекс.Метрики
 export async function GET() {
 	try {
-		const authResult = await checkAdminAuth();
-
-		if (!authResult.success || !authResult.user) {
-			return createAuthErrorResponse(authResult);
-		}
-
 		const token = process.env.YANDEX_METRIKA_API_TOKEN;
 		const counterId =
 			process.env.YANDEX_METRIKA_COUNTER_ID ||
