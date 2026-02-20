@@ -4,6 +4,7 @@ import { AuthBlock } from '@/features/auth';
 import { ThemeToggle } from '@/shared/components/theme-toggle';
 import { UserStats } from '@/features/user-stats/ui/user-stats';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { AdminVisitorsStats } from '@/features/admin-metrika/ui/admin-visitors-stats';
 
 export default function SettingsPage() {
 	const { user } = useAuth();
@@ -15,6 +16,7 @@ export default function SettingsPage() {
 					Settings
 				</h1>
 				{user && <UserStats />}
+				{user?.role === 'ADMIN' && <AdminVisitorsStats />}
 				<ThemeToggle />
 				<AuthBlock />
 			</main>
