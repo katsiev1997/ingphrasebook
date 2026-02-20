@@ -4,6 +4,7 @@ import { AuthBlock } from '@/features/auth';
 import { ThemeToggle } from '@/shared/components/theme-toggle';
 import { UserStats } from '@/features/user-stats/ui/user-stats';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { VisitorsStats } from '@/features/visitors-stats/ui/visitors-stats';
 
 export default function SettingsPage() {
 	const { user } = useAuth();
@@ -17,6 +18,7 @@ export default function SettingsPage() {
 				{user && <UserStats />}
 				<ThemeToggle />
 				<AuthBlock />
+				<VisitorsStats />
 			</main>
 		</div>
 	);
