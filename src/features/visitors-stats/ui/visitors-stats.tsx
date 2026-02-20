@@ -41,7 +41,7 @@ interface VisitorsStatsResponse {
 }
 
 async function getVisitorsStatsRequest(): Promise<VisitorsStatsResponse> {
-	const response = await fetch('/api/admin/visitors', { cache: 'no-store' });
+	const response = await fetch('/api/visitors', { cache: 'no-store' });
 
 	if (!response.ok) {
 		let message = 'Не удалось загрузить статистику посетителей.';
@@ -78,9 +78,9 @@ const formatNumber = (value: number): string => {
 	return value.toLocaleString('ru-RU');
 };
 
-export function AdminVisitorsStats() {
+export function VisitorsStats() {
 	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ['admin-visitors-stats'],
+		queryKey: ['visitors-stats'],
 		queryFn: getVisitorsStatsRequest,
 		retry: false,
 		refetchOnWindowFocus: false,

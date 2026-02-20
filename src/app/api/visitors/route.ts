@@ -27,7 +27,7 @@ const toNumber = (value: unknown): number => {
 	return Number.isFinite(parsed) ? parsed : 0;
 };
 
-// GET /api/admin/visitors - публичная статистика посетителей из Яндекс.Метрики
+// GET /api/visitors - публичная статистика посетителей из Яндекс.Метрики
 export async function GET() {
 	try {
 		const token = process.env.YANDEX_METRIKA_API_TOKEN;
