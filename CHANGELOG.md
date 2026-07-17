@@ -8,10 +8,15 @@ Source of truth for the in-app page: `src/shared/config/changelog.ts`.
 
 ### Changed
 
-- Bottom tab «Ещё» → «Профиль»
-- Phrase search moved to `/search`; floating search button on home
+- Bottom tab «Ещё» → «Профиль»; profile page split into sections (account, settings, about)
+- «About» and «Updates» as nav rows in profile, not buried at the bottom
+- Visitor analytics visible only to moderators and admins
+- Phrase search moved to `/search`; floating animated search button on home
+- Search field autofocus; Russian placeholder «Поиск по всем фразам»
+- Pronunciation removed from profile; stays in Study hub
 - Pronunciation guide grouped into accordions (vowels, consonants, noun classes)
 - User activity stats moved into learning statistics
+- «Changelog» page renamed to «Обновления» (Updates)
 
 ### Added
 

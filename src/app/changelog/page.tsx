@@ -4,8 +4,8 @@ import { BackButton } from '@/shared/components/back-button';
 import { CHANGELOG_ENTRIES } from '@/shared/config/changelog';
 
 export const metadata: Metadata = {
-	title: 'Changelog | IngPhrase',
-	description: 'История изменений IngPhrase',
+	title: 'Обновления | IngPhrase',
+	description: 'История обновлений IngPhrase',
 };
 
 export default function ChangelogPage() {
@@ -14,13 +14,13 @@ export default function ChangelogPage() {
 			<main className="flex-1 px-4 py-4 pb-24 space-y-6">
 				<div className="flex items-center justify-between gap-3">
 					<h1 className="text-3xl font-bold text-black dark:text-white">
-						Changelog
+						Обновления
 					</h1>
 					<BackButton fallbackHref="/settings" />
 				</div>
 
 				<p className="text-sm text-muted-foreground leading-relaxed">
-					Что нового в IngPhrase. Актуальная версия приложения:{' '}
+					История изменений IngPhrase. Актуальная версия:{' '}
 					<span className="font-medium text-foreground">
 						{CHANGELOG_ENTRIES[0]?.version ?? '—'}
 					</span>

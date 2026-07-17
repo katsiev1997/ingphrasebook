@@ -37,7 +37,7 @@ export default function AboutPage() {
 
 				<p className="text-sm text-muted-foreground">
 					<Link href="/changelog" className="underline text-primary">
-						Что нового — Changelog
+						Обновления
 					</Link>
 				</p>
 
