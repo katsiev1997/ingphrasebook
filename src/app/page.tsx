@@ -2,7 +2,6 @@
 
 import { useGetCategories } from '@/entities/category/model/queries/use-get-categories';
 import { SearchFab } from '@/features/search-bar';
-import { ReviewCta } from '@/features/flashcards';
 import { HomeDialoguesTeaser } from '@/features/dialogues/ui/home-dialogues-teaser';
 import { CategoryList } from '@/widgets/category-list';
 
@@ -19,7 +18,6 @@ export default function Home() {
 				<h1 className="mb-4 text-3xl font-bold text-black dark:text-white">
 					Ing Phrase
 				</h1>
-				<ReviewCta />
 				<HomeDialoguesTeaser />
 				<SearchFab />
 				<CategoryList

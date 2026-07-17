@@ -49,4 +49,4 @@ Capture before / after Phase 1:
 
 ## Success for Phase 1 MVP
 
-Logged-in user completes a flashcard session; due cards reappear on schedule; home shows “Review (N)”; guests can try a demo without persistence.
+Logged-in user completes a flashcard session; due cards reappear on schedule; Study hub shows progress; guests can try a demo without persistence.
