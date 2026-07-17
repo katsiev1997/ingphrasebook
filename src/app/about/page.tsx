@@ -192,10 +192,10 @@ export default function AboutPage() {
 
 						<div className="bg-component-light dark:bg-component-dark rounded-lg p-4 space-y-2">
 							<h3 className="font-medium text-black dark:text-white">
-								5. Настройки и авторизация
+								5. Профиль и авторизация
 							</h3>
 							<p className="text-sm text-gray-600 dark:text-gray-400">
-								Перейдите в раздел &quot;Настройки&quot; для входа в аккаунт,
+								Перейдите в раздел &quot;Профиль&quot; для входа в аккаунт,
 								переключения темы и управления другими параметрами приложения.
 							</p>
 						</div>

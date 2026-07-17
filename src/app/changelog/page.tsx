@@ -62,7 +62,7 @@ export default function ChangelogPage() {
 					</Link>
 					{' · '}
 					<Link href="/settings" className="underline">
-						Настройки
+						Профиль
 					</Link>
 				</p>
 			</main>

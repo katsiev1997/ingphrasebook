@@ -11,6 +11,7 @@ import {
 } from '@/shared/components/ui/card';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useGetLearningSummary } from '@/features/flashcards';
+import { UserStats } from '@/features/user-stats/ui/user-stats';
 import { Flame, Layers, Target } from 'lucide-react';
 
 export default function StatisticsPage() {
@@ -22,7 +23,7 @@ export default function StatisticsPage() {
 			<main className="flex-1 px-4 py-4 pb-24 space-y-4">
 				<div className="flex items-center justify-between">
 					<h1 className="text-2xl font-bold text-black dark:text-white">
-						Статистика
+						Статистика обучения
 					</h1>
 					<BackButton fallbackHref="/study" />
 				</div>
@@ -121,6 +122,8 @@ export default function StatisticsPage() {
 						)}
 					</>
 				)}
+
+				{isAuthenticated && !loading && <UserStats />}
 			</main>
 		</div>
 	);

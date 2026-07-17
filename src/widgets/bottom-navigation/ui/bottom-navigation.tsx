@@ -6,8 +6,8 @@ import {
 	BookOpen,
 	GamepadDirectionalIcon,
 	Layers,
-	Settings,
 	Star,
+	User,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -50,8 +50,8 @@ const navItems: NavItem[] = [
 	},
 	{
 		href: '/settings',
-		icon: Settings,
-		label: 'Ещё',
+		icon: User,
+		label: 'Профиль',
 	},
 ];
 

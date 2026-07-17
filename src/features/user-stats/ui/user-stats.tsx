@@ -34,7 +34,7 @@ export function UserStats() {
 		return (
 			<Card>
 				<CardHeader>
-					<CardTitle>Статистика</CardTitle>
+					<CardTitle>Активность</CardTitle>
 				</CardHeader>
 				<CardContent>
 					<p className="text-sm text-muted-foreground">Загрузка...</p>
@@ -58,7 +58,7 @@ export function UserStats() {
 	return (
 		<Card>
 			<CardHeader>
-				<CardTitle>Статистика</CardTitle>
+				<CardTitle>Активность</CardTitle>
 			</CardHeader>
 			<CardContent className="space-y-4">
 				<div className="flex items-center gap-3">
