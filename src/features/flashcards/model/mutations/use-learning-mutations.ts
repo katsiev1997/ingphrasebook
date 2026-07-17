@@ -11,7 +11,8 @@ export const useSubmitReview = () => {
 		mutationKey: ['learning-review'],
 		mutationFn: submitReviewRequest,
 		onSuccess: () => {
-			queryClient.invalidateQueries({ queryKey: ['learning-due'] });
+			// Do not invalidate learning-due mid-session — refetch remounts the deck
+			// and resets the card index (1→2→1 flicker).
 			queryClient.invalidateQueries({ queryKey: ['learning-summary'] });
 			queryClient.invalidateQueries({ queryKey: ['user-stats'] });
 		},

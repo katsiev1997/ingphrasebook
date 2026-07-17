@@ -1,10 +1,11 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Check, RotateCcw, Volume2, X } from 'lucide-react';
+import { Check, Loader2, RotateCcw, Volume2, X } from 'lucide-react';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/shared/components/ui/button';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { useGetGamePhrases } from '@/features/quiz-game/model/queries/use-get-game-phrases';
@@ -12,6 +13,46 @@ import { useGetDueCards } from '../model/queries/use-learning-queries';
 import { useSubmitReview } from '../model/mutations/use-learning-mutations';
 import type { DueCard } from '../model/api/learning-requests';
 import type { Phrase } from '@/db/schema';
+
+function usePhraseAudio(audioUrl: string | null | undefined) {
+	const audioRef = useRef<HTMLAudioElement | null>(null);
+	const [ready, setReady] = useState(false);
+
+	useEffect(() => {
+		if (!audioUrl) {
+			audioRef.current = null;
+			return;
+		}
+
+		const audio = new Audio();
+		audio.preload = 'auto';
+		audioRef.current = audio;
+
+		const markReady = () => setReady(true);
+		audio.addEventListener('canplaythrough', markReady);
+		audio.addEventListener('loadeddata', markReady);
+		audio.src = audioUrl;
+		audio.load();
+
+		return () => {
+			audio.pause();
+			audio.removeEventListener('canplaythrough', markReady);
+			audio.removeEventListener('loadeddata', markReady);
+			audioRef.current = null;
+		};
+	}, [audioUrl]);
+
+	const play = useCallback(() => {
+		const audio = audioRef.current;
+		if (!audio || !ready) {
+			return;
+		}
+		audio.currentTime = 0;
+		void audio.play();
+	}, [ready]);
+
+	return { ready, play, hasAudio: Boolean(audioUrl) };
+}
 
 function FlashcardSession({
 	card,
@@ -21,7 +62,6 @@ function FlashcardSession({
 	onUnknown,
 	progressLabel,
 	demo,
-	busy,
 }: {
 	card: Phrase;
 	flipped: boolean;
@@ -30,14 +70,8 @@ function FlashcardSession({
 	onUnknown: () => void;
 	progressLabel: string;
 	demo?: boolean;
-	busy?: boolean;
 }) {
-	const playAudio = () => {
-		if (!card.audioUrl) {
-			return;
-		}
-		void new Audio(card.audioUrl).play();
-	};
+	const { ready, play, hasAudio } = usePhraseAudio(card.audioUrl);
 
 	return (
 		<div className="space-y-6">
@@ -57,13 +91,14 @@ function FlashcardSession({
 					animate={{ rotateY: 0, opacity: 1 }}
 					transition={{ duration: 0.2 }}
 				>
+					{/* Front: Russian prompt; back: Ingush + transcription */}
 					<p className="text-xs uppercase tracking-wide text-muted-foreground mb-3">
-						{flipped ? 'Русский' : 'Ингушский'}
+						{flipped ? 'Ингушский' : 'Русский'}
 					</p>
 					<p className="text-2xl font-semibold text-foreground leading-snug">
-						{flipped ? card.translate : card.title}
+						{flipped ? card.title : card.translate}
 					</p>
-					{!flipped && (
+					{flipped && (
 						<p className="mt-3 text-muted-foreground">{card.transcription}</p>
 					)}
 					<p className="mt-8 text-sm text-muted-foreground">
@@ -72,15 +107,20 @@ function FlashcardSession({
 				</motion.div>
 			</button>
 
-			{card.audioUrl && (
+			{hasAudio && (
 				<Button
 					type="button"
 					variant="outline"
-					className="w-full"
-					onClick={playAudio}
+					className="w-full active:scale-[0.98] active:bg-accent dark:active:bg-accent"
+					disabled={!ready}
+					onClick={play}
 				>
-					<Volume2 className="mr-2 size-4" />
-					Слушать
+					{ready ? (
+						<Volume2 className="mr-2 size-4" />
+					) : (
+						<Loader2 className="mr-2 size-4 animate-spin" />
+					)}
+					{ready ? 'Слушать' : 'Загрузка аудио...'}
 				</Button>
 			)}
 
@@ -89,9 +129,8 @@ function FlashcardSession({
 					type="button"
 					variant="outline"
 					size="lg"
-					disabled={busy}
 					onClick={onUnknown}
-					className="h-14"
+					className="h-14 active:scale-[0.98] active:bg-accent dark:active:bg-accent"
 				>
 					<X className="mr-2 size-5" />
 					Не знаю
@@ -99,9 +138,8 @@ function FlashcardSession({
 				<Button
 					type="button"
 					size="lg"
-					disabled={busy}
 					onClick={onKnown}
-					className="h-14"
+					className="h-14 active:scale-[0.98] active:bg-primary/80"
 				>
 					<Check className="mr-2 size-5" />
 					Знаю
@@ -218,37 +256,61 @@ function DemoFlashcards({ phrases }: { phrases: Phrase[] }) {
 }
 
 function AuthenticatedFlashcardDeck({
-	queue,
+	initialQueue,
 	hardOnly,
 }: {
-	queue: DueCard[];
+	initialQueue: DueCard[];
 	hardOnly: boolean;
 }) {
-	const { mutateAsync: submitReview, isPending: reviewing } = useSubmitReview();
+	const queryClient = useQueryClient();
+	const { mutate: submitReview } = useSubmitReview();
+	/** Snapshot for the whole session — do not replace when due-query refetches. */
+	const [queue] = useState(initialQueue);
 	const [index, setIndex] = useState(0);
 	const [flipped, setFlipped] = useState(false);
 	const [knownCount, setKnownCount] = useState(0);
 	const [finished, setFinished] = useState(false);
+	/** Prevents double-tap reviewing the same card twice before React re-renders. */
+	const lastAnsweredIdRef = useRef<number | null>(null);
 
 	const current = queue[index]?.phrase;
 
+	useEffect(() => {
+		if (!finished) {
+			return;
+		}
+		void queryClient.invalidateQueries({ queryKey: ['learning-due'] });
+		void queryClient.invalidateQueries({ queryKey: ['learning-summary'] });
+	}, [finished, queryClient]);
+
 	const handleAnswer = useCallback(
-		async (known: boolean) => {
-			if (!current) {
+		(known: boolean) => {
+			if (!current || finished) {
 				return;
 			}
-			await submitReview({ phraseId: current.id, known });
+			if (lastAnsweredIdRef.current === current.id) {
+				return;
+			}
+			lastAnsweredIdRef.current = current.id;
+
+			const phraseId = current.id;
+			const nextIndex = index + 1;
+			const isLast = nextIndex >= queue.length;
+
+			// Optimistic UI: advance immediately, persist in background
 			if (known) {
 				setKnownCount((c) => c + 1);
 			}
 			setFlipped(false);
-			if (index + 1 >= queue.length) {
+			if (isLast) {
 				setFinished(true);
 			} else {
-				setIndex((i) => i + 1);
+				setIndex(nextIndex);
 			}
+
+			submitReview({ phraseId, known });
 		},
-		[current, index, queue.length, submitReview]
+		[current, finished, index, queue.length, submitReview]
 	);
 
 	if (!queue.length || finished || !current) {
@@ -264,13 +326,13 @@ function AuthenticatedFlashcardDeck({
 
 	return (
 		<FlashcardSession
+			key={current.id}
 			card={current}
 			flipped={flipped}
 			onFlip={() => setFlipped((f) => !f)}
-			onKnown={() => void handleAnswer(true)}
-			onUnknown={() => void handleAnswer(false)}
+			onKnown={() => handleAnswer(true)}
+			onUnknown={() => handleAnswer(false)}
 			progressLabel={`${index + 1} / ${queue.length}`}
-			busy={reviewing}
 		/>
 	);
 }
@@ -283,21 +345,21 @@ export function FlashcardsView() {
 	const categoryIdParam = searchParams.get('categoryId');
 	const categoryId = categoryIdParam ? Number(categoryIdParam) : undefined;
 
-	const { data: dueCards, isPending, isError, refetch } = useGetDueCards(
-		{
+	const dueParams = useMemo(
+		() => ({
 			favoritesOnly,
 			hardOnly,
 			categoryId: Number.isFinite(categoryId) ? categoryId : undefined,
 			limit: 20,
-		},
+		}),
+		[favoritesOnly, hardOnly, categoryId]
+	);
+
+	const { data: dueCards, isPending, isError, refetch } = useGetDueCards(
+		dueParams,
 		isAuthenticated
 	);
 	const { data: demoPhrases } = useGetGamePhrases();
-
-	const deckKey = useMemo(
-		() => (dueCards ?? []).map((c) => c.phrase.id).join('-'),
-		[dueCards]
-	);
 
 	if (authLoading) {
 		return <p className="text-muted-foreground mt-8">Загрузка...</p>;
@@ -333,8 +395,8 @@ export function FlashcardsView() {
 
 	return (
 		<AuthenticatedFlashcardDeck
-			key={deckKey || 'empty'}
-			queue={dueCards ?? []}
+			key={`deck-${favoritesOnly}-${hardOnly}-${categoryId ?? 'all'}`}
+			initialQueue={dueCards ?? []}
 			hardOnly={hardOnly}
 		/>
 	);
