@@ -71,8 +71,8 @@ export default function AboutPage() {
 									Поиск фраз
 								</h3>
 								<p className="text-sm text-gray-600 dark:text-gray-400">
-									Используйте поиск на главной странице для быстрого нахождения нужных
-									фраз по ключевым словам.
+									Нажмите кнопку поиска на главной странице, чтобы быстро найти нужные
+									фразы по ключевым словам.
 								</p>
 							</div>
 						</div>
@@ -164,8 +164,8 @@ export default function AboutPage() {
 						<div className="bg-component-light dark:bg-component-dark rounded-lg p-4 space-y-2">
 							<h3 className="font-medium text-black dark:text-white">2. Поиск фраз</h3>
 							<p className="text-sm text-gray-600 dark:text-gray-400">
-								Введите ключевое слово в строку поиска на главной странице. Результаты
-								появятся в реальном времени.
+								Нажмите кнопку поиска на главной странице и введите ключевое слово.
+								Результаты появятся в реальном времени.
 							</p>
 						</div>
 

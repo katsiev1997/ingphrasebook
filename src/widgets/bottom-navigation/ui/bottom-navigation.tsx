@@ -56,6 +56,13 @@ const navItems: NavItem[] = [
 ];
 
 function pathMatches(pathname: string, item: NavItem) {
+	if (item.href === '/') {
+		return (
+			pathname === '/' ||
+			pathname.startsWith('/search') ||
+			pathname.startsWith('/phrases')
+		);
+	}
 	if (item.matchPrefix) {
 		return (
 			pathname === item.href ||

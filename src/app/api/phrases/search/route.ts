@@ -1,5 +1,5 @@
 import { db } from '@/db/drizzle';
-import { phrases, categories, favoritePhrases } from '../../../../db/schema';
+import { phrases, categories } from '../../../../db/schema';
 import { ilike, or, eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -46,23 +46,12 @@ export async function GET(req: NextRequest) {
 				)
 			);
 
-		// Получаем информацию о том, кто добавил фразы в избранное
-		const phrasesWithFavorites = await Promise.all(
-			phrasesList.map(async (phrase) => {
-				const favorites = await db
-					.select()
-					.from(favoritePhrases)
-					.where(eq(favoritePhrases.phraseId, phrase.id));
-
-				return {
-					...phrase,
-					favoritedBy: favorites,
-				};
-			})
-		);
-
-		return NextResponse.json(phrasesWithFavorites);
+		return NextResponse.json(phrasesList);
 	} catch (error) {
-		return NextResponse.json({ error }, { status: 500 });
+		console.error('Search phrases failed:', error);
+		return NextResponse.json(
+			{ error: 'Failed to search phrases' },
+			{ status: 500 }
+		);
 	}
 }
