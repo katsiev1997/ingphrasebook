@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useGetCategories } from '@/entities/category/model/queries/use-get-categories';
 import { useSearchPhrases } from '@/entities/phrase/model/queries/use-search-phrases';
 import { SearchBar } from '@/features/search-bar';
+import { ReviewCta } from '@/features/flashcards';
 import { CategoryList } from '@/widgets/category-list';
 import { PhraseList } from '@/entities/phrase';
 
@@ -28,6 +29,7 @@ export default function Home() {
 				<h1 className="mb-4 text-3xl font-bold text-black dark:text-white">
 					Ing Phrase
 				</h1>
+				{!isSearching && <ReviewCta />}
 				<SearchBar onSearchChange={setSearchQuery} />
 				{isSearching ? (
 					<PhraseList

@@ -1,9 +1,9 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
 import { db } from '@/db/drizzle';
 import { gameStats } from '@/db/schema';
 import { checkAuth, createAuthErrorResponse } from '@/shared/lib/auth-utils';
+import { incrementUserActivity } from '@/shared/lib/user-activity';
 import { eq } from 'drizzle-orm';
+import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/game/stats - Получить статистику пользователя
 export async function GET(req: NextRequest) {
@@ -89,6 +89,7 @@ export async function POST(req: NextRequest) {
 				})
 				.returning();
 
+			await incrementUserActivity(userId, 'quizCount', 1);
 			return NextResponse.json(newStats);
 		}
 
@@ -104,6 +105,7 @@ export async function POST(req: NextRequest) {
 			.where(eq(gameStats.userId, userId))
 			.returning();
 
+		await incrementUserActivity(userId, 'quizCount', 1);
 		return NextResponse.json(updatedStats);
 	} catch (error) {
 		console.error('Error updating game stats:', error);

@@ -104,10 +104,58 @@ export const gameStats = pgTable('gameStats', {
 	updatedAt: timestamp('updatedAt').notNull().defaultNow(),
 });
 
+export const learningLevelEnum = pgEnum('learning_level', [
+	'new',
+	'learning',
+	'review',
+	'mastered',
+]);
+
+// Прогресс изучения фраз (SRS)
+export const phraseLearningProgress = pgTable(
+	'phraseLearningProgress',
+	{
+		userId: integer('userId')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		phraseId: integer('phraseId')
+			.notNull()
+			.references(() => phrases.id, { onDelete: 'cascade' }),
+		level: learningLevelEnum('level').notNull().default('new'),
+		/** Ease factor × 100 (default 2.5 → 250) */
+		easeFactor: integer('easeFactor').notNull().default(250),
+		intervalDays: integer('intervalDays').notNull().default(0),
+		repetitions: integer('repetitions').notNull().default(0),
+		nextReviewAt: timestamp('nextReviewAt').notNull().defaultNow(),
+		lastReviewedAt: timestamp('lastReviewedAt'),
+		successCount: integer('successCount').notNull().default(0),
+		failCount: integer('failCount').notNull().default(0),
+		createdAt: timestamp('createdAt').notNull().defaultNow(),
+		updatedAt: timestamp('updatedAt').notNull().defaultNow(),
+	},
+	(table) => [primaryKey({ columns: [table.userId, table.phraseId] })]
+);
+
+/** Daily activity log — one row per user per calendar day (YYYY-MM-DD) */
+export const userActivity = pgTable(
+	'userActivity',
+	{
+		userId: integer('userId')
+			.notNull()
+			.references(() => users.id, { onDelete: 'cascade' }),
+		date: varchar('date', { length: 10 }).notNull(),
+		reviewsCount: integer('reviewsCount').notNull().default(0),
+		quizCount: integer('quizCount').notNull().default(0),
+	},
+	(table) => [primaryKey({ columns: [table.userId, table.date] })]
+);
+
 // Определение связей
 export const usersRelations = relations(users, ({ many }) => ({
 	favoritePhrases: many(favoritePhrases),
 	gameStats: many(gameStats),
+	phraseLearningProgress: many(phraseLearningProgress),
+	userActivity: many(userActivity),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
@@ -120,6 +168,7 @@ export const phrasesRelations = relations(phrases, ({ one, many }) => ({
 		references: [categories.id],
 	}),
 	favoritedBy: many(favoritePhrases),
+	learningProgress: many(phraseLearningProgress),
 }));
 
 export const dialoguesRelations = relations(dialogues, ({ many }) => ({
@@ -154,6 +203,27 @@ export const gameStatsRelations = relations(gameStats, ({ one }) => ({
 	}),
 }));
 
+export const phraseLearningProgressRelations = relations(
+	phraseLearningProgress,
+	({ one }) => ({
+		user: one(users, {
+			fields: [phraseLearningProgress.userId],
+			references: [users.id],
+		}),
+		phrase: one(phrases, {
+			fields: [phraseLearningProgress.phraseId],
+			references: [phrases.id],
+		}),
+	})
+);
+
+export const userActivityRelations = relations(userActivity, ({ one }) => ({
+	user: one(users, {
+		fields: [userActivity.userId],
+		references: [users.id],
+	}),
+}));
+
 // Типы для TypeScript
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -169,3 +239,8 @@ export type FavoritePhrase = typeof favoritePhrases.$inferSelect;
 export type NewFavoritePhrase = typeof favoritePhrases.$inferInsert;
 export type GameStats = typeof gameStats.$inferSelect;
 export type NewGameStats = typeof gameStats.$inferInsert;
+export type PhraseLearningProgress = typeof phraseLearningProgress.$inferSelect;
+export type NewPhraseLearningProgress = typeof phraseLearningProgress.$inferInsert;
+export type UserActivity = typeof userActivity.$inferSelect;
+export type NewUserActivity = typeof userActivity.$inferInsert;
+export type LearningLevel = (typeof learningLevelEnum.enumValues)[number];

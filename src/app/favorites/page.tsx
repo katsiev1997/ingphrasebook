@@ -1,9 +1,12 @@
 'use client';
 
+import Link from 'next/link';
 import { useGetFavoritePhrases } from '@/entities/phrase/model/queries/use-get-favorite-phrases';
 import { BackButton } from '@/shared/components/back-button';
+import { Button } from '@/shared/components/ui/button';
 import { useAuth } from '@/shared/hooks/use-auth';
 import { FavoritePhraseList } from '@/widgets/phrase-list';
+import { Layers } from 'lucide-react';
 
 export default function FavoritesPage() {
 	const { user, isAuthenticated } = useAuth();
@@ -22,12 +25,24 @@ export default function FavoritesPage() {
 						{isAuthenticated && (
 							<p className="text-sm text-muted-foreground">
 								{favoriteCount}{' '}
-								{favoriteCount === 1 ? 'фраза' : favoriteCount < 5 ? 'фразы' : 'фраз'}
+								{favoriteCount === 1
+									? 'фраза'
+									: favoriteCount < 5
+										? 'фразы'
+										: 'фраз'}
 							</p>
 						)}
 					</div>
 					<BackButton />
 				</div>
+				{isAuthenticated && favoriteCount > 0 && (
+					<Button asChild className="mb-4 w-full" variant="outline">
+						<Link href="/flashcards?favorites=1">
+							<Layers className="mr-2 size-4" />
+							Учить избранное
+						</Link>
+					</Button>
+				)}
 				<FavoritePhraseList />
 			</main>
 		</div>

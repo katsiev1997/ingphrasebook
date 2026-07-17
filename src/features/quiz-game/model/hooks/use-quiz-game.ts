@@ -59,6 +59,7 @@ export const useQuizGame = () => {
 		isAnswered: false,
 		isCorrect: null,
 		usedPhraseIds: new Set<number>(),
+		failedPhraseIds: [],
 	});
 	const [isGameStarted, setIsGameStarted] = useState(false);
 	const hasInitializedRef = useRef(false);
@@ -115,6 +116,7 @@ export const useQuizGame = () => {
 			isAnswered: false,
 			isCorrect: null,
 			usedPhraseIds: new Set<number>(),
+			failedPhraseIds: [],
 		});
 		refetchPhrases();
 	}, [refetchPhrases]);
@@ -131,6 +133,7 @@ export const useQuizGame = () => {
 			}
 
 			const isCorrect = phraseId === session.currentQuestion.correctPhrase.id;
+			const correctId = session.currentQuestion.correctPhrase.id;
 
 			setSession((prev) => ({
 				...prev,
@@ -138,6 +141,11 @@ export const useQuizGame = () => {
 				isAnswered: true,
 				isCorrect,
 				correctAnswers: isCorrect ? prev.correctAnswers + 1 : prev.correctAnswers,
+				failedPhraseIds: isCorrect
+					? prev.failedPhraseIds
+					: prev.failedPhraseIds.includes(correctId)
+						? prev.failedPhraseIds
+						: [...prev.failedPhraseIds, correctId],
 			}));
 		},
 		[session.isAnswered, session.currentQuestion]

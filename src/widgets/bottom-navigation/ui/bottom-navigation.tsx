@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import {
 	BookOpen,
 	GamepadDirectionalIcon,
-	HelpCircleIcon,
+	Layers,
 	Settings,
 	Star,
 } from 'lucide-react';
@@ -19,6 +19,7 @@ interface NavItem {
 	icon: ComponentType<{ className?: string }>;
 	label: string;
 	isActive?: boolean;
+	matchPrefix?: boolean;
 }
 
 interface BottomNavigationProps {
@@ -32,9 +33,10 @@ const navItems: NavItem[] = [
 		label: 'Phrases',
 	},
 	{
-		href: '/about',
-		icon: HelpCircleIcon,
-		label: 'About',
+		href: '/study',
+		icon: Layers,
+		label: 'Study',
+		matchPrefix: true,
 	},
 	{
 		href: '/game',
@@ -53,11 +55,28 @@ const navItems: NavItem[] = [
 	},
 ];
 
+function pathMatches(pathname: string, item: NavItem) {
+	if (item.matchPrefix) {
+		return (
+			pathname === item.href ||
+			pathname.startsWith(`${item.href}/`) ||
+			pathname.startsWith('/flashcards') ||
+			pathname.startsWith('/dialogues') ||
+			pathname.startsWith('/dictation') ||
+			pathname.startsWith('/statistics')
+		);
+	}
+	return pathname === item.href;
+}
+
 export function BottomNavigation({ className }: BottomNavigationProps) {
 	const pathname = usePathname();
-	const isActive = useCallback((href: string) => pathname === href, [pathname]);
+	const isActive = useCallback(
+		(item: NavItem) => pathMatches(pathname, item),
+		[pathname]
+	);
 	const activeIndex = useMemo(() => {
-		const index = navItems.findIndex((item) => pathname === item.href);
+		const index = navItems.findIndex((item) => pathMatches(pathname, item));
 		return index !== -1 ? index : 0;
 	}, [pathname]);
 
@@ -128,7 +147,7 @@ export function BottomNavigation({ className }: BottomNavigationProps) {
 								href={item.href}
 								className={cn(
 									'relative z-10 flex flex-col items-center gap-1',
-									isActive(item.href)
+									isActive(item)
 										? 'text-primary'
 										: 'text-gray-500 dark:text-gray-400'
 								)}

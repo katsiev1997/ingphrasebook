@@ -25,4 +25,6 @@ export interface GameSession {
 	isAnswered: boolean;
 	isCorrect: boolean | null;
 	usedPhraseIds: Set<number>;
+	/** Phrase IDs answered incorrectly in this session */
+	failedPhraseIds: number[];
 }

@@ -1,6 +1,7 @@
 import { db } from '@/db/drizzle';
-import { favoritePhrases, gameStats, users } from '@/db/schema';
+import { favoritePhrases, gameStats, userActivity, users } from '@/db/schema';
 import { checkAuth, createAuthErrorResponse } from '@/shared/lib/auth-utils';
+import { computeStreak } from '@/shared/lib/user-activity';
 import { eq, sql } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
@@ -15,7 +16,6 @@ export async function GET() {
 
 		const userId = authResult.user.id;
 
-		// Получаем данные пользователя
 		const user = await db
 			.select()
 			.from(users)
@@ -30,55 +30,41 @@ export async function GET() {
 		const registrationDate = userData.createdAt;
 		const now = new Date();
 
-		// Вычисляем количество дней в системе
 		const daysInSystem = Math.floor(
 			(now.getTime() - registrationDate.getTime()) / (1000 * 60 * 60 * 24)
 		);
 
-		// Получаем статистику игр
 		const stats = await db
 			.select()
 			.from(gameStats)
 			.where(eq(gameStats.userId, userId))
 			.limit(1);
 
-		// Получаем количество избранных фраз
 		const favoriteCount = await db
 			.select({ count: sql<number>`count(*)` })
 			.from(favoritePhrases)
 			.where(eq(favoritePhrases.userId, userId));
 
-		// Определяем последнюю активность
-		// Используем updatedAt из gameStats, если статистика есть
-		const lastActivity =
-			stats.length > 0 && stats[0].updatedAt
+		const activityRows = await db
+			.select()
+			.from(userActivity)
+			.where(eq(userActivity.userId, userId));
+
+		const consecutiveDays = computeStreak(
+			activityRows.map((row) => row.date),
+			now
+		);
+
+		const lastActivityFromLog = activityRows
+			.map((row) => row.date)
+			.sort()
+			.at(-1);
+
+		const lastActivity = lastActivityFromLog
+			? new Date(`${lastActivityFromLog}T12:00:00.000Z`)
+			: stats.length > 0 && stats[0].updatedAt
 				? stats[0].updatedAt
 				: registrationDate;
-
-		// Вычисляем количество дней подряд
-		// Упрощенная логика: если последняя активность была сегодня, считаем 1 день
-		// Для более точного подсчета нужна таблица истории активности
-		let consecutiveDays = 0;
-		if (stats.length > 0 && stats[0].updatedAt) {
-			const lastActivityDate = stats[0].updatedAt;
-			const today = new Date(now);
-			today.setHours(0, 0, 0, 0);
-
-			const lastActivityDay = new Date(lastActivityDate);
-			lastActivityDay.setHours(0, 0, 0, 0);
-
-			const daysDiff = Math.floor(
-				(today.getTime() - lastActivityDay.getTime()) / (1000 * 60 * 60 * 24)
-			);
-
-			// Если активность была сегодня, считаем 1 день подряд
-			// Если вчера, тоже 1 день (серия продолжается)
-			if (daysDiff === 0) {
-				consecutiveDays = 1;
-			} else if (daysDiff === 1) {
-				consecutiveDays = 1; // Упрощенная логика: считаем что серия продолжается
-			}
-		}
 
 		return NextResponse.json({
 			registrationDate,
