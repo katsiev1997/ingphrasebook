@@ -71,7 +71,8 @@ function pathMatches(pathname: string, item: NavItem) {
 			pathname.startsWith('/dialogues') ||
 			pathname.startsWith('/dictation') ||
 			pathname.startsWith('/statistics') ||
-			pathname.startsWith('/pronunciation')
+			pathname.startsWith('/pronunciation') ||
+			pathname.startsWith('/survey')
 		);
 	}
 	return pathname === item.href;

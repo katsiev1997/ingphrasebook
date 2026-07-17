@@ -150,12 +150,25 @@ export const userActivity = pgTable(
 	(table) => [primaryKey({ columns: [table.userId, table.date] })]
 );
 
+/** One-shot product survey response per user */
+export const productSurveyResponses = pgTable('productSurveyResponses', {
+	id: serial('id').primaryKey(),
+	userId: integer('userId')
+		.notNull()
+		.references(() => users.id, { onDelete: 'cascade' })
+		.unique(),
+	surveyVersion: varchar('surveyVersion', { length: 20 }).notNull().default('v1'),
+	answers: text('answers').notNull(),
+	createdAt: timestamp('createdAt').notNull().defaultNow(),
+});
+
 // Определение связей
 export const usersRelations = relations(users, ({ many }) => ({
 	favoritePhrases: many(favoritePhrases),
 	gameStats: many(gameStats),
 	phraseLearningProgress: many(phraseLearningProgress),
 	userActivity: many(userActivity),
+	productSurveyResponses: many(productSurveyResponses),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
@@ -224,6 +237,16 @@ export const userActivityRelations = relations(userActivity, ({ one }) => ({
 	}),
 }));
 
+export const productSurveyResponsesRelations = relations(
+	productSurveyResponses,
+	({ one }) => ({
+		user: one(users, {
+			fields: [productSurveyResponses.userId],
+			references: [users.id],
+		}),
+	})
+);
+
 // Типы для TypeScript
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
@@ -243,4 +266,6 @@ export type PhraseLearningProgress = typeof phraseLearningProgress.$inferSelect;
 export type NewPhraseLearningProgress = typeof phraseLearningProgress.$inferInsert;
 export type UserActivity = typeof userActivity.$inferSelect;
 export type NewUserActivity = typeof userActivity.$inferInsert;
+export type ProductSurveyResponse = typeof productSurveyResponses.$inferSelect;
+export type NewProductSurveyResponse = typeof productSurveyResponses.$inferInsert;
 export type LearningLevel = (typeof learningLevelEnum.enumValues)[number];

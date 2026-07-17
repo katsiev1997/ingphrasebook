@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import {
 	BookOpenCheck,
+	ClipboardList,
 	Flame,
 	Layers,
 	MessageCircle,
@@ -12,11 +13,14 @@ import {
 } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 import { useAuth } from '@/shared/hooks/use-auth';
+import { useGetSurveyStatus } from '@/features/survey';
 import { useGetLearningSummary } from '../model/queries/use-learning-queries';
 
 export function StudyHub() {
 	const { isAuthenticated, loading } = useAuth();
 	const { data: summary } = useGetLearningSummary(isAuthenticated);
+	const { data: surveyStatus } = useGetSurveyStatus(isAuthenticated);
+	const showSurveyCta = isAuthenticated && surveyStatus?.submitted !== true;
 
 	if (loading) {
 		return <p className="text-muted-foreground">Загрузка...</p>;
@@ -108,6 +112,14 @@ export function StudyHub() {
 						Статистика обучения
 					</Link>
 				</Button>
+				{showSurveyCta && (
+					<Button asChild variant="outline" size="lg" className="h-12 justify-start">
+						<Link href="/survey">
+							<ClipboardList className="mr-3 size-5" />
+							Опрос для пользователей
+						</Link>
+					</Button>
+				)}
 			</div>
 		</div>
 	);

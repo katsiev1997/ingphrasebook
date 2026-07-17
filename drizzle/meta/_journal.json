@@ -50,6 +50,13 @@
       "when": 1784312069484,
       "tag": "0006_workable_jazinda",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1784320660470,
+      "tag": "0007_glorious_lizard",
+      "breakpoints": true
     }
   ]
 }
