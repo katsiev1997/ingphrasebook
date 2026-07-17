@@ -4,6 +4,23 @@ All notable changes to IngPhrase are documented here and on `/changelog` in the 
 
 Source of truth for the in-app page: `src/shared/config/changelog.ts`.
 
+## [0.2.1] — 2026-07-17
+
+### Changed
+
+- Bottom tab «Ещё» → «Профиль»
+- Phrase search moved to `/search`; floating search button on home
+- Pronunciation guide grouped into accordions (vowels, consonants, noun classes)
+- User activity stats moved into learning statistics
+
+### Added
+
+- Motion polish on phrase and category cards; floating search FAB animation
+
+### Fixed
+
+- Search API N+1 `favoritePhrases` queries that failed under Neon load
+
 ## [0.2.0] — 2026-07-17
 
 ### Added
