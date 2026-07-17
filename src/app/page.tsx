@@ -5,6 +5,7 @@ import { useGetCategories } from '@/entities/category/model/queries/use-get-cate
 import { useSearchPhrases } from '@/entities/phrase/model/queries/use-search-phrases';
 import { SearchBar } from '@/features/search-bar';
 import { ReviewCta } from '@/features/flashcards';
+import { HomeDialoguesTeaser } from '@/features/dialogues/ui/home-dialogues-teaser';
 import { CategoryList } from '@/widgets/category-list';
 import { PhraseList } from '@/entities/phrase';
 
@@ -30,6 +31,7 @@ export default function Home() {
 					Ing Phrase
 				</h1>
 				{!isSearching && <ReviewCta />}
+				{!isSearching && <HomeDialoguesTeaser />}
 				<SearchBar onSearchChange={setSearchQuery} />
 				{isSearching ? (
 					<PhraseList

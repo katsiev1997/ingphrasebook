@@ -24,7 +24,7 @@ export default function StatisticsPage() {
 					<h1 className="text-2xl font-bold text-black dark:text-white">
 						Статистика
 					</h1>
-					<BackButton />
+					<BackButton fallbackHref="/study" />
 				</div>
 
 				{(loading || (isAuthenticated && isPending)) && (

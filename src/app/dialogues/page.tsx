@@ -11,7 +11,7 @@ export default function DialoguesPage() {
 					<h1 className="text-2xl font-bold text-black dark:text-white">
 						Диалоги
 					</h1>
-					<BackButton />
+					<BackButton fallbackHref="/study" />
 				</div>
 				<DialoguesList />
 			</main>

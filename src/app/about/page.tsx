@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { BackButton } from '@/shared/components/back-button';
 
 export const metadata: Metadata = {
 	title: 'О проекте | IngPhrase',
@@ -20,15 +21,24 @@ export default function AboutPage() {
 	return (
 		<div className="mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-background-dark font-display">
 			<main className="flex-1 px-4 py-4 pb-24 space-y-6">
-				<h1 className="mb-4 text-3xl font-bold text-black dark:text-white">
-					О проекте
-				</h1>
+				<div className="flex items-center justify-between gap-3">
+					<h1 className="text-3xl font-bold text-black dark:text-white">
+						О проекте
+					</h1>
+					<BackButton fallbackHref="/settings" />
+				</div>
 
 				{/* О проекте */}
 				<p className="text-gray-700 dark:text-gray-300 leading-relaxed">
 					IngPhrase — это современный разговорник для изучения ингушского языка.
 					Приложение помогает изучающим язык быстро находить нужные фразы,
 					прослушивать их произношение и систематизировать изучение по категориям.
+				</p>
+
+				<p className="text-sm text-muted-foreground">
+					<Link href="/changelog" className="underline text-primary">
+						Что нового — Changelog
+					</Link>
 				</p>
 
 				{/* Основные возможности */}

@@ -33,7 +33,7 @@ export default function FavoritesPage() {
 							</p>
 						)}
 					</div>
-					<BackButton />
+					<BackButton fallbackHref="/" />
 				</div>
 				{isAuthenticated && favoriteCount > 0 && (
 					<Button asChild className="mb-4 w-full" variant="outline">

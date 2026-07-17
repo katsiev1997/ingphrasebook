@@ -1,4 +1,5 @@
 import { Button } from '@/shared/components/ui/button';
+import Link from 'next/link';
 import { Leaderboard } from './leaderboard';
 
 interface QuizStartProps {
@@ -22,6 +23,13 @@ export const QuizStart = ({ isLoading, startGame }: QuizStartProps) => {
 					<div className="flex flex-col items-center justify-center gap-4 py-8">
 						<p className="text-center text-muted-foreground">
 							Готовы начать? Проверьте свои знания ингушского языка!
+						</p>
+						<p className="text-center text-sm text-muted-foreground">
+							Ошибки после игры попадут в{' '}
+							<Link href="/study" className="text-primary underline">
+								повторения
+							</Link>
+							, чтобы закрепить материал.
 						</p>
 						<Button
 							onClick={startGame}

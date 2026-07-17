@@ -38,7 +38,7 @@ export default async function PhrasesPage({ params }: Props) {
 			<main className="flex-1 px-4 py-4 pb-24">
 				<div className="mb-4 flex items-center justify-between">
 					<CategoryTitle categoryId={categoryId} />
-					<BackButton />
+					<BackButton fallbackHref="/" />
 				</div>
 				<PhraseListCategory categoryId={categoryId} />
 			</main>

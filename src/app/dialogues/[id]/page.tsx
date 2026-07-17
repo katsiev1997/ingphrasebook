@@ -21,7 +21,7 @@ export default function DialoguePage({
 					<h1 className="text-2xl font-bold text-black dark:text-white">
 						{data?.title ?? 'Диалог'}
 					</h1>
-					<BackButton />
+					<BackButton fallbackHref="/dialogues" />
 				</div>
 				{Number.isFinite(id) ? (
 					<DialogueDetail id={id} />

@@ -80,7 +80,7 @@ export default function DictationPage() {
 					<h1 className="text-2xl font-bold text-black dark:text-white">
 						Диктовка
 					</h1>
-					<BackButton />
+					<BackButton fallbackHref="/study" />
 				</div>
 
 				{!isAuthenticated && (

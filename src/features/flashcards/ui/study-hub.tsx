@@ -8,6 +8,7 @@ import {
 	MessageCircle,
 	Mic,
 	Target,
+	Volume2,
 } from 'lucide-react';
 import { Button } from '@/shared/components/ui/button';
 import { useAuth } from '@/shared/hooks/use-auth';
@@ -72,7 +73,12 @@ export function StudyHub() {
 					</Link>
 				</Button>
 				{summary && summary.hardCount > 0 && (
-					<Button asChild variant="outline" size="lg" className="h-12 justify-start">
+					<Button
+						asChild
+						variant="outline"
+						size="lg"
+						className="h-12 justify-start"
+					>
 						<Link href="/flashcards?hard=1">
 							Сложные фразы ({summary.hardCount})
 						</Link>
@@ -88,6 +94,12 @@ export function StudyHub() {
 					<Link href="/dialogues">
 						<MessageCircle className="mr-3 size-5" />
 						Диалоги
+					</Link>
+				</Button>
+				<Button asChild variant="outline" size="lg" className="h-12 justify-start">
+					<Link href="/pronunciation">
+						<Volume2 className="mr-3 size-5" />
+						Произношение
 					</Link>
 				</Button>
 				<Button asChild variant="outline" size="lg" className="h-12 justify-start">

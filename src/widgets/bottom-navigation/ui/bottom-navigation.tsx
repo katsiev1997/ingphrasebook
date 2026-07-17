@@ -30,28 +30,28 @@ const navItems: NavItem[] = [
 	{
 		href: '/',
 		icon: BookOpen,
-		label: 'Phrases',
+		label: 'Фразы',
 	},
 	{
 		href: '/study',
 		icon: Layers,
-		label: 'Study',
+		label: 'Учёба',
 		matchPrefix: true,
 	},
 	{
 		href: '/game',
 		icon: GamepadDirectionalIcon,
-		label: 'Game',
+		label: 'Игра',
 	},
 	{
 		href: '/favorites',
 		icon: Star,
-		label: 'Favorites',
+		label: 'Избранное',
 	},
 	{
 		href: '/settings',
 		icon: Settings,
-		label: 'Settings',
+		label: 'Ещё',
 	},
 ];
 
@@ -63,7 +63,8 @@ function pathMatches(pathname: string, item: NavItem) {
 			pathname.startsWith('/flashcards') ||
 			pathname.startsWith('/dialogues') ||
 			pathname.startsWith('/dictation') ||
-			pathname.startsWith('/statistics')
+			pathname.startsWith('/statistics') ||
+			pathname.startsWith('/pronunciation')
 		);
 	}
 	return pathname === item.href;

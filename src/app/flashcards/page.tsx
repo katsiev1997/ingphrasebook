@@ -12,7 +12,7 @@ export default function FlashcardsPage() {
 					<h1 className="text-2xl font-bold text-black dark:text-white">
 						Карточки
 					</h1>
-					<BackButton />
+					<BackButton fallbackHref="/study" />
 				</div>
 				<Suspense fallback={<p className="text-muted-foreground">Загрузка...</p>}>
 					<FlashcardsView />

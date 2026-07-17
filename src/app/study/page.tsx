@@ -11,7 +11,7 @@ export default function StudyPage() {
 					<h1 className="text-2xl font-bold text-black dark:text-white">
 						Учёба
 					</h1>
-					<BackButton />
+					<BackButton fallbackHref="/" />
 				</div>
 				<StudyHub />
 			</main>
