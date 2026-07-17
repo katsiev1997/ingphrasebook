@@ -35,7 +35,7 @@ const navItems: NavItem[] = [
 	{
 		href: '/study',
 		icon: Layers,
-		label: 'Учёба',
+		label: 'Обучение',
 		matchPrefix: true,
 	},
 	{

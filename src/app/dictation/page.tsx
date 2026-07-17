@@ -99,7 +99,7 @@ export default function DictationPage() {
 							Нет фраз с аудио для диктовки.
 						</p>
 						<Button asChild variant="outline">
-							<Link href="/study">К учёбе</Link>
+							<Link href="/study">К обучению</Link>
 						</Button>
 					</div>
 				)}
@@ -111,7 +111,7 @@ export default function DictationPage() {
 							Верно: {knownCount} / {deck.length}
 						</p>
 						<Button asChild className="w-full">
-							<Link href="/study">К учёбе</Link>
+							<Link href="/study">К обучению</Link>
 						</Button>
 					</div>
 				)}

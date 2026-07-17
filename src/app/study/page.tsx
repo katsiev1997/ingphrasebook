@@ -9,7 +9,7 @@ export default function StudyPage() {
 			<main className="flex-1 px-4 py-4 pb-24">
 				<div className="mb-4 flex items-center justify-between">
 					<h1 className="text-2xl font-bold text-black dark:text-white">
-						Учёба
+						Обучение
 					</h1>
 					<BackButton fallbackHref="/" />
 				</div>
