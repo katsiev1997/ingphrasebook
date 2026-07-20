@@ -303,15 +303,15 @@ export const AudioControls = ({ phraseId, audioUrl }: AudioControlsProps) => {
             <button
               onClick={toggleAudioPlayback}
               disabled={isLoadingAudio}
-              className="w-full h-9 bg-accent flex items-center justify-center gap-2 px-3 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-9 bg-background border border-border flex items-center justify-center gap-2 px-3 rounded-md hover:bg-primary/10 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               title="Правильное произношение"
             >
               {isLoadingAudio ? (
-                <Loader2Icon className="h-4 w-4 animate-spin" />
+                <Loader2Icon className="h-4 w-4 animate-spin text-foreground" />
               ) : isPlayingAudio ? (
-                <PauseIcon className="h-4 w-4" />
+                <PauseIcon className="h-4 w-4 text-foreground" />
               ) : (
-                <PlayIcon className="h-4 w-4" />
+                <PlayIcon className="h-4 w-4 text-foreground" />
               )}
               <span className="text-sm text-foreground">
                 {isLoadingAudio ? "Загрузка..." : "Правильное произношение"}
